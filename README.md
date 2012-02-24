@@ -1,8 +1,10 @@
-# Simple Modification to Excel Sheets
+# bad.robot.simple-excel
 
-Basically wrapping the POI project with Java builder, modify simple sheets quickly and easily.
+Basically wrapping the POI project with Java builders to modify simple sheets quickly and easily.
 
-## Example
+## simple modification of an Excel sheet 
+
+Add styles, formula and content to cells programatically via a simple DSL
 
     @Test
     public void shouldReplaceCellsInComplicatedExample() throws IOException {
@@ -17,3 +19,7 @@ Basically wrapping the POI project with Java builder, modify simple sheets quick
 
         assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls"))));
     }
+
+## more.tools
+
+For more tools, see [robotooling.com](http://www.robotooling.com)
