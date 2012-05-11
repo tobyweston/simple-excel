@@ -43,9 +43,5 @@ public class ExcelColumnTest {
     public void convertRowCoordinateToExcelRowForExtendedAlphabet() {
         assertThat(AA.ordinal(),is(26));
         assertThat(ZZ.ordinal(), is(701));
-        assertThat(AAA.ordinal(), is(702));
-        assertThat(AAB.ordinal(), is(703));
-        assertThat(ZZZ.ordinal(), is(18277));
-        assertThat(AAAA.ordinal(), is(18278));
     }
 }
