@@ -21,24 +21,20 @@
 
 package bad.robot.excel.valuetypes;
 
-import static bad.robot.excel.valuetypes.ExcelColumn.*;
-import static bad.robot.excel.valuetypes.ExcelCoordinate.*;
-import static bad.robot.excel.valuetypes.SheetIndex.sheet;
-
 public class ExcelCoordinate {
 
-    private final ExcelColumn column;
-    private final ExcelRow row;
+    private final ExcelColumnIndex column;
+    private final ExcelRowIndex row;
 
-    public static ExcelCoordinate coordinate(ExcelColumn column, int row) {
-        return new ExcelCoordinate(column, ExcelRow.row(row));
+    public static ExcelCoordinate coordinate(ExcelColumnIndex column, int row) {
+        return new ExcelCoordinate(column, ExcelRowIndex.row(row));
     }
 
-    public static ExcelCoordinate coordinate(ExcelColumn column, ExcelRow row) {
+    public static ExcelCoordinate coordinate(ExcelColumnIndex column, ExcelRowIndex row) {
         return new ExcelCoordinate(column, row);
     }
 
-    public ExcelCoordinate(ExcelColumn column, ExcelRow row) {
+    public ExcelCoordinate(ExcelColumnIndex column, ExcelRowIndex row) {
         this.column = column;
         this.row = row;
     }

@@ -21,27 +21,15 @@
 
 package bad.robot.excel.valuetypes;
 
-import org.junit.Test;
+import bad.robot.AbstractValueType;
 
-import static bad.robot.excel.valuetypes.ExcelColumn.*;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+public class ExcelRowIndex extends AbstractValueType<Integer> {
 
-public class ExcelColumnTest {
-
-    @Test
-    public void convertToIndex() {
-        assertThat(A.ordinal(), is(0));
-        assertThat(B.ordinal(), is(1));
-        assertThat(C.ordinal(), is(2));
-        assertThat(X.ordinal(), is(23));
-        assertThat(Y.ordinal(), is(24));
-        assertThat(Z.ordinal(), is(25));
+    public static ExcelRowIndex row(Integer value) {
+        return new ExcelRowIndex(value);
     }
 
-    @Test
-    public void convertRowCoordinateToExcelRowForExtendedAlphabet() {
-        assertThat(AA.ordinal(),is(26));
-        assertThat(ZZ.ordinal(), is(701));
+    private ExcelRowIndex(Integer value) {
+        super(value);
     }
 }
