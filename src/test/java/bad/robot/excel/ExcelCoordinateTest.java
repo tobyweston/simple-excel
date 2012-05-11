@@ -70,7 +70,7 @@ public class ExcelCoordinateTest {
         assertThat(asColumn(18278), is("AAAA"));
     }
 
-    public String asColumnStringVersion(int column) {
+    public String asColumn(int column) {
         String converted = "";
         while (column >= 0) {
             int remainder = column % 26;
@@ -80,13 +80,4 @@ public class ExcelCoordinateTest {
         return converted;
     }
 
-    public String asColumn(int column) {
-        StringBuilder builder = new StringBuilder();
-        while (column >= 0) {
-            int remainder = column % 26;
-            builder.insert(0, (char) ('A' + remainder));
-            column = (column / 26) - 1;
-        }
-        return builder.toString();
-    }
 }
