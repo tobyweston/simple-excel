@@ -77,7 +77,7 @@ public class PoiWorkbookMutator implements WorkbookMutator {
 
     @Override
     public WorkbookMutator insertRowToFirstSheet(Row row, RowIndex index) {
-        row.insertAt(workbook, SheetIndex.sheet(0), index);
+        row.insertAt(workbook, SheetIndex.sheet(1), index);
         return this;
     }
 
@@ -89,7 +89,7 @@ public class PoiWorkbookMutator implements WorkbookMutator {
 
     @Override
     public WorkbookMutator appendRowToFirstSheet(Row row) {
-        row.appendTo(workbook, SheetIndex.sheet(0));
+        row.appendTo(workbook, SheetIndex.sheet(1));
         return this;
     }
 

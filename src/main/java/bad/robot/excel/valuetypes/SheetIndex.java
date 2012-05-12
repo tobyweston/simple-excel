@@ -26,7 +26,9 @@ import bad.robot.AbstractValueType;
 public class SheetIndex extends AbstractValueType<Integer> {
 
     public static SheetIndex sheet(Integer value) {
-        return new SheetIndex(value);
+        if (value <= 0)
+            throw new IllegalArgumentException("sheet indices start at 1");
+        return new SheetIndex(value - 1);
     }
 
     private SheetIndex(Integer value) {

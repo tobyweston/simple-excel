@@ -30,15 +30,19 @@ public class Coordinate {
     private final SheetIndex sheet;
 
     public static Coordinate coordinate(ExcelColumnIndex column, Integer row) {
-        return new Coordinate(ColumnIndex.column(column), RowIndex.row(row), sheet(0));
+        return new Coordinate(ColumnIndex.column(column), RowIndex.row(row), sheet(1));
+    }
+
+    public static Coordinate coordinate(ExcelColumnIndex column, Integer row, SheetIndex sheet) {
+        return new Coordinate(ColumnIndex.column(column), RowIndex.row(row), sheet);
+    }
+
+    public static Coordinate coordinate(ColumnIndex column, RowIndex row) {
+        return new Coordinate(column, row, sheet(1));
     }
 
     public static Coordinate coordinate(ColumnIndex column, RowIndex row, SheetIndex sheet) {
         return new Coordinate(column, row, sheet);
-    }
-
-    public static Coordinate coordinate(ColumnIndex column, RowIndex row) {
-        return new Coordinate(column, row, sheet(0));
     }
 
     private Coordinate(ColumnIndex column, RowIndex row, SheetIndex sheet) {
