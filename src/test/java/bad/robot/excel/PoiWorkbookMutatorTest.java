@@ -52,7 +52,7 @@ public class PoiWorkbookMutatorTest {
     @Test
     public void shouldReplaceCell() throws IOException {
         HSSFWorkbook workbook = getWorkbook("shouldReplaceCellTemplate.xls");
-        new PoiWorkbookMutator(workbook).replaceCell(coordinate(column(A), row(0)), "Hello World");
+        new PoiWorkbookMutator(workbook).replaceCell(coordinate(column(A), row(1)), "Hello World");
 
         assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellTemplateExpected.xls"))));
     }
@@ -61,12 +61,12 @@ public class PoiWorkbookMutatorTest {
     public void shouldReplaceCellsInComplicatedExample() throws IOException {
         HSSFWorkbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
         new PoiWorkbookMutator(workbook)
-                .replaceCell(coordinate(column(C), row(4)), "Very")
-                .replaceCell(coordinate(column(D), row(10)), "Complicated")
-                .replaceCell(coordinate(column(G), row(2)), "Example")
-                .replaceCell(coordinate(column(H), row(6)), "Of")
-                .replaceCell(coordinate(column(J), row(9)), "Templated")
-                .replaceCell(coordinate(column(M), row(14)), "Spreadsheet");
+                .replaceCell(coordinate(column(C), row(5)), "Very")
+                .replaceCell(coordinate(column(D), row(11)), "Complicated")
+                .replaceCell(coordinate(column(G), row(3)), "Example")
+                .replaceCell(coordinate(column(H), row(7)), "Of")
+                .replaceCell(coordinate(column(J), row(10)), "Templated")
+                .replaceCell(coordinate(column(M), row(15)), "Spreadsheet");
 
         assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls"))));
     }
@@ -75,12 +75,12 @@ public class PoiWorkbookMutatorTest {
     public void shouldReplaceCellsInComplicatedAlternateSyntaxExample() throws IOException {
         HSSFWorkbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
         new PoiWorkbookMutator(workbook)
-                .replaceCell(coordinate(C, 4), "Very")
-                .replaceCell(coordinate(D, 10), "Complicated")
-                .replaceCell(coordinate(G, 2), "Example")
-                .replaceCell(coordinate(H, 6), "Of")
-                .replaceCell(coordinate(J, 9), "Templated")
-                .replaceCell(coordinate(M, 14), "Spreadsheet");
+                .replaceCell(coordinate(C, 5), "Very")
+                .replaceCell(coordinate(D, 11), "Complicated")
+                .replaceCell(coordinate(G, 3), "Example")
+                .replaceCell(coordinate(H, 7), "Of")
+                .replaceCell(coordinate(J, 10), "Templated")
+                .replaceCell(coordinate(M, 15), "Spreadsheet");
 
         assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls"))));
     }

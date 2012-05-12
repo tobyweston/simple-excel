@@ -26,7 +26,9 @@ import bad.robot.AbstractValueType;
 public class RowIndex extends AbstractValueType<Integer> {
 
     public static RowIndex row(Integer value) {
-        return new RowIndex(value);
+        if (value <= 0)
+            throw new IllegalArgumentException("row indices start at 1");
+        return new RowIndex(value - 1);
     }
 
     private RowIndex(Integer value) {
