@@ -33,7 +33,6 @@ import java.util.Date;
 
 import static bad.robot.excel.RowBuilder.aRow;
 import static bad.robot.excel.matchers.WorkbookEqualityMatcher.sameWorkBook;
-import static bad.robot.excel.valuetypes.CellIndex.cellIndex;
 import static bad.robot.excel.valuetypes.ColumnIndex.column;
 import static bad.robot.excel.valuetypes.Coordinate.coordinate;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.*;
@@ -89,18 +88,18 @@ public class PoiWorkbookMutatorTest {
     public void shouldAppendRow() throws IOException, ParseException {
         HSSFWorkbook workbook = getWorkbook("shouldAppendRowTemplate.xls");
         RowBuilder row = aRow()
-                .withString(cellIndex(A), "This")
-                .withString(cellIndex(C), "Row")
-                .withString(cellIndex(D), "was")
-                .withString(cellIndex(E), "inserted")
-                .withString(cellIndex(H), "here")
-                .withString(cellIndex(I), "by")
-                .withString(cellIndex(J), "some")
-                .withString(cellIndex(K), "smart")
-                .withString(cellIndex(N), "Programmer")
-                .withInteger(cellIndex(L), 1)
-                .withDate(cellIndex(P), fromSimpleString("79-02-11"))
-                .withDouble(cellIndex(O), new Double("0.123456789"));
+                .withString(column(A), "This")
+                .withString(column(C), "Row")
+                .withString(column(D), "was")
+                .withString(column(E), "inserted")
+                .withString(column(H), "here")
+                .withString(column(I), "by")
+                .withString(column(J), "some")
+                .withString(column(K), "smart")
+                .withString(column(N), "Programmer")
+                .withInteger(column(L), 1)
+                .withDate(column(P), fromSimpleString("79-02-11"))
+                .withDouble(column(O), new Double("0.123456789"));
         new PoiWorkbookMutator(workbook).appendRowToFirstSheet(row.build());
 
         assertThat(workbook, is(sameWorkBook(getWorkbook("shouldAppendRowTemplateExpected.xls"))));

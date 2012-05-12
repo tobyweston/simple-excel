@@ -21,7 +21,7 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.CellIndex;
+import bad.robot.excel.valuetypes.ColumnIndex;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -29,8 +29,8 @@ import java.util.Map;
 
 public class StyledRowBuilder {
 
-    private Map<CellIndex,Cell> cells  = new HashMap<CellIndex,Cell>();
-    private Style defaultStyle;
+    private final Map<ColumnIndex, Cell> cells = new HashMap<ColumnIndex, Cell>();
+    private final Style defaultStyle;
 
     public static StyledRowBuilder aRowWithDefaultStyle(Style defaultStyle) {
         return new StyledRowBuilder(defaultStyle);
@@ -44,62 +44,62 @@ public class StyledRowBuilder {
         this.defaultStyle = defaultStyle;
     }
 
-    public StyledRowBuilder withBlank(CellIndex index) {
+    public StyledRowBuilder withBlank(ColumnIndex index) {
         this.cells.put(index, new BlankCell(defaultStyle));
         return this;
     }
 
-    public StyledRowBuilder withBlank(CellIndex index, Style style) {
+    public StyledRowBuilder withBlank(ColumnIndex index, Style style) {
         this.cells.put(index, new BlankCell(style));
         return this;
     }
 
-    public StyledRowBuilder withString(CellIndex index, String text) {
+    public StyledRowBuilder withString(ColumnIndex index, String text) {
         this.cells.put(index, new StringCell(text, defaultStyle));
         return this;
     }
 
-    public StyledRowBuilder withString(CellIndex index, String text, Style style) {
+    public StyledRowBuilder withString(ColumnIndex index, String text, Style style) {
         this.cells.put(index, new StringCell(text, style));
         return this;
     }
 
-    public StyledRowBuilder withDouble(CellIndex index, Double value) {
+    public StyledRowBuilder withDouble(ColumnIndex index, Double value) {
         this.cells.put(index, new DoubleCell(value, defaultStyle));
         return this;
     }
 
-    public StyledRowBuilder withDouble(CellIndex index, Double value, Style style) {
+    public StyledRowBuilder withDouble(ColumnIndex index, Double value, Style style) {
         this.cells.put(index, new DoubleCell(value, style));
         return this;
     }
 
-    public StyledRowBuilder withInteger(CellIndex index, Integer value) {
+    public StyledRowBuilder withInteger(ColumnIndex index, Integer value) {
         this.cells.put(index, new DoubleCell(new Double(Integer.toString(value)), defaultStyle));
         return this;
     }
 
-    public StyledRowBuilder withInteger(CellIndex index, Integer value, Style style) {
+    public StyledRowBuilder withInteger(ColumnIndex index, Integer value, Style style) {
         this.cells.put(index, new DoubleCell(new Double(Integer.toString(value)), style));
         return this;
     }
 
-    public StyledRowBuilder withDate(CellIndex index, Date date) {
+    public StyledRowBuilder withDate(ColumnIndex index, Date date) {
         this.cells.put(index, new DateCell(date, defaultStyle));
         return this;
     }
 
-    public StyledRowBuilder withDate(CellIndex index, Date date, Style style) {
+    public StyledRowBuilder withDate(ColumnIndex index, Date date, Style style) {
         this.cells.put(index, new DateCell(date, style));
         return this;
     }
 
-    public StyledRowBuilder withFormula(CellIndex index, String formula) {
+    public StyledRowBuilder withFormula(ColumnIndex index, String formula) {
         this.cells.put(index, new FormulaCell(formula, defaultStyle));
         return this;
     }
 
-    public StyledRowBuilder withFormula(CellIndex index, String formula, Style style) {
+    public StyledRowBuilder withFormula(ColumnIndex index, String formula, Style style) {
         this.cells.put(index, new FormulaCell(formula, style));
         return this;
     }

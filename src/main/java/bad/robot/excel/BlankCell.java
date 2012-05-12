@@ -21,7 +21,7 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.CellIndex;
+import bad.robot.excel.valuetypes.ColumnIndex;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -38,8 +38,8 @@ public class BlankCell extends Cell {
     }
 
     @Override
-    public void addTo(Row row, CellIndex index, Workbook workbook) {
-        org.apache.poi.ss.usermodel.Cell cell = row.createCell(index.value(), CELL_TYPE_BLANK);
+    public void addTo(Row row, ColumnIndex column, Workbook workbook) {
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_BLANK);
         this.getStyle().applyTo(cell, workbook);
     }
 

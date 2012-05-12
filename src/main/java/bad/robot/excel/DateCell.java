@@ -21,7 +21,7 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.CellIndex;
+import bad.robot.excel.valuetypes.ColumnIndex;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -41,8 +41,8 @@ public class DateCell extends Cell {
     }
 
     @Override
-    public void addTo(Row row, CellIndex index, Workbook workbook) {
-        org.apache.poi.ss.usermodel.Cell cell = row.createCell(index.value()); // what poi type is the date cell?
+    public void addTo(Row row, ColumnIndex column, Workbook workbook) {
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value()); // what poi type is the date cell?
         this.getStyle().applyTo(cell, workbook);
         cell.setCellValue(value);
     }

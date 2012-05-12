@@ -21,7 +21,7 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.CellIndex;
+import bad.robot.excel.valuetypes.ColumnIndex;
 import bad.robot.excel.valuetypes.RowIndex;
 import bad.robot.excel.valuetypes.SheetIndex;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -34,9 +34,9 @@ public class Row {
 
     private static final int shiftDownAmount = 1;
 
-    private final Map<CellIndex, Cell> cells = new HashMap<CellIndex, Cell>();
+    private final Map<ColumnIndex, Cell> cells = new HashMap<ColumnIndex, Cell>();
 
-    public Row(Map<CellIndex, Cell> cells) {
+    public Row(Map<ColumnIndex, Cell> cells) {
         this.cells.putAll(cells);
     }
 
@@ -54,7 +54,7 @@ public class Row {
     }
 
     private void copyCellsTo(org.apache.poi.ss.usermodel.Row row, Workbook workbook) {
-        for (CellIndex index : cells.keySet()) {
+        for (ColumnIndex index : cells.keySet()) {
             Cell cellToInsert = cells.get(index);
             cellToInsert.addTo(row, index, workbook);
         }

@@ -21,7 +21,7 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.CellIndex;
+import bad.robot.excel.valuetypes.ColumnIndex;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import java.util.Map;
 
 public class RowBuilder {
 
-    private Map<CellIndex,Cell> cells  = new HashMap<CellIndex,Cell>();
+    private Map<ColumnIndex, Cell> cells = new HashMap<ColumnIndex, Cell>();
 
     private RowBuilder() {
     }
@@ -38,32 +38,32 @@ public class RowBuilder {
         return new RowBuilder();
     }
 
-    public RowBuilder withString(CellIndex index, String text) {
+    public RowBuilder withString(ColumnIndex index, String text) {
         this.cells.put(index, new StringCell(text));
         return this;
     }
 
-    public RowBuilder withDouble(CellIndex index, Double value) {
+    public RowBuilder withDouble(ColumnIndex index, Double value) {
         this.cells.put(index, new DoubleCell(value));
         return this;
     }
 
-    public RowBuilder withDouble(CellIndex index, Double value, Style style) {
+    public RowBuilder withDouble(ColumnIndex index, Double value, Style style) {
         this.cells.put(index, new DoubleCell(value, style));
         return this;
     }
 
-    public RowBuilder withInteger(CellIndex index, Integer value) {
+    public RowBuilder withInteger(ColumnIndex index, Integer value) {
         this.cells.put(index, new DoubleCell(new Double(Integer.toString(value))));
         return this;
     }
 
-    public RowBuilder withDate(CellIndex index, Date date) {
+    public RowBuilder withDate(ColumnIndex index, Date date) {
         this.cells.put(index, new DateCell(date));
         return this;
     }
 
-    public RowBuilder withDate(CellIndex index, Date date, Style style) {
+    public RowBuilder withDate(ColumnIndex index, Date date, Style style) {
         this.cells.put(index, new DateCell(date, style));
         return this;
     }

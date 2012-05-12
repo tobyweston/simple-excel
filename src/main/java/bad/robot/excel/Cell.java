@@ -21,7 +21,7 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.CellIndex;
+import bad.robot.excel.valuetypes.ColumnIndex;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -37,6 +37,6 @@ public abstract class Cell {
         return style;
     }
 
-    public abstract void addTo(Row row, CellIndex index, Workbook workbook);
+    public abstract void addTo(Row row, ColumnIndex column, Workbook workbook);
 
 }

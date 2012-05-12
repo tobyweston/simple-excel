@@ -24,7 +24,8 @@
     <orderEntry type="library" scope="TEST" name="Maven: jmock:jmock-cglib:1.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: jmock:jmock:1.1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: cglib:cglib-full:2.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.poi:poi:3.7" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.poi:poi:3.8" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.5" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.1" level="project" />
   </component>
 </module>
