@@ -25,8 +25,8 @@ import bad.robot.AbstractValueType;
 
 public class ColumnIndex extends AbstractValueType<Integer> {
 
-    public static ColumnIndex column(Integer value) {
-        return new ColumnIndex(value);
+    public static ColumnIndex column(ExcelColumnIndex index) {
+        return new ColumnIndex(index.ordinal());
     }
 
     private ColumnIndex(Integer value) {

@@ -23,14 +23,15 @@ package bad.robot.excel.valuetypes;
 
 import bad.robot.AbstractValueType;
 
+// TODO should this be called column?
 public class CellIndex extends AbstractValueType<Integer> {
+
+    public static CellIndex cellIndex(ExcelColumnIndex index) {
+        return new CellIndex(index.ordinal());
+    }
 
     private CellIndex(Integer value) {
         super(value);
-    }
-
-    public static CellIndex cellIndex(Integer value) {
-        return new CellIndex(value);
     }
 
 }

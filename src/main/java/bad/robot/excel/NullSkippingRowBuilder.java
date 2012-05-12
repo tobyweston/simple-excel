@@ -22,6 +22,7 @@
 package bad.robot.excel;
 
 import bad.robot.excel.valuetypes.CellIndex;
+import bad.robot.excel.valuetypes.ExcelColumnIndex;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -37,9 +38,8 @@ public class NullSkippingRowBuilder {
     public NullSkippingRowBuilder(int initialCapacity, Style defaultStyle) {
         cells = new HashMap<CellIndex, Cell>(initialCapacity);
         this.defaultStyle = defaultStyle;
-        for (int i = 0; i < initialCapacity; i++) {
-            cells.put(cellIndex(i), new BlankCell(defaultStyle));
-        }
+        for (int i = 0; i < initialCapacity; i++)
+            cells.put(cellIndex(ExcelColumnIndex.values()[i]), new BlankCell(defaultStyle));
     }
 
     public NullSkippingRowBuilder withString(CellIndex index, String text) {

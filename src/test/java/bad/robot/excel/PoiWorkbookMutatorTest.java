@@ -36,6 +36,7 @@ import static bad.robot.excel.matchers.WorkbookEqualityMatcher.sameWorkBook;
 import static bad.robot.excel.valuetypes.CellIndex.cellIndex;
 import static bad.robot.excel.valuetypes.ColumnIndex.column;
 import static bad.robot.excel.valuetypes.Coordinate.coordinate;
+import static bad.robot.excel.valuetypes.ExcelColumnIndex.*;
 import static bad.robot.excel.valuetypes.RowIndex.row;
 import static org.apache.commons.lang3.time.DateUtils.parseDateStrictly;
 import static org.hamcrest.Matchers.is;
@@ -51,7 +52,7 @@ public class PoiWorkbookMutatorTest {
     @Test
     public void shouldReplaceCell() throws IOException {
         HSSFWorkbook workbook = getWorkbook("shouldReplaceCellTemplate.xls");
-        new PoiWorkbookMutator(workbook).replaceCell(coordinate(column(0), row(0)), "Hello World");
+        new PoiWorkbookMutator(workbook).replaceCell(coordinate(column(A), row(0)), "Hello World");
 
         assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellTemplateExpected.xls"))));
     }
@@ -60,12 +61,26 @@ public class PoiWorkbookMutatorTest {
     public void shouldReplaceCellsInComplicatedExample() throws IOException {
         HSSFWorkbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
         new PoiWorkbookMutator(workbook)
-                .replaceCell(coordinate(column(2), row(4)), "Very")
-                .replaceCell(coordinate(column(3), row(10)), "Complicated")
-                .replaceCell(coordinate(column(6), row(2)), "Example")
-                .replaceCell(coordinate(column(7), row(6)), "Of")
-                .replaceCell(coordinate(column(9), row(9)), "Templated")
-                .replaceCell(coordinate(column(12), row(14)), "Spreadsheet");
+                .replaceCell(coordinate(column(C), row(4)), "Very")
+                .replaceCell(coordinate(column(D), row(10)), "Complicated")
+                .replaceCell(coordinate(column(G), row(2)), "Example")
+                .replaceCell(coordinate(column(H), row(6)), "Of")
+                .replaceCell(coordinate(column(J), row(9)), "Templated")
+                .replaceCell(coordinate(column(M), row(14)), "Spreadsheet");
+
+        assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls"))));
+    }
+
+    @Test
+    public void shouldReplaceCellsInComplicatedAlternateSyntaxExample() throws IOException {
+        HSSFWorkbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
+        new PoiWorkbookMutator(workbook)
+                .replaceCell(coordinate(C, 4), "Very")
+                .replaceCell(coordinate(D, 10), "Complicated")
+                .replaceCell(coordinate(G, 2), "Example")
+                .replaceCell(coordinate(H, 6), "Of")
+                .replaceCell(coordinate(J, 9), "Templated")
+                .replaceCell(coordinate(M, 14), "Spreadsheet");
 
         assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls"))));
     }
@@ -74,18 +89,18 @@ public class PoiWorkbookMutatorTest {
     public void shouldAppendRow() throws IOException, ParseException {
         HSSFWorkbook workbook = getWorkbook("shouldAppendRowTemplate.xls");
         RowBuilder row = aRow()
-                .withString(cellIndex(0), "This")
-                .withString(cellIndex(2), "Row")
-                .withString(cellIndex(3), "was")
-                .withString(cellIndex(4), "inserted")
-                .withString(cellIndex(7), "here")
-                .withString(cellIndex(8), "by")
-                .withString(cellIndex(9), "some")
-                .withString(cellIndex(10), "smart")
-                .withString(cellIndex(13), "Programmer")
-                .withInteger(cellIndex(11), 1)
-                .withDate(cellIndex(15), fromSimpleString("79-02-11"))
-                .withDouble(cellIndex(14), new Double("0.123456789"));
+                .withString(cellIndex(A), "This")
+                .withString(cellIndex(C), "Row")
+                .withString(cellIndex(D), "was")
+                .withString(cellIndex(E), "inserted")
+                .withString(cellIndex(H), "here")
+                .withString(cellIndex(I), "by")
+                .withString(cellIndex(J), "some")
+                .withString(cellIndex(K), "smart")
+                .withString(cellIndex(N), "Programmer")
+                .withInteger(cellIndex(L), 1)
+                .withDate(cellIndex(P), fromSimpleString("79-02-11"))
+                .withDouble(cellIndex(O), new Double("0.123456789"));
         new PoiWorkbookMutator(workbook).appendRowToFirstSheet(row.build());
 
         assertThat(workbook, is(sameWorkBook(getWorkbook("shouldAppendRowTemplateExpected.xls"))));

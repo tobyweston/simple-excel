@@ -29,6 +29,10 @@ public class Coordinate {
     private final RowIndex row;
     private final SheetIndex sheet;
 
+    public static Coordinate coordinate(ExcelColumnIndex column, Integer row) {
+        return new Coordinate(ColumnIndex.column(column), RowIndex.row(row), sheet(0));
+    }
+
     public static Coordinate coordinate(ColumnIndex column, RowIndex row, SheetIndex sheet) {
         return new Coordinate(column, row, sheet);
     }
