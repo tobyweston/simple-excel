@@ -50,7 +50,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
             @Override
             public void assertSameValue(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) throws WorkbookDiscrepancyException {
                 if (expectedCell.getBooleanCellValue() != actualCell.getBooleanCellValue())
-                    throw new WorkbookDiscrepancyException(format("Cell at %s%s values different: expected '%s' actual '%s'", asExcelRow(expectedCell), asExcelColumn(expectedCell), expectedCell.getBooleanCellValue(), actualCell.getBooleanCellValue()));
+                    throw new WorkbookDiscrepancyException(format("Cell at %s%s has different values: expected '%s' actual '%s'", asExcelRow(expectedCell), asExcelColumn(expectedCell), expectedCell.getBooleanCellValue(), actualCell.getBooleanCellValue()));
 
             }
         },
@@ -58,7 +58,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
             @Override
             public void assertSameValue(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) throws WorkbookDiscrepancyException {
                 if (expectedCell.getErrorCellValue() != actualCell.getErrorCellValue()) {
-                    throw new WorkbookDiscrepancyException(format("Cell at %s%s values different: expected '%s' actual '%s'", asExcelRow(expectedCell), asExcelColumn(expectedCell), expectedCell.getErrorCellValue(), actualCell.getErrorCellValue()));
+                    throw new WorkbookDiscrepancyException(format("Cell at %s%s has different values: expected '%s' actual '%s'", asExcelRow(expectedCell), asExcelColumn(expectedCell), expectedCell.getErrorCellValue(), actualCell.getErrorCellValue()));
                 }
 
             }
@@ -67,7 +67,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
             @Override
             public void assertSameValue(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) throws WorkbookDiscrepancyException {
                 if (!expectedCell.getCellFormula().equals(actualCell.getCellFormula())) {
-                    throw new WorkbookDiscrepancyException(format("Cell at %s%s values different: expected '%s' actual '%s'", asExcelRow(expectedCell), asExcelColumn(expectedCell), expectedCell.getCellFormula(), actualCell.getCellFormula()));
+                    throw new WorkbookDiscrepancyException(format("Cell at %s%s has different values: expected '%s' actual '%s'", asExcelRow(expectedCell), asExcelColumn(expectedCell), expectedCell.getCellFormula(), actualCell.getCellFormula()));
                 }
 
             }
@@ -76,7 +76,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
             @Override
             public void assertSameValue(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) throws WorkbookDiscrepancyException {
                 if (expectedCell.getNumericCellValue() != actualCell.getNumericCellValue())
-                    throw new WorkbookDiscrepancyException(format("Cell at %s%s values different: expected '%s' actual '%s'", asExcelRow(expectedCell), asExcelColumn(expectedCell), expectedCell.getNumericCellValue(), actualCell.getNumericCellValue()));
+                    throw new WorkbookDiscrepancyException(format("Cell at %s%s has different values: expected '%s' actual '%s'", asExcelRow(expectedCell), asExcelColumn(expectedCell), expectedCell.getNumericCellValue(), actualCell.getNumericCellValue()));
             }
         },
         STRING(1,3) {
@@ -86,7 +86,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
                     return;
                 }
                 if (!expectedCell.getStringCellValue().equals(actualCell.getStringCellValue())) {
-                    throw new WorkbookDiscrepancyException(format("Cell at %s%s values different: expected '%s' actual '%s'", asExcelRow(expectedCell), asExcelColumn(expectedCell), expectedCell.getStringCellValue(), actualCell.getStringCellValue()));
+                    throw new WorkbookDiscrepancyException(format("Cell at %s%s has different values: expected '%s' actual '%s'", asExcelRow(expectedCell), asExcelColumn(expectedCell), expectedCell.getStringCellValue(), actualCell.getStringCellValue()));
                 }
             }
         };
@@ -163,7 +163,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
         CellType actualCellType = CellType.valueOf(actualCell.getCellType());
 
         if (expectedCellType != actualCellType)
-            throw new WorkbookDiscrepancyException(format("Cell at C%s,R%s Types different: expected: '%s' actual '%s'", asExcelColumn(expectedCell), asExcelRow(expectedCell), expectedCellType, actualCellType));
+            throw new WorkbookDiscrepancyException(format("Cell at %s%s has different types: expected: '%s' actual '%s'", asExcelRow(expectedCell), asExcelColumn(expectedCell), expectedCellType, actualCellType));
 
         expectedCellType.assertSameValue(expectedCell, actualCell);
 
