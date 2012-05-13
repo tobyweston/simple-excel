@@ -30,11 +30,11 @@ public class PoiToExcelCoordinateCoercions {
         return asExcelColumn(cell) + asExcelRow(cell);
     }
 
-    private static String asExcelRow(Cell cell) {
-        return ExcelColumnIndex.from(cell.getRowIndex()).name();
+    private static String asExcelColumn(Cell cell) {
+        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
     }
 
-    private static int asExcelColumn(Cell cell) {
-        return cell.getColumnIndex() + 1;
+    private static int asExcelRow(Cell cell) {
+        return cell.getRowIndex() + 1;
     }
 }
