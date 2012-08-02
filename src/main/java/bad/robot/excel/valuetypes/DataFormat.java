@@ -21,7 +21,7 @@
 
 package bad.robot.excel.valuetypes;
 
-import bad.robot.AbstractValueType;
+import bad.robot.excel.AbstractValueType;
 
 public class DataFormat extends AbstractValueType<String> {
 

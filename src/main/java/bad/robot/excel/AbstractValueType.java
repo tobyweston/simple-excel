@@ -19,7 +19,7 @@
  * under the License.
  */
 
-package bad.robot;
+package bad.robot.excel;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -27,7 +27,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
-import static bad.robot.Assertions.assertNotNull;
 import static org.apache.commons.lang3.builder.CompareToBuilder.reflectionCompare;
 import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
@@ -36,7 +35,7 @@ public abstract class AbstractValueType<T extends Serializable> implements Value
     private final T value;
 
     public AbstractValueType(T value) {
-        assertNotNull(value);
+        Assertions.assertNotNull(value);
         this.value = value;
     }
 

@@ -19,13 +19,12 @@
  * under the License.
  */
 
-package bad.robot;
+package bad.robot.excel;
 
-public class Assertions {
+import java.io.Serializable;
 
-    public static void assertNotNull(Object object) {
-        if (object == null)
-            throw new IllegalArgumentException("object can not be null");
-    }
+public interface ValueType<T> extends Serializable {
+
+    T value();
 
 }

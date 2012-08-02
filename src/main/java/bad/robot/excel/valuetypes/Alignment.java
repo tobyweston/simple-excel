@@ -21,7 +21,7 @@
 
 package bad.robot.excel.valuetypes;
 
-import bad.robot.AbstractValueType;
+import bad.robot.excel.AbstractValueType;
 import bad.robot.excel.AlignmentStyle;
 
 public class Alignment extends AbstractValueType<AlignmentStyle> {
