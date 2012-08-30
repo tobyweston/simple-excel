@@ -28,7 +28,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import static bad.robot.excel.PoiToExcelCoordinateCoercions.asExcelCoordinate;
-import static bad.robot.excel.matchers.SheetNumberMatcher.hasSameNumberOfSheetsAs;
+import static bad.robot.excel.matchers.SheetMatcher.hasSameSheetsAs;
 import static java.lang.String.format;
 
 public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
@@ -47,7 +47,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
     @Override
     public boolean matchesSafely(Workbook actual) {
         try {
-            if (!hasSameNumberOfSheetsAs(expectedWorkbook).matches(actual))
+            if (!hasSameSheetsAs(expectedWorkbook).matches(actual))
                 return false;
 
             for (int a = 0; a < actual.getNumberOfSheets(); a++) {

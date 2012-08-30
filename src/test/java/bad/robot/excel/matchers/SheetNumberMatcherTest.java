@@ -35,18 +35,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-// Using Assert (from JUnit)
-//java.lang.AssertionError:
-//        Expected: <2> sheet(s)
-//        got: <org.apache.poi.hssf.usermodel.HSSFWorkbook@3b6f0be8>
-
-// Using MatcherAssert:
-//java.lang.AssertionError:
-//        Expected: <2> sheet(s)
-//        but: got <1> sheet(s)
-//        at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)
-
 public class SheetNumberMatcherTest {
+
+    private final Description description = new StringDescription();
 
     private HSSFWorkbook workbookWithOneSheet;
     private HSSFWorkbook workbookWithTwoSheets;
@@ -75,14 +66,12 @@ public class SheetNumberMatcherTest {
 
     @Test
     public void description() {
-        Description description = new StringDescription();
         hasSameNumberOfSheetsAs(workbookWithOneSheet).describeTo(description);
         assertThat(description.toString(), is("<1> sheet(s)"));
     }
 
     @Test
     public void mismatch() {
-        Description description = new StringDescription();
         hasSameNumberOfSheetsAs(workbookWithOneSheet).matchesSafely(workbookWithTwoSheets, description);
         assertThat(description.toString(), is("got <2> sheet(s)"));
     }

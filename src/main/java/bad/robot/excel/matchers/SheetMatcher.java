@@ -25,6 +25,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
+import static bad.robot.excel.matchers.SheetNameMatcher.containsSameNamedSheetsAs;
+import static bad.robot.excel.matchers.SheetNumberMatcher.hasSameNumberOfSheetsAs;
+
 /**
  * Assert the number of sheets in two workbooks are the same.
  *
@@ -43,26 +46,31 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
  *          but: got <1> sheet(s)
  * </code>
  */
-public class SheetNumberMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
+public class SheetMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
 
-    private final Workbook expected;
+    private final SheetNameMatcher names;
+    private final SheetNumberMatcher numberOfSheets;
 
-    private SheetNumberMatcher(Workbook expected) {
-        this.expected = expected;
+    public static SheetMatcher hasSameSheetsAs(Workbook expected) {
+        return new SheetMatcher(expected);
     }
 
-    public static SheetNumberMatcher hasSameNumberOfSheetsAs(Workbook expected) {
-        return new SheetNumberMatcher(expected);
+    private SheetMatcher(Workbook expected) {
+        this.numberOfSheets = hasSameNumberOfSheetsAs(expected);
+        this.names = containsSameNamedSheetsAs(expected);
     }
 
     @Override
     protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        mismatch.appendText("got " ).appendValue(actual.getNumberOfSheets()).appendText(" sheet(s)");
-        return expected.getNumberOfSheets() == actual.getNumberOfSheets();
+        if (!numberOfSheets.matchesSafely(actual, mismatch))
+            return false;
+        return names.matchesSafely(actual, mismatch);
     }
 
     @Override
     public void describeTo(Description description) {
-        description.appendValue(expected.getNumberOfSheets()).appendText(" sheet(s)");
+        numberOfSheets.describeTo(description);
+        names.describeTo(description);
     }
+
 }
