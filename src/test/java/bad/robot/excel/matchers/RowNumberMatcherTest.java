@@ -23,31 +23,31 @@ package bad.robot.excel.matchers;
 
 import org.junit.Test;
 
-import static bad.robot.excel.WorkbookResource.getWorkbook;
-import static bad.robot.excel.matchers.SheetNumberEqualityMatcher.hasSameNumberOfSheetsAs;
+import static bad.robot.excel.WorkbookResource.firstSheetOf;
+import static bad.robot.excel.matchers.RowNumberMatcher.hasSameNumberOfRowAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
 
 // Using Assert (from JUnit)
 //java.lang.AssertionError:
-//        Expected: <2> sheet(s)
-//        got: <org.apache.poi.hssf.usermodel.HSSFWorkbook@3b6f0be8>
+//        Expected: <3> row(s) in sheet "Sheet1"
+//        got: <org.apache.poi.hssf.usermodel.HSSFSheet@47d62270>
 
 // Using MatcherAssert:
 //java.lang.AssertionError:
-//        Expected: <2> sheet(s)
-//        but: got <1> sheet(s)
+//        Expected: <3> row(s) in sheet "Sheet1"
+//        but: got <2> row(s) in sheet "Sheet1"
 //        at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)
 
-public class SheetNumberEqualityMatcherTest {
+public class RowNumberMatcherTest {
 
     @Test
     public void sheetNumbersAreEqual() throws Exception {
-        assertThat(getWorkbook("sheetNumbersAreEqual.xls"), hasSameNumberOfSheetsAs(getWorkbook("sheetNumbersAreEqual.xls")));
+        assertThat(firstSheetOf("rowNumbersAreEqual.xls"), hasSameNumberOfRowAs(firstSheetOf("rowNumbersAreEqual.xls")));
     }
 
     @Test
     public void sheetNumbersAreNotEqual() throws Exception {
-        assertThat(getWorkbook("sheetNumbersAreEqual.xls"), not(hasSameNumberOfSheetsAs(getWorkbook("sheetNumbersAreNotEqual.xls"))));
+        assertThat(firstSheetOf("rowNumbersAreNotEqual.xls"), not(hasSameNumberOfRowAs(firstSheetOf("rowNumbersAreEqual.xls"))));
     }
 }

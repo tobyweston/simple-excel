@@ -21,7 +21,7 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
@@ -30,39 +30,43 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
  *
  * Will return something like the following using (old style) {@link org.junit.Assert#assertThat(Object, org.hamcrest.Matcher)}
  * <code>
- *     java.lang.AssertionError:
- *     Expected: '2' sheets
- *          got: &lt;org.apache.poi.hssf.usermodel.HSSFWorkbook@3b6f0be8&gt;
- * </code>
+ *      java.lang.AssertionError:
+ *         Expected: <3> row(s) in sheet "Sheet1"
+ *              got: <org.apache.poi.hssf.usermodel.HSSFSheet@47d62270> * </code>
  *
  * and, something like the following for {@link org.hamcrest.MatcherAssert#assertThat(Object, org.hamcrest.Matcher)}
  *
  * <code>
- *     java.lang.AssertionError:
- *     Expected: <2> sheet(s)
- *          but: got <1> sheet(s)
+ *      java.lang.AssertionError:
+ *          Expected: <3> row(s) in sheet "Sheet1"
+ *               but: got <2> row(s) in sheet "Sheet1"
  * </code>
  */
-public class SheetNumberEqualityMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
+public class RowNumberMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
-    private final Workbook expected;
+    private final Sheet expected;
 
-    public static SheetNumberEqualityMatcher hasSameNumberOfSheetsAs(Workbook expected) {
-        return new SheetNumberEqualityMatcher(expected);
+    public static RowNumberMatcher hasSameNumberOfRowAs(Sheet expected) {
+        return new RowNumberMatcher(expected);
     }
 
-    private SheetNumberEqualityMatcher(Workbook expected) {
+    private RowNumberMatcher(Sheet expected) {
         this.expected = expected;
     }
 
     @Override
-    protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        mismatch.appendText("got " ).appendValue(actual.getNumberOfSheets()).appendText(" sheet(s)");
-        return expected.getNumberOfSheets() == actual.getNumberOfSheets();
+    protected boolean matchesSafely(Sheet actual, Description mismatch) {
+        mismatch.appendText("got ").appendValue(numberOfRowsIn(actual)).appendText(" row(s) in sheet ").appendValue(actual.getSheetName());
+        return numberOfRowsIn(expected) == numberOfRowsIn(actual);
     }
 
     @Override
     public void describeTo(Description description) {
-        description.appendValue(expected.getNumberOfSheets()).appendText(" sheet(s)");
+        description.appendValue(numberOfRowsIn(expected)).appendText(" row(s) in sheet ").appendValue(expected.getSheetName());
+    }
+
+    /** POI is zero-based */
+    private static int numberOfRowsIn(Sheet sheet) {
+        return sheet.getLastRowNum() + 1;
     }
 }

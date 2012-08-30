@@ -22,6 +22,7 @@
 package bad.robot.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -35,4 +36,9 @@ public class WorkbookResource {
             throw new FileNotFoundException(file);
         return new HSSFWorkbook(stream);
     }
+
+    public static Sheet firstSheetOf(String file) throws IOException {
+        return getWorkbook(file).getSheetAt(0);
+    }
+
 }

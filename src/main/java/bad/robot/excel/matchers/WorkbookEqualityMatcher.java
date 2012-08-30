@@ -28,7 +28,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import static bad.robot.excel.PoiToExcelCoordinateCoercions.asExcelCoordinate;
-import static bad.robot.excel.matchers.SheetNumberEqualityMatcher.hasSameNumberOfSheetsAs;
+import static bad.robot.excel.matchers.SheetNumberMatcher.hasSameNumberOfSheetsAs;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -120,8 +120,8 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
                 Sheet actualSheet = actual.getSheetAt(a);
                 Sheet expectedSheet = expectedWorkbook.getSheetAt(a);
 
-                if (actualSheet.getLastRowNum() != expectedSheet.getLastRowNum())
-                    throw new WorkbookDiscrepancyException(format("Different number of rows: expected: '%d' actual '%d'", expectedSheet.getLastRowNum(), actualSheet.getLastRowNum()));
+                if (!RowNumberMatcher.hasSameNumberOfRowAs(expectedSheet).matches(actualSheet))
+                    return false;
 
                 for (int i = 0; i <= expectedSheet.getLastRowNum(); i++)
                     checkIfRowEqual(actualSheet, expectedSheet, i);
