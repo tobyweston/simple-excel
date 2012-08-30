@@ -21,11 +21,18 @@
 
 package bad.robot.excel.matchers;
 
+import org.apache.poi.ss.usermodel.Sheet;
+import org.hamcrest.Description;
+import org.hamcrest.StringDescription;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static bad.robot.excel.WorkbookResource.firstSheetOf;
 import static bad.robot.excel.matchers.RowNumberMatcher.hasSameNumberOfRowAs;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 // Using Assert (from JUnit)
@@ -41,13 +48,42 @@ import static org.hamcrest.Matchers.not;
 
 public class RowNumberMatcherTest {
 
-    @Test
-    public void sheetNumbersAreEqual() throws Exception {
-        assertThat(firstSheetOf("rowNumbersAreEqual.xls"), hasSameNumberOfRowAs(firstSheetOf("rowNumbersAreEqual.xls")));
+    private Sheet sheetWithThreeRows;
+    private Sheet sheetWithTwoRows;
+
+    @Before
+    public void loadWorkbookAndSheets() throws IOException {
+        sheetWithThreeRows = firstSheetOf("sheetWithThreeRows.xls");
+        sheetWithTwoRows = firstSheetOf("sheetWithTwoRows.xls");
     }
 
     @Test
-    public void sheetNumbersAreNotEqual() throws Exception {
-        assertThat(firstSheetOf("rowNumbersAreNotEqual.xls"), not(hasSameNumberOfRowAs(firstSheetOf("rowNumbersAreEqual.xls"))));
+    public void exampleUsages() throws Exception {
+        assertThat(sheetWithThreeRows, hasSameNumberOfRowAs(sheetWithThreeRows));
+        assertThat(sheetWithTwoRows, not(hasSameNumberOfRowAs(sheetWithThreeRows)));
+    }
+
+    @Test
+    public void matches() {
+        assertThat(hasSameNumberOfRowAs(sheetWithThreeRows).matches(sheetWithThreeRows), is(true));
+    }
+
+    @Test
+    public void doesNotMatch() {
+        assertThat(hasSameNumberOfRowAs(sheetWithThreeRows).matches(sheetWithTwoRows), is(false));
+    }
+
+    @Test
+    public void description() {
+        Description description = new StringDescription();
+        hasSameNumberOfRowAs(sheetWithThreeRows).describeTo(description);
+        assertThat(description.toString(), is("<3> row(s) in sheet \"Sheet1\""));
+    }
+
+    @Test
+    public void mismatch() {
+        Description description = new StringDescription();
+        hasSameNumberOfRowAs(sheetWithThreeRows).matchesSafely(sheetWithTwoRows, description);
+        assertThat(description.toString(), is("got <2> row(s) in sheet \"Sheet1\""));
     }
 }
