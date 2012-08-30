@@ -155,7 +155,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
         if (bothCellsAreNullOrBlank(expectedCell, actualCell))
             return;
 
-        if (anyOfTheCellsIsNull(expectedCell, actualCell))
+        if (anyOfTheCellsAreNull(expectedCell, actualCell))
             throw new WorkbookDiscrepancyException("One of cells was null");
 
         CellType expectedCellType = CellType.valueOf(expectedCell.getCellType());
@@ -190,7 +190,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
         return false;
     }
 
-    private boolean anyOfTheCellsIsNull(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) {
+    private boolean anyOfTheCellsAreNull(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) {
         return actualCell == null || expectedCell == null;
     }
 
