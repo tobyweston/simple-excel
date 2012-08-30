@@ -25,13 +25,12 @@ import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.util.Date;
 
 import static bad.robot.excel.RowBuilder.aRow;
+import static bad.robot.excel.WorkbookResource.getWorkbook;
 import static bad.robot.excel.matchers.WorkbookEqualityMatcher.sameWorkBook;
 import static bad.robot.excel.valuetypes.ColumnIndex.column;
 import static bad.robot.excel.valuetypes.Coordinate.coordinate;
@@ -103,13 +102,6 @@ public class PoiWorkbookMutatorTest {
         new PoiWorkbookMutator(workbook).appendRowToFirstSheet(row.build());
 
         assertThat(workbook, is(sameWorkBook(getWorkbook("shouldAppendRowTemplateExpected.xls"))));
-    }
-
-    private static HSSFWorkbook getWorkbook(String file) throws IOException {
-        InputStream stream = PoiWorkbookMutatorTest.class.getResourceAsStream(file);
-        if (stream == null)
-            throw new FileNotFoundException(file);
-        return new HSSFWorkbook(stream);
     }
 
     public static Date fromSimpleString(String date) throws ParseException {

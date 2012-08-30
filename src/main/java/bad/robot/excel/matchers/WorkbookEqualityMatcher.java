@@ -28,6 +28,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import static bad.robot.excel.PoiToExcelCoordinateCoercions.asExcelCoordinate;
+import static bad.robot.excel.matchers.SheetNumberEqualityMatcher.hasSameNumberOfSheetsAs;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -110,10 +111,10 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
     }
 
     @Override
-    public boolean matchesSafely(Workbook actual) {
+    public boolean matchesSafely(final Workbook actual) {
         try {
-            if (actual.getNumberOfSheets() != expectedWorkbook.getNumberOfSheets())
-                throw new WorkbookDiscrepancyException(format("Different number of sheets: expected: '%d' actual '%d'", expectedWorkbook.getNumberOfSheets(), ((Workbook) actual).getNumberOfSheets()));
+            if (!hasSameNumberOfSheetsAs(expectedWorkbook).matches(actual))
+                return false;
 
             for (int a = 0; a < actual.getNumberOfSheets(); a++) {
                 Sheet actualSheet = actual.getSheetAt(a);
@@ -209,4 +210,5 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
             super(message);
         }
     }
+
 }
