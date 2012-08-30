@@ -68,7 +68,7 @@ public class SheetMatcherTest {
     @Test
     public void description() {
         hasSameSheetsAs(workbookWithManyNamedSheets).describeTo(description);
-        assertThat(description.toString(), is("<4> sheet(s)named \"Sheet1\", \"Another Sheet\", \"Yet Another Sheet\", \"Sheet5\""));
+        assertThat(description.toString(), is("<4> sheet(s) named \"Sheet1\", \"Another Sheet\", \"Yet Another Sheet\", \"Sheet5\""));
     }
 
     @Test
@@ -80,6 +80,6 @@ public class SheetMatcherTest {
     @Test
     public void mismatchOnNameOfSheets() {
         hasSameSheetsAs(workbookWithManyNamedSheets).matchesSafely(workbookWithMultipleAlternativelyNamedSheets, description);
-        assertThat(description.toString(), is("got <4> sheet(s)\"Yet Another Sheet\" were not found"));
+        assertThat(description.toString(), is("got <4> sheet(s) but \"Yet Another Sheet\" was not found"));
     }
 }
