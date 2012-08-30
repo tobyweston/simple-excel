@@ -45,7 +45,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
     }
 
     @Override
-    public boolean matchesSafely(final Workbook actual) {
+    public boolean matchesSafely(Workbook actual) {
         try {
             if (!hasSameNumberOfSheetsAs(expectedWorkbook).matches(actual))
                 return false;
