@@ -30,7 +30,6 @@ import org.hamcrest.TypeSafeMatcher;
 import static bad.robot.excel.PoiToExcelCoordinateCoercions.asExcelCoordinate;
 import static bad.robot.excel.matchers.SheetNumberMatcher.hasSameNumberOfSheetsAs;
 import static java.lang.String.format;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
 
@@ -43,71 +42,6 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
 
     public static Matcher<Workbook> sameWorkBook(Workbook expectedWorkbook) {
         return new WorkbookEqualityMatcher(expectedWorkbook);
-    }
-
-    enum CellType {
-        BOOLEAN(4) {
-            @Override
-            public void assertSameValue(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) throws WorkbookDiscrepancyException {
-                if (expectedCell.getBooleanCellValue() != actualCell.getBooleanCellValue())
-                    throw new WorkbookDiscrepancyException(format("Cell at %s has different values: expected '%s' actual '%s'", asExcelCoordinate(expectedCell), expectedCell.getBooleanCellValue(), actualCell.getBooleanCellValue()));
-
-            }
-        },
-        ERROR(5) {
-            @Override
-            public void assertSameValue(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) throws WorkbookDiscrepancyException {
-                if (expectedCell.getErrorCellValue() != actualCell.getErrorCellValue()) {
-                    throw new WorkbookDiscrepancyException(format("Cell at %s has different values: expected '%s' actual '%s'", asExcelCoordinate(expectedCell), expectedCell.getErrorCellValue(), actualCell.getErrorCellValue()));
-                }
-
-            }
-        },
-        FORMULA(2) {
-            @Override
-            public void assertSameValue(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) throws WorkbookDiscrepancyException {
-                if (!expectedCell.getCellFormula().equals(actualCell.getCellFormula())) {
-                    throw new WorkbookDiscrepancyException(format("Cell at %s has different values: expected '%s' actual '%s'", asExcelCoordinate(expectedCell), expectedCell.getCellFormula(), actualCell.getCellFormula()));
-                }
-
-            }
-        },
-        NUMERIC(0) {
-            @Override
-            public void assertSameValue(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) throws WorkbookDiscrepancyException {
-                if (expectedCell.getNumericCellValue() != actualCell.getNumericCellValue())
-                    throw new WorkbookDiscrepancyException(format("Cell at %s has different values: expected '%s' actual '%s'", asExcelCoordinate(expectedCell), expectedCell.getNumericCellValue(), actualCell.getNumericCellValue()));
-            }
-        },
-        STRING(1, 3) {
-            @Override
-            public void assertSameValue(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) throws WorkbookDiscrepancyException {
-                if (actualCell.getCellType() == 3 && isBlank(expectedCell.getStringCellValue())) {
-                    return;
-                }
-                if (!expectedCell.getStringCellValue().equals(actualCell.getStringCellValue())) {
-                    throw new WorkbookDiscrepancyException(format("Cell at %s has different values: expected '%s' actual '%s'", asExcelCoordinate(expectedCell), expectedCell.getStringCellValue(), actualCell.getStringCellValue()));
-                }
-            }
-        };
-
-        private Integer[] poiValues;
-
-        CellType(Integer... poiValues) {
-            this.poiValues = poiValues;
-        }
-
-        public static CellType valueOf(int cellType) {
-            for (CellType type : values()) {
-                for (Integer poiValue : type.poiValues) {
-                    if (poiValue == cellType)
-                        return type;
-                }
-            }
-            throw new RuntimeException("Unknown poi type " + cellType);
-        }
-
-        public abstract void assertSameValue(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) throws WorkbookDiscrepancyException;
     }
 
     @Override
@@ -204,11 +138,5 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
         description.appendText(lastError);
     }
 
-
-    static class WorkbookDiscrepancyException extends Exception {
-        public WorkbookDiscrepancyException(String message) {
-            super(message);
-        }
-    }
 
 }
