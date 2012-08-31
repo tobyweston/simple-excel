@@ -21,36 +21,8 @@
 
 package bad.robot.excel.matchers;
 
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-class Mismatches<T> implements MismatchDetector<T> {
-
-    private final List<Matcher<T>> mismatches = new ArrayList<Matcher<T>>();
-
-    @Override
-    public boolean discover(T actual, Iterable<Matcher<T>> matchers) {
-        for (Matcher<T> matcher : matchers) {
-            if (!matcher.matches(actual))
-                mismatches.add(matcher);
-        }
-        return found();
-    }
-
-    public void describeTo(Description description, T actual) {
-        Iterator<Matcher<T>> iterator = mismatches.iterator();
-        while (iterator.hasNext()) {
-            iterator.next().describeMismatch(actual, description);
-            if (iterator.hasNext())
-                description.appendText(", ");
-        }
-    }
-
-    public boolean found() {
-        return !mismatches.isEmpty();
-    }
+public interface MismatchDetector<T> {
+    boolean discover(T actual, Iterable<Matcher<T>> matchers);
 }
