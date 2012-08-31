@@ -49,8 +49,7 @@ class CompositeMatcher<T> extends TypeSafeDiagnosingMatcher<T> {
     @Override
     protected boolean matchesSafely(T actual, Description mismatch) {
         Mismatches<T> mismatches = new Mismatches<T>();
-        mismatches.discover(actual, matchers);
-        if (mismatches.found())
+        if (mismatches.discover(actual, matchers))
             mismatches.describeTo(mismatch, actual);
         return !mismatches.found();
     }

@@ -32,11 +32,12 @@ class Mismatches<T> {
 
     private final List<Matcher<T>> mismatches = new ArrayList<Matcher<T>>();
 
-    public void discover(T actual, Iterable<Matcher<T>> matchers) {
+    public boolean discover(T actual, Iterable<Matcher<T>> matchers) {
         for (Matcher<T> matcher : matchers) {
             if (!matcher.matches(actual))
                 mismatches.add(matcher);
         }
+        return found();
     }
 
     public void describeTo(Description description, T actual) {
