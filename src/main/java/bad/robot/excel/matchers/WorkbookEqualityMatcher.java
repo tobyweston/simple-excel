@@ -21,15 +21,13 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import static bad.robot.excel.PoiToExcelCoordinateCoercions.asExcelCoordinate;
+import static bad.robot.excel.matchers.RowEqualityMatcher.*;
 import static bad.robot.excel.matchers.RowNumberMatcher.hasSameNumberOfRowAs;
 import static bad.robot.excel.matchers.SheetMatcher.hasSameSheetsAs;
 import static java.lang.String.format;
@@ -37,7 +35,6 @@ import static java.lang.String.format;
 public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
 
     private final Workbook expectedWorkbook;
-    private String lastError;
 
     WorkbookEqualityMatcher(Workbook expectedWorkbook) {
         this.expectedWorkbook = expectedWorkbook;
@@ -49,96 +46,26 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
 
     @Override
     public boolean matchesSafely(Workbook actual) {
-        try {
-            if (!hasSameSheetsAs(expectedWorkbook).matches(actual))
+        if (!hasSameSheetsAs(expectedWorkbook).matches(actual))
+            return false;
+
+        for (int a = 0; a < actual.getNumberOfSheets(); a++) {
+            Sheet actualSheet = actual.getSheetAt(a);
+            Sheet expectedSheet = expectedWorkbook.getSheetAt(a);
+
+            if (!hasSameNumberOfRowAs(expectedSheet).matches(actualSheet))
                 return false;
 
-            for (int a = 0; a < actual.getNumberOfSheets(); a++) {
-                Sheet actualSheet = actual.getSheetAt(a);
-                Sheet expectedSheet = expectedWorkbook.getSheetAt(a);
-
-                if (!hasSameNumberOfRowAs(expectedSheet).matches(actualSheet))
-                    return false;
-
-                for (int i = 0; i <= expectedSheet.getLastRowNum(); i++)
-                    checkIfRowEqual(actualSheet, expectedSheet, i);
-            }
-        } catch (WorkbookDiscrepancyException e) {
-            lastError = e.getMessage();
-            return false;
+            if (!rowsEqual(expectedSheet).matches(actualSheet))
+                return false;
         }
+
         return true;
-    }
-
-    private void checkIfRowEqual(Sheet actualSheet, Sheet expectedSheet, int i) throws WorkbookDiscrepancyException {
-        Row expectedRow = expectedSheet.getRow(i);
-        Row actualRow = actualSheet.getRow(i);
-        if (bothRowsAreNull(expectedRow, actualRow))
-            return;
-        if (oneRowIsNullAndOtherNot(expectedRow, actualRow))
-            throw new WorkbookDiscrepancyException("One of rows was null");
-        if (expectedRow.getLastCellNum() != actualRow.getLastCellNum())
-            throw new WorkbookDiscrepancyException(format("Different number of cells: expected: '%d' actual '%d'", expectedRow.getLastCellNum(), actualRow.getLastCellNum()));
-
-        for (int j = 0; j <= expectedRow.getLastCellNum(); j++)
-            checkIfCellEqual(expectedRow, actualRow, j);
-    }
-
-    private void checkIfCellEqual(Row expectedRow, Row actualRow, int j) throws WorkbookDiscrepancyException {
-        Cell expectedCell = expectedRow.getCell(j);
-        Cell actualCell = actualRow.getCell(j);
-        if (bothCellsAreNull(expectedCell, actualCell))
-            return;
-
-        if (bothCellsAreNullOrBlank(expectedCell, actualCell))
-            return;
-
-        if (anyOfTheCellsAreNull(expectedCell, actualCell))
-            throw new WorkbookDiscrepancyException("One of cells was null");
-
-        CellType expectedCellType = CellType.valueOf(expectedCell.getCellType());
-        CellType actualCellType = CellType.valueOf(actualCell.getCellType());
-
-        if (expectedCellType != actualCellType)
-            throw new WorkbookDiscrepancyException(format("Cell at %s has different types: expected: '%s' actual '%s'", asExcelCoordinate(expectedCell), expectedCellType, actualCellType));
-
-        expectedCellType.assertSameValue(expectedCell, actualCell);
-
-    }
-
-    private boolean cellIsNullOrBlank(Cell cell) {
-        if (cell == null || cell.getCellType() == 3)
-            return true;
-        return false;
-    }
-
-    private boolean bothCellsAreNullOrBlank(Cell expected, Cell actual) {
-        return cellIsNullOrBlank(expected) && cellIsNullOrBlank(actual);
-    }
-
-    private boolean oneRowIsNullAndOtherNot(Row expectedRow, Row actualRow) {
-        if (actualRow == null || expectedRow == null)
-            return true;
-        return false;
-    }
-
-    private boolean bothRowsAreNull(Row expectedRow, Row actualRow) {
-        if ((actualRow == null && expectedRow == null))
-            return true;
-        return false;
-    }
-
-    private boolean anyOfTheCellsAreNull(Cell expectedCell, Cell actualCell) {
-        return actualCell == null || expectedCell == null;
-    }
-
-    private boolean bothCellsAreNull(Cell expectedCell, Cell actualCell) {
-        return (actualCell == null && expectedCell == null);
     }
 
     @Override
     public void describeTo(Description description) {
-        description.appendText(lastError);
+        description.appendText("not done yet!");
     }
 
 
