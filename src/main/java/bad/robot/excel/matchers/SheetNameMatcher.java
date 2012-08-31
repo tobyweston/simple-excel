@@ -31,6 +31,7 @@ import java.util.List;
 
 import static bad.robot.excel.WorkbookSheetIterable.sheetsOf;
 import static bad.robot.excel.WorkbookSheetNameIterable.sheetNamesOf;
+import static java.lang.String.format;
 
 /**
  * For every sheet in the "expected", the matcher checks to see if a sheet of the same name is in the "actual".
@@ -56,7 +57,7 @@ public class SheetNameMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
             if (actual.getSheet(sheet.getSheetName()) == null)
                 missingSheets.add(sheet.getSheetName());
         }
-        mismatch.appendValueList("", ", ", " were not found", missingSheets);
+        mismatch.appendValueList("", ", ", notFound(missingSheets), missingSheets);
         return missingSheets.isEmpty();
     }
 
@@ -69,5 +70,9 @@ public class SheetNameMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
 
     private static boolean previousDescriptionsIncludedIn(Description description) {
         return !description.toString().endsWith("Expected: ");
+    }
+
+    private String notFound(List<String> values) {
+        return format(" %s not found", values.size() == 1 ? "was" : "were");
     }
 }

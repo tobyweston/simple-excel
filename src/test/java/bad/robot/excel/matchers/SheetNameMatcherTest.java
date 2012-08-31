@@ -41,11 +41,13 @@ public class SheetNameMatcherTest {
 
     private HSSFWorkbook workbookWithOneNamedSheet;
     private HSSFWorkbook workbookWithManyNamedSheets;
+    private HSSFWorkbook workbookWithMultipleAlternativelyNamedSheets;
 
     @Before
     public void loadWorkbooks() throws IOException {
         workbookWithOneNamedSheet = getWorkbook("workbookWithOneSheet.xls");
         workbookWithManyNamedSheets = getWorkbook("workbookWithMultipleNamedSheets.xls");
+        workbookWithMultipleAlternativelyNamedSheets = getWorkbook("workbookWithMultipleAlternativelyNamedSheets.xls");
     }
 
     @Test
@@ -78,7 +80,13 @@ public class SheetNameMatcherTest {
     }
 
     @Test
-    public void mismatch() {
+    public void singularMismatch() {
+        containsSameNamedSheetsAs(workbookWithManyNamedSheets).matchesSafely(workbookWithMultipleAlternativelyNamedSheets, description);
+        assertThat(description.toString(), is("\"Yet Another Sheet\" was not found"));
+    }
+
+    @Test
+    public void multipleMismatch() {
         containsSameNamedSheetsAs(workbookWithManyNamedSheets).matchesSafely(workbookWithOneNamedSheet, description);
         assertThat(description.toString(), is("\"Another Sheet\", \"Yet Another Sheet\", \"Sheet5\" were not found"));
     }

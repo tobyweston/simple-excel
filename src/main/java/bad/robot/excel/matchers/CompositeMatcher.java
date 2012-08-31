@@ -21,41 +21,43 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Description;
+import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static bad.robot.excel.matchers.CompositeMatcher.allOf;
-import static bad.robot.excel.matchers.SheetNameMatcher.containsSameNamedSheetsAs;
-import static bad.robot.excel.matchers.SheetNumberMatcher.hasSameNumberOfSheetsAs;
+import java.util.Arrays;
 
-public class SheetMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
+class CompositeMatcher<T> extends TypeSafeDiagnosingMatcher<T> {
 
-    private final Matcher<Workbook> matchers;
+    private final Iterable<Matcher<T>> matchers;
 
-    public static SheetMatcher hasSameSheetsAs(Workbook expected) {
-        return new SheetMatcher(expected);
+    @Factory
+    static <T> TypeSafeDiagnosingMatcher<T> allOf(Iterable<Matcher<T>> matchers) {
+        return new CompositeMatcher<T>(matchers);
     }
 
-    private SheetMatcher(Workbook expected) {
-        Matcher<Workbook> numberOfSheets = hasSameNumberOfSheetsAs(expected);
-        Matcher<Workbook> namesOfSheets = containsSameNamedSheetsAs(expected);
-        this.matchers = allOf(numberOfSheets, namesOfSheets);
+    @Factory
+    static <T> TypeSafeDiagnosingMatcher<T> allOf(Matcher<T>... matchers) {
+        return allOf(Arrays.asList(matchers));
+    }
+
+    private CompositeMatcher(Iterable<Matcher<T>> matchers) {
+        this.matchers = matchers;
     }
 
     @Override
-    protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        boolean match = matchers.matches(actual);
-        if (!match)
-            matchers.describeMismatch(actual, mismatch);
-        return match;
+    protected boolean matchesSafely(T actual, Description mismatch) {
+        Mismatches<T> mismatches = new Mismatches<T>();
+        mismatches.discover(actual, matchers);
+        if (mismatches.found())
+            mismatches.describeTo(mismatch, actual);
+        return !mismatches.found();
     }
 
     @Override
     public void describeTo(Description description) {
-        matchers.describeTo(description);
+        description.appendList("", " ", "", matchers);
     }
-
 
 }
