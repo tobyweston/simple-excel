@@ -37,8 +37,8 @@ import static bad.robot.excel.valuetypes.Coordinate.coordinate;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.*;
 import static bad.robot.excel.valuetypes.RowIndex.row;
 import static org.apache.commons.lang3.time.DateUtils.parseDateStrictly;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 public class PoiWorkbookMutatorTest {
 

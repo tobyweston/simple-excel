@@ -19,10 +19,23 @@
  * under the License.
  */
 
-package bad.robot.excel.matchers;
+package bad.robot.excel;
 
-import bad.robot.excel.Cell;
+import org.junit.Test;
 
-public interface CellAdapter {
-    Cell adapt(org.apache.poi.ss.usermodel.Cell cell);
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
+public class StringCellTest {
+
+    @Test
+    public void stringRepresentation() {
+        assertThat(new StringCell("Value").toString(), is("\"Value\""));
+    }
+
+    @Test
+    public void equalityOfDifferingTypes() {
+        assertThat(new StringCell("Foo").equals(new BlankCell()), is(false));
+    }
+
 }

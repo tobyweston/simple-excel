@@ -40,16 +40,20 @@ public class RowEqualityMatcherTest {
 
     private Sheet sheetWithDifferingValues;
     private Sheet sheetWithThreeRows;
+    private Sheet sheetWithTwoRows;
 
     @Before
     public void loadWorkbooks() throws IOException {
         sheetWithThreeRows = firstSheetOf("sheetWithThreeRows.xls");
         sheetWithDifferingValues = firstSheetOf("sheetWithThreeRowsWithAlternativeValues.xls");
+        sheetWithTwoRows = firstSheetOf("sheetWithTwoRows.xls");
     }
 
     @Test
     public void exampleUsage() throws IOException {
         assertThat(sheetWithDifferingValues, not(rowsEqual(sheetWithThreeRows)));
+        assertThat(sheetWithTwoRows, not(rowsEqual(sheetWithThreeRows)));
+        assertThat(sheetWithThreeRows, rowsEqual(sheetWithTwoRows));
     }
 
     @Test
@@ -71,6 +75,12 @@ public class RowEqualityMatcherTest {
     @Test
     public void mismatch() throws IOException {
         rowsEqual(sheetWithThreeRows).matchesSafely(sheetWithDifferingValues, description);
-        assertThat(description.toString(), is("Cell at A2 has different values: expected 'Row 2' actual 'XXX'"));
+        assertThat(description.toString(), is("cell at \"A2\" contained <\"XXX\"> expected <\"Row 2\">"));
+    }
+
+    @Test
+    public void mismatchOn() {
+        rowsEqual(sheetWithThreeRows).matchesSafely(sheetWithTwoRows, description);
+        assertThat(description.toString(), is("row 3 is missing"));
     }
 }

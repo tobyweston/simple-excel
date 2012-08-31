@@ -34,6 +34,7 @@ import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     private final Sheet expected;
+    private final CellTypeAdapter adapter = new CellTypeAdapter();
 
     public static RowEqualityMatcher rowsEqual(Sheet expected) {
         return new RowEqualityMatcher(expected);
@@ -47,7 +48,7 @@ public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
     protected boolean matchesSafely(Sheet actual, Description mismatch) {
         try {
             for (Row row : expected)
-                verify(row, actual.getRow(row.getRowNum()));
+                verify(row, actual.getRow(row.getRowNum()), mismatch);
         } catch (WorkbookDiscrepancyException e) {
             mismatch.appendText(e.getMessage());
             return false;
@@ -60,45 +61,55 @@ public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
         description.appendText("equality on all rows in ").appendValue(expected.getSheetName());
     }
 
-    private void verify(Row expected, Row actual) throws WorkbookDiscrepancyException {
-        if (isBothNull(expected, actual))
+    private void verify(Row expected, Row actual, Description mismatch) throws WorkbookDiscrepancyException {
+        if (isBothNull(expected, actual)) // is this needed?
             return;
 
-        if (oneRowIsNullAndOtherNot(expected, actual))
-            throw new WorkbookDiscrepancyException("One of rows was null");
+        if (expectedRowIsMissingFrom(actual))
+            throw new WorkbookDiscrepancyException(format("row %s is missing", expected.getRowNum() + 1));
 
         if (expected.getLastCellNum() != actual.getLastCellNum())
             throw new WorkbookDiscrepancyException(format("Different number of cells: expected: '%d' actual '%d'", expected.getLastCellNum(), actual.getLastCellNum()));
 
         for (Cell cell : expected)
-            verify(cell, actual.getCell(cell.getColumnIndex()));
+            verify(cell, actual.getCell(cell.getColumnIndex()), mismatch);
     }
 
-    private void verify(Cell expected, Cell actual) throws WorkbookDiscrepancyException {
-        if (isBothNull(expected, actual))
-            return;
+    private void verify(Cell expected, Cell actual, Description mismatch) throws WorkbookDiscrepancyException {
+        bad.robot.excel.Cell expectedCell = adapter.adapt(expected);
+        bad.robot.excel.Cell actualCell = adapter.adapt(actual);
 
-        if (bothCellsAreNullOrBlank(expected, actual))
-            return;
+        if (!expectedCell.equals(actualCell)) {
+            mismatch.appendText("cell at ").appendValue(asExcelCoordinate(expected)).appendText(" contained ").appendValue(actualCell).appendText(" expected ").appendValue(expectedCell);
+            throw new WorkbookDiscrepancyException("");
+        }
 
-        if (anyOfTheCellsAreNull(expected, actual))
-            throw new WorkbookDiscrepancyException("One of cells was null");
+        // deprecated below this line
 
-        CellType expectedCellType = CellType.valueOf(expected.getCellType());
-        CellType actualCellType = CellType.valueOf(actual.getCellType());
-
-        if (expectedCellType != actualCellType)
-            throw new WorkbookDiscrepancyException(format("Cell at %s has different types: expected: '%s' actual '%s'", asExcelCoordinate(expected), expectedCellType, actualCellType));
-
-        expectedCellType.assertSameValue(expected, actual);
+//        if (isBothNull(expected, actual))
+//            return;
+//
+//        if (bothCellsAreNullOrBlank(expected, actual))
+//            return;
+//
+//        if (anyOfTheCellsAreNull(expected, actual))
+//            throw new WorkbookDiscrepancyException("One of cells was null");
+//
+//        DeprecatedCellType expectedCellType = DeprecatedCellType.valueOf(expected.getCellType());
+//        DeprecatedCellType actualCellType = DeprecatedCellType.valueOf(actual.getCellType());
+//
+//        if (expectedCellType != actualCellType) // DONE with equality
+//            throw new WorkbookDiscrepancyException(format("Cell at %s has different types: expected: '%s' actual '%s'", asExcelCoordinate(expected), expectedCellType, actualCellType));
+//
+//        expectedCellType.assertSameValue(expected, actual);
     }
 
     private boolean isBothNull(Object first, Object second) {
         return first == null && second == null;
     }
 
-    private boolean oneRowIsNullAndOtherNot(Row expectedRow, Row actualRow) {
-        return actualRow == null || expectedRow == null;
+    private boolean expectedRowIsMissingFrom(Row second) {
+        return second == null;
     }
 
     private boolean bothCellsAreNullOrBlank(Cell expected, Cell actual) {

@@ -27,10 +27,9 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import static bad.robot.excel.matchers.RowEqualityMatcher.*;
+import static bad.robot.excel.matchers.RowEqualityMatcher.rowsEqual;
 import static bad.robot.excel.matchers.RowNumberMatcher.hasSameNumberOfRowAs;
 import static bad.robot.excel.matchers.SheetMatcher.hasSameSheetsAs;
-import static java.lang.String.format;
 
 public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
 
@@ -65,7 +64,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("not done yet!");
+        description.appendText("entire workbook to be equal");
     }
 
 
