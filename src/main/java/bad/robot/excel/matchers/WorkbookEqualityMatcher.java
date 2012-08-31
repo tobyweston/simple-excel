@@ -21,6 +21,8 @@
 
 package bad.robot.excel.matchers;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Description;
@@ -28,6 +30,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import static bad.robot.excel.PoiToExcelCoordinateCoercions.asExcelCoordinate;
+import static bad.robot.excel.matchers.RowNumberMatcher.hasSameNumberOfRowAs;
 import static bad.robot.excel.matchers.SheetMatcher.hasSameSheetsAs;
 import static java.lang.String.format;
 
@@ -54,7 +57,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
                 Sheet actualSheet = actual.getSheetAt(a);
                 Sheet expectedSheet = expectedWorkbook.getSheetAt(a);
 
-                if (!RowNumberMatcher.hasSameNumberOfRowAs(expectedSheet).matches(actualSheet))
+                if (!hasSameNumberOfRowAs(expectedSheet).matches(actualSheet))
                     return false;
 
                 for (int i = 0; i <= expectedSheet.getLastRowNum(); i++)
@@ -68,8 +71,8 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
     }
 
     private void checkIfRowEqual(Sheet actualSheet, Sheet expectedSheet, int i) throws WorkbookDiscrepancyException {
-        org.apache.poi.ss.usermodel.Row expectedRow = expectedSheet.getRow(i);
-        org.apache.poi.ss.usermodel.Row actualRow = actualSheet.getRow(i);
+        Row expectedRow = expectedSheet.getRow(i);
+        Row actualRow = actualSheet.getRow(i);
         if (bothRowsAreNull(expectedRow, actualRow))
             return;
         if (oneRowIsNullAndOtherNot(expectedRow, actualRow))
@@ -81,9 +84,9 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
             checkIfCellEqual(expectedRow, actualRow, j);
     }
 
-    private void checkIfCellEqual(org.apache.poi.ss.usermodel.Row expectedRow, org.apache.poi.ss.usermodel.Row actualRow, int j) throws WorkbookDiscrepancyException {
-        org.apache.poi.ss.usermodel.Cell expectedCell = expectedRow.getCell(j);
-        org.apache.poi.ss.usermodel.Cell actualCell = actualRow.getCell(j);
+    private void checkIfCellEqual(Row expectedRow, Row actualRow, int j) throws WorkbookDiscrepancyException {
+        Cell expectedCell = expectedRow.getCell(j);
+        Cell actualCell = actualRow.getCell(j);
         if (bothCellsAreNull(expectedCell, actualCell))
             return;
 
@@ -103,33 +106,33 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
 
     }
 
-    private boolean cellIsNullOrBlank(org.apache.poi.ss.usermodel.Cell cell) {
+    private boolean cellIsNullOrBlank(Cell cell) {
         if (cell == null || cell.getCellType() == 3)
             return true;
         return false;
     }
 
-    private boolean bothCellsAreNullOrBlank(org.apache.poi.ss.usermodel.Cell expected, org.apache.poi.ss.usermodel.Cell actual) {
+    private boolean bothCellsAreNullOrBlank(Cell expected, Cell actual) {
         return cellIsNullOrBlank(expected) && cellIsNullOrBlank(actual);
     }
 
-    private boolean oneRowIsNullAndOtherNot(org.apache.poi.ss.usermodel.Row expectedRow, org.apache.poi.ss.usermodel.Row actualRow) {
+    private boolean oneRowIsNullAndOtherNot(Row expectedRow, Row actualRow) {
         if (actualRow == null || expectedRow == null)
             return true;
         return false;
     }
 
-    private boolean bothRowsAreNull(org.apache.poi.ss.usermodel.Row expectedRow, org.apache.poi.ss.usermodel.Row actualRow) {
+    private boolean bothRowsAreNull(Row expectedRow, Row actualRow) {
         if ((actualRow == null && expectedRow == null))
             return true;
         return false;
     }
 
-    private boolean anyOfTheCellsAreNull(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) {
+    private boolean anyOfTheCellsAreNull(Cell expectedCell, Cell actualCell) {
         return actualCell == null || expectedCell == null;
     }
 
-    private boolean bothCellsAreNull(org.apache.poi.ss.usermodel.Cell expectedCell, org.apache.poi.ss.usermodel.Cell actualCell) {
+    private boolean bothCellsAreNull(Cell expectedCell, Cell actualCell) {
         return (actualCell == null && expectedCell == null);
     }
 
