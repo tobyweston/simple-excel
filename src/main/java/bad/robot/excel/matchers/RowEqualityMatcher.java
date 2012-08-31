@@ -113,5 +113,4 @@ public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
         return cell == null || cell.getCellType() == CELL_TYPE_BLANK;
     }
 
-    // need factory to create a bad.robot Cell from a poi Cell then we can do equality properly.
 }

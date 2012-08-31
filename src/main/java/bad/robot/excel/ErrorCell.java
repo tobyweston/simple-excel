@@ -25,23 +25,26 @@ import bad.robot.excel.valuetypes.ColumnIndex;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA;
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR;
 
-public class BlankCell extends Cell {
+public class ErrorCell extends Cell {
 
-    public BlankCell() {
-        this(new NoStyle());
+    private final Byte value;
+
+    public ErrorCell(Byte text) {
+        this(text, new NoStyle());
     }
 
-    public BlankCell(Style style) {
+    public ErrorCell(Byte text, Style style) {
         super(style);
+        this.value = text;
     }
 
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
-        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_FORMULA);
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_ERROR);
         this.getStyle().applyTo(cell, workbook);
-        cell.setCellValue("");
+        cell.setCellErrorValue(value);
     }
 
 }
