@@ -29,7 +29,7 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 import static bad.robot.excel.PoiToExcelCoordinateCoercions.asExcelCoordinate;
 import static java.lang.String.format;
-import static org.apache.poi.ss.usermodel.Cell.*;
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 
 public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
@@ -57,7 +57,7 @@ public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("NOT DONE");
+        description.appendText("equality on all rows in ").appendValue(expected.getSheetName());
     }
 
     private void verify(Row expected, Row actual) throws WorkbookDiscrepancyException {
