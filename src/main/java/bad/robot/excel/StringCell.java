@@ -25,7 +25,6 @@ import bad.robot.excel.valuetypes.ColumnIndex;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING;
 
 public class StringCell extends Cell {
@@ -46,11 +45,6 @@ public class StringCell extends Cell {
         org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_STRING);
         this.getStyle().applyTo(cell, workbook);
         cell.setCellValue(value);
-    }
-
-    @Override
-    public boolean equals(Object that) {
-        return reflectionEquals(this, that, false, StringCell.class);
     }
 
     @Override

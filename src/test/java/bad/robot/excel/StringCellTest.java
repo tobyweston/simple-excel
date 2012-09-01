@@ -38,4 +38,10 @@ public class StringCellTest {
         assertThat(new StringCell("Foo").equals(new BlankCell()), is(false));
     }
 
+    @Test
+    public void basicEquality() {
+        assertThat(new StringCell("Bar").equals(new StringCell("Bar")), is(true));
+    }
+
+
 }

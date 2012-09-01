@@ -25,6 +25,7 @@ import bad.robot.excel.valuetypes.ColumnIndex;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import static java.lang.String.format;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR;
 
 public class ErrorCell extends Cell {
@@ -47,4 +48,8 @@ public class ErrorCell extends Cell {
         cell.setCellErrorValue(value);
     }
 
+    @Override
+    public String toString() {
+        return format("Error:%s", value);
+    }
 }

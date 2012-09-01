@@ -47,4 +47,8 @@ public class DateCell extends Cell {
         cell.setCellValue(value);
     }
 
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

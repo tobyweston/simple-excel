@@ -47,4 +47,9 @@ public class FormulaCell extends Cell {
         cell.setCellFormula(formula);
     }
 
+    @Override
+    public String toString() {
+        return String.format("Formula:%s", formula);
+    }
+
 }
