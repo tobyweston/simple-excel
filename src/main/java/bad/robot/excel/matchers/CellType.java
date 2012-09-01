@@ -71,12 +71,16 @@ public enum CellType implements CellAdapter {
         this.poiType = poiType;
     }
 
-    static CellAdapter adapterFor(org.apache.poi.ss.usermodel.Cell poi) {
+    private static CellAdapter getAdapterFor(org.apache.poi.ss.usermodel.Cell poi) {
         for (CellType type : values()) {
             if (type.poiType == poi.getCellType())
                 return type;
         }
         throw new RuntimeException("Unknown poi type " + poi.getCellType());
+    }
+
+    public static Cell adaptPoi(org.apache.poi.ss.usermodel.Cell cell) {
+        return getAdapterFor(cell).adapt(cell);
     }
 
 }

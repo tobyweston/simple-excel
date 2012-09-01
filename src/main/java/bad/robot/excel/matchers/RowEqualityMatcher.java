@@ -34,7 +34,6 @@ import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     private final Sheet expected;
-    private final CellTypeAdapter adapter = new CellTypeAdapter();
 
     public static RowEqualityMatcher rowsEqual(Sheet expected) {
         return new RowEqualityMatcher(expected);
@@ -76,8 +75,8 @@ public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
     }
 
     private void verify(Cell expected, Cell actual, Description mismatch) throws WorkbookDiscrepancyException {
-        bad.robot.excel.Cell expectedCell = adapter.adapt(expected);
-        bad.robot.excel.Cell actualCell = adapter.adapt(actual);
+        bad.robot.excel.Cell expectedCell = CellType.adaptPoi(expected);
+        bad.robot.excel.Cell actualCell = CellType.adaptPoi(actual);
 
         if (!expectedCell.equals(actualCell)) {
             mismatch.appendText("cell at ").appendValue(asExcelCoordinate(expected)).appendText(" contained ").appendValue(actualCell).appendText(" expected ").appendValue(expectedCell);
