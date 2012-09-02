@@ -28,6 +28,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static bad.robot.excel.Assertions.assertNotNull;
+
 public class WorkbookResource {
 
     public static HSSFWorkbook getWorkbook(String file) throws IOException {
@@ -38,15 +40,19 @@ public class WorkbookResource {
     }
 
     public static Sheet firstSheetOf(String file) throws IOException {
-        return getWorkbook(file).getSheetAt(0);
+        return assertNotNull(getWorkbook(file).getSheetAt(0));
     }
 
     public static org.apache.poi.ss.usermodel.Row firstRowOf(String file) throws IOException {
-        return firstSheetOf(file).getRow(0);
+        return assertNotNull(firstSheetOf(file).getRow(0));
     }
 
     public static org.apache.poi.ss.usermodel.Row secondRowOf(String file) throws IOException {
-        return firstSheetOf(file).getRow(1);
+        return assertNotNull(firstSheetOf(file).getRow(1));
+    }
+
+    public static org.apache.poi.ss.usermodel.Row thirdRowOf(String file) throws IOException {
+        return assertNotNull(firstSheetOf(file).getRow(2));
     }
 
 }

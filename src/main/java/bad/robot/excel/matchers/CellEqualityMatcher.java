@@ -29,7 +29,6 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
 import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
 import static bad.robot.excel.matchers.CellType.adaptPoi;
-import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 
 public class CellEqualityMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
@@ -62,36 +61,9 @@ public class CellEqualityMatcher extends TypeSafeDiagnosingMatcher<Row> {
         return true;
     }
 
-    private boolean expectedCellIsMissingFrom(Object cell) {
-        return cell == null;
-    }
-
-//        if (isBothNull(expected, actual))
-//            return;
-//
-//        if (bothCellsAreNullOrBlank(expected, actual))
-//            return;
-//
-//        if (anyOfTheCellsAreNull(expected, actual))
-//            throw new WorkbookDiscrepancyException("One of cells was null");
-//
-
-
     @Override
     public void describeTo(Description description) {
-        description.appendText("equality of all cells of row ").appendValue(asExcelRow(expected));
-    }
-
-    private boolean bothCellsAreNullOrBlank(Cell expected, Cell actual) {
-        return cellIsNullOrBlank(expected) && cellIsNullOrBlank(actual);
-    }
-
-    private boolean anyOfTheCellsAreNull(Cell expectedCell, Cell actualCell) {
-        return actualCell == null || expectedCell == null;
-    }
-
-    private boolean cellIsNullOrBlank(Cell cell) {
-        return cell == null || cell.getCellType() == CELL_TYPE_BLANK;
+        description.appendText("equality of all cells on row ").appendValue(asExcelRow(expected));
     }
 
 }

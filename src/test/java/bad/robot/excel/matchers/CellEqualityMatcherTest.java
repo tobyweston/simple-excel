@@ -28,8 +28,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static bad.robot.excel.WorkbookResource.firstRowOf;
-import static bad.robot.excel.WorkbookResource.secondRowOf;
+import static bad.robot.excel.WorkbookResource.*;
 import static bad.robot.excel.matchers.CellEqualityMatcher.hasSameCellsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -41,15 +40,19 @@ public class CellEqualityMatcherTest {
 
     private Row firstRow;
     private Row secondRow;
+    private Row thirdRow;
     private Row firstRowWithAlternateValues;
     private Row secondRowWithAlternateValues;
+    private Row thirdRowWithAlternateValues;
 
     @Before
     public void loadWorkbookAndSheets() throws IOException {
         firstRow = firstRowOf("rowWithThreeCells.xls");
         secondRow = secondRowOf("rowWithThreeCells.xls");
+        thirdRow = thirdRowOf("rowWithThreeCells.xls");
         firstRowWithAlternateValues = firstRowOf("rowWithThreeCellsAlternativeValues.xls");
         secondRowWithAlternateValues = secondRowOf("rowWithThreeCellsAlternativeValues.xls");
+        thirdRowWithAlternateValues = thirdRowOf("rowWithThreeCellsAlternativeValues.xls");
     }
 
     @Test
@@ -57,6 +60,7 @@ public class CellEqualityMatcherTest {
         assertThat(firstRow, hasSameCellsAs(firstRow));
         assertThat(firstRowWithAlternateValues, not(hasSameCellsAs(firstRow)));
         assertThat(secondRowWithAlternateValues, not(hasSameCellsAs(secondRow)));
+        assertThat(thirdRowWithAlternateValues, hasSameCellsAs(thirdRow));
     }
 
     @Test
@@ -72,7 +76,7 @@ public class CellEqualityMatcherTest {
     @Test
     public void description() {
         hasSameCellsAs(firstRow).describeTo(description);
-        assertThat(description.toString(), is("equality of all cells of row <1>"));
+        assertThat(description.toString(), is("equality of all cells on row <1>"));
     }
 
     @Test

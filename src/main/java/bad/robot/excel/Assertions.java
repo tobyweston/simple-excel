@@ -23,9 +23,10 @@ package bad.robot.excel;
 
 public class Assertions {
 
-    public static void assertNotNull(Object object) {
+    public static <T> T assertNotNull(T object) {
         if (object == null)
             throw new IllegalArgumentException("object can not be null");
+        return object;
     }
 
 }
