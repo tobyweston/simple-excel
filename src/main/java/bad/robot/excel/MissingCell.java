@@ -21,32 +21,31 @@
 
 package bad.robot.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Sheet;
+import bad.robot.excel.valuetypes.ColumnIndex;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA;
 
-public class WorkbookResource {
+public class MissingCell extends Cell {
 
-    public static HSSFWorkbook getWorkbook(String file) throws IOException {
-        InputStream stream = PoiWorkbookMutatorTest.class.getResourceAsStream(file);
-        if (stream == null)
-            throw new FileNotFoundException(file);
-        return new HSSFWorkbook(stream);
+    public MissingCell() {
+        this(new NoStyle());
     }
 
-    public static Sheet firstSheetOf(String file) throws IOException {
-        return getWorkbook(file).getSheetAt(0);
+    public MissingCell(Style style) {
+        super(style);
     }
 
-    public static org.apache.poi.ss.usermodel.Row firstRowOf(String file) throws IOException {
-        return firstSheetOf(file).getRow(0);
+    @Override
+    public void addTo(Row row, ColumnIndex column, Workbook workbook) {
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_FORMULA);
+        this.getStyle().applyTo(cell, workbook);
+        cell.setCellValue("");
     }
 
-    public static org.apache.poi.ss.usermodel.Row secondRowOf(String file) throws IOException {
-        return firstSheetOf(file).getRow(1);
+    @Override
+    public String toString() {
+        return "nothing";
     }
-
 }

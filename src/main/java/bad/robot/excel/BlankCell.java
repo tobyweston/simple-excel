@@ -44,4 +44,8 @@ public class BlankCell extends Cell {
         cell.setCellValue("");
     }
 
+    @Override
+    public String toString() {
+        return "blank";
+    }
 }

@@ -26,6 +26,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
+import static bad.robot.excel.matchers.CellEqualityMatcher.hasSameCellsAs;
 import static bad.robot.excel.matchers.CellNumberMatcher.hasSameNumberOfCellsAs;
 import static java.lang.String.format;
 
@@ -68,16 +69,16 @@ public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
         if (!hasSameNumberOfCellsAs(expected).matchesSafely(actual, mismatch))
             throw new WorkbookDiscrepancyException(format("Different number of cells: expected: '%d' actual '%d'", expected.getLastCellNum(), actual.getLastCellNum()));
 
-        if (!CellEqualityMatcher.hasSameCellsAs(expected).matchesSafely(actual, mismatch))
-            throw new WorkbookDiscrepancyException("No idea");
+        if (!hasSameCellsAs(expected).matchesSafely(actual, mismatch))
+            throw new WorkbookDiscrepancyException("");
     }
 
     private boolean isBothNull(Object first, Object second) {
         return first == null && second == null;
     }
 
-    private boolean expectedRowIsMissingFrom(Row second) {
-        return second == null;
+    private boolean expectedRowIsMissingFrom(Row row) {
+        return row == null;
     }
 
 }

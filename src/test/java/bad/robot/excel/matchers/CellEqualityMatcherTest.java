@@ -29,6 +29,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static bad.robot.excel.WorkbookResource.firstRowOf;
+import static bad.robot.excel.WorkbookResource.secondRowOf;
 import static bad.robot.excel.matchers.CellEqualityMatcher.hasSameCellsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -38,40 +39,51 @@ public class CellEqualityMatcherTest {
 
     private StringDescription description = new StringDescription();
 
-    private Row rowWithThreeCells;
-    private Row rowWithThreeCellsAlternateValues;
+    private Row firstRow;
+    private Row secondRow;
+    private Row firstRowWithAlternateValues;
+    private Row secondRowWithAlternateValues;
 
     @Before
     public void loadWorkbookAndSheets() throws IOException {
-        rowWithThreeCells = firstRowOf("rowWithThreeCells.xls");
-        rowWithThreeCellsAlternateValues = firstRowOf("rowWithThreeCellsAlternativeValues.xls");
+        firstRow = firstRowOf("rowWithThreeCells.xls");
+        secondRow = secondRowOf("rowWithThreeCells.xls");
+        firstRowWithAlternateValues = firstRowOf("rowWithThreeCellsAlternativeValues.xls");
+        secondRowWithAlternateValues = secondRowOf("rowWithThreeCellsAlternativeValues.xls");
     }
 
     @Test
     public void exampleUsage() {
-        assertThat(rowWithThreeCells, hasSameCellsAs(rowWithThreeCells));
-        assertThat(rowWithThreeCellsAlternateValues, not(hasSameCellsAs(rowWithThreeCells)));
+        assertThat(firstRow, hasSameCellsAs(firstRow));
+        assertThat(firstRowWithAlternateValues, not(hasSameCellsAs(firstRow)));
+        assertThat(secondRowWithAlternateValues, not(hasSameCellsAs(secondRow)));
     }
 
     @Test
     public void matches() {
-        assertThat(hasSameCellsAs(rowWithThreeCells).matches(rowWithThreeCells), is(true));
+        assertThat(hasSameCellsAs(firstRow).matches(firstRow), is(true));
     }
 
     @Test
     public void doesNotMatch() {
-        assertThat(hasSameCellsAs(rowWithThreeCellsAlternateValues).matches(rowWithThreeCells), is(false));
+        assertThat(hasSameCellsAs(firstRowWithAlternateValues).matches(firstRow), is(false));
     }
 
     @Test
     public void description() {
-        hasSameCellsAs(rowWithThreeCells).describeTo(description);
+        hasSameCellsAs(firstRow).describeTo(description);
         assertThat(description.toString(), is("equality of all cells of row <1>"));
     }
 
     @Test
     public void mismatch() {
-        hasSameCellsAs(rowWithThreeCells).matchesSafely(rowWithThreeCellsAlternateValues, description);
-        assertThat(description.toString(), is("cell at \"B1\" contained <3.14D> expected <\"Cell 2, Row 1\">"));
+        hasSameCellsAs(firstRow).matchesSafely(firstRowWithAlternateValues, description);
+        assertThat(description.toString(), is("cell at \"B1\" contained <3.14D> expected <\"C2, R1\">"));
+    }
+
+    @Test
+    public void mismatchOnMissingCell() {
+        hasSameCellsAs(secondRow).matchesSafely(secondRowWithAlternateValues, description);
+        assertThat(description.toString(), is("cell at \"B2\" contained <nothing> expected <\"C2, R2\">"));
     }
 }

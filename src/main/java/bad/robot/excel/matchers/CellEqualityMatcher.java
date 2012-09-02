@@ -62,6 +62,10 @@ public class CellEqualityMatcher extends TypeSafeDiagnosingMatcher<Row> {
         return true;
     }
 
+    private boolean expectedCellIsMissingFrom(Object cell) {
+        return cell == null;
+    }
+
 //        if (isBothNull(expected, actual))
 //            return;
 //
