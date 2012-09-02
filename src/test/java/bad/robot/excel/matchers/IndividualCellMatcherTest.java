@@ -21,6 +21,10 @@
 
 package bad.robot.excel.matchers;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.hamcrest.StringDescription;
 import org.junit.Before;
@@ -29,16 +33,17 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static bad.robot.excel.WorkbookResource.*;
-import static bad.robot.excel.matchers.CellEqualityMatcher.hasSameCellsAs;
+import static bad.robot.excel.matchers.IndividualCellMatcher.hasSameCellAs;
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class CellEqualityMatcherTest {
+public class IndividualCellMatcherTest {
 
     private StringDescription description = new StringDescription();
 
-    private Row firstRow;
+    private Row row;
     private Row secondRow;
     private Row thirdRow;
     private Row firstRowWithAlternateValues;
@@ -47,7 +52,7 @@ public class CellEqualityMatcherTest {
 
     @Before
     public void loadWorkbookAndSheets() throws IOException {
-        firstRow = firstRowOf("rowWithThreeCells.xls");
+        row = firstRowOf("rowWithThreeCells.xls");
         secondRow = secondRowOf("rowWithThreeCells.xls");
         thirdRow = thirdRowOf("rowWithThreeCells.xls");
         firstRowWithAlternateValues = firstRowOf("rowWithThreeCellsAlternativeValues.xls");
@@ -57,43 +62,37 @@ public class CellEqualityMatcherTest {
 
     @Test
     public void exampleUsage() {
-        assertThat(firstRow, hasSameCellsAs(firstRow));
-        assertThat(firstRowWithAlternateValues, not(hasSameCellsAs(firstRow)));
-        assertThat(secondRowWithAlternateValues, not(hasSameCellsAs(secondRow)));
-        assertThat(thirdRowWithAlternateValues, not(hasSameCellsAs(thirdRow)));
+        assertThat(row, hasSameCellAs(createCell(0, 0, "C1, R1")));
+        assertThat(row, not(hasSameCellAs(createCell(0, 0, "XXX"))));
     }
 
     @Test
     public void matches() {
-        assertThat(hasSameCellsAs(firstRow).matches(firstRow), is(true));
+        assertThat(hasSameCellAs(createCell(0, 1, "C2, R1")).matches(row), is(true));
     }
 
     @Test
     public void doesNotMatch() {
-        assertThat(hasSameCellsAs(firstRowWithAlternateValues).matches(firstRow), is(false));
+        assertThat(hasSameCellAs(createCell(0, 0, "C3, R1")).matches(row), is(false));
     }
 
     @Test
-    public void description() {
-        hasSameCellsAs(firstRow).describeTo(description);
-        assertThat(description.toString(), is("equality of all cells on row <1>"));
+    public void describe() {
+        hasSameCellAs(createCell(0, 0, "XXX")).describeTo(description);
+        assertThat(description.toString(), is("equality of cell \"A1\""));
     }
 
     @Test
     public void mismatch() {
-        hasSameCellsAs(firstRow).matchesSafely(firstRowWithAlternateValues, description);
-        assertThat(description.toString(), is("cell at \"B1\" contained <3.14D> expected <\"C2, R1\">"));
+        hasSameCellAs(createCell(0, 0, "XXX")).matchesSafely(row, description);
+        assertThat(description.toString(), is("cell at \"A1\" contained <\"C1, R1\"> expected <\"XXX\">"));
     }
 
-    @Test
-    public void mismatchOnMissingCell() {
-        hasSameCellsAs(secondRow).matchesSafely(secondRowWithAlternateValues, description);
-        assertThat(description.toString(), is("cell at \"B2\" contained <nothing> expected <\"C2, R2\">"));
-    }
-
-    @Test
-    public void mismatchMultipleValues() {
-        hasSameCellsAs(thirdRow).matchesSafely(thirdRowWithAlternateValues, description);
-        assertThat(description.toString(), is("cell at \"A3\" contained <40940.0D> expected <\"C1, R3\">, cell at \"B3\" contained <Formula:2+2> expected <\"C2, R3\">"));
+    public static Cell createCell(int row, int column, String value) {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet();
+        HSSFCell cell = sheet.createRow(row).createCell(column, CELL_TYPE_STRING);
+        cell.setCellValue(value);
+        return cell;
     }
 }

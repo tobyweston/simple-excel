@@ -24,47 +24,47 @@ package bad.robot.excel.matchers;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
+import java.util.ArrayList;
+import java.util.List;
+
 import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
-import static bad.robot.excel.matchers.CellType.adaptPoi;
+import static bad.robot.excel.matchers.IndividualCellMatcher.hasSameCellAs;
 
 public class CellEqualityMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
     private final Row expected;
-
-    private CellEqualityMatcher(Row expected) {
-        this.expected = expected;
-    }
+    private final List<Matcher<Row>> cellsOnRow;
 
     public static CellEqualityMatcher hasSameCellsAs(Row expected) {
         return new CellEqualityMatcher(expected);
     }
 
-    @Override
-    protected boolean matchesSafely(Row actual, Description mismatch) {
-        boolean mismatches = false;
-        for (Cell cell : expected)
-            if (!equal(cell, actual, mismatch))
-                mismatches = true;
-        return !mismatches;
+    private CellEqualityMatcher(Row expected) {
+        this.expected = expected;
+        this.cellsOnRow = createCellMatchers(expected);
     }
 
-    private boolean equal(Cell expectedPoi, Row actualPoi, Description mismatch) {
-        bad.robot.excel.Cell expected = adaptPoi(expectedPoi);
-        bad.robot.excel.Cell actual = adaptPoi(actualPoi.getCell(expectedPoi.getColumnIndex()));
-
-        if (!expected.equals(actual)) {
-            mismatch.appendText("cell at ").appendValue(asExcelCoordinate(expectedPoi)).appendText(" contained ").appendValue(actual).appendText(" expected ").appendValue(expected);
-            return false;
-        }
-        return true;
+    @Override
+    protected boolean matchesSafely(Row actual, Description mismatch) {
+        Mismatches<Row> mismatches = new Mismatches<Row>();
+        if (mismatches.discover(actual, cellsOnRow))
+            mismatches.describeTo(mismatch, actual);
+        return !mismatches.found();
     }
 
     @Override
     public void describeTo(Description description) {
         description.appendText("equality of all cells on row ").appendValue(asExcelRow(expected));
+    }
+
+    private static List<Matcher<Row>> createCellMatchers(Row row) {
+        List<Matcher<Row>> matchers = new ArrayList<Matcher<Row>>();
+        for (Cell expected : row)
+            matchers.add(hasSameCellAs(expected));
+        return matchers;
     }
 
 }

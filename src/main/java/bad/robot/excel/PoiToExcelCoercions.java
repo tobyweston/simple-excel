@@ -31,11 +31,11 @@ public class PoiToExcelCoercions {
         return asExcelColumn(cell) + asExcelRow(cell);
     }
 
-    private static String asExcelColumn(Cell cell) {
+    public static String asExcelColumn(Cell cell) {
         return ExcelColumnIndex.from(cell.getColumnIndex()).name();
     }
 
-    private static int asExcelRow(Cell cell) {
+    public static int asExcelRow(Cell cell) {
         return cell.getRowIndex() + 1;
     }
 
