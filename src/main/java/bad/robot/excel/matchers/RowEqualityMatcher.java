@@ -28,6 +28,7 @@ import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
+import static bad.robot.excel.matchers.CellNumberMatcher.hasSameNumberOfCellsAs;
 import static java.lang.String.format;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 
@@ -67,7 +68,7 @@ public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
         if (expectedRowIsMissingFrom(actual))
             throw new WorkbookDiscrepancyException(format("row %s is missing", expected.getRowNum() + 1));
 
-        if (expected.getLastCellNum() != actual.getLastCellNum())
+        if (!hasSameNumberOfCellsAs(expected).matches(actual))
             throw new WorkbookDiscrepancyException(format("Different number of cells: expected: '%d' actual '%d'", expected.getLastCellNum(), actual.getLastCellNum()));
 
         for (Cell cell : expected)
