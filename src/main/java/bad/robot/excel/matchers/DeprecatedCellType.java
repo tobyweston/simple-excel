@@ -23,7 +23,7 @@ package bad.robot.excel.matchers;
 
 import org.apache.poi.ss.usermodel.Cell;
 
-import static bad.robot.excel.PoiToExcelCoordinateCoercions.asExcelCoordinate;
+import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
 import static java.lang.String.format;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.poi.ss.usermodel.Cell.*;

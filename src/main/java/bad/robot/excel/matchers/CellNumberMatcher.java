@@ -21,38 +21,40 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Row;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
+import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
+
 /**
- * Assert the number of sheets in two workbooks are the same.
+ * Assert the number of cells in two workbooks are the same.
  */
-public class RowNumberMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
+public class CellNumberMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
-    private final Sheet expected;
+    private final Row expected;
 
-    public static RowNumberMatcher hasSameNumberOfRowAs(Sheet expected) {
-        return new RowNumberMatcher(expected);
+    public static CellNumberMatcher hasSameNumberOfCellsAs(Row expected) {
+        return new CellNumberMatcher(expected);
     }
 
-    private RowNumberMatcher(Sheet expected) {
+    private CellNumberMatcher(Row expected) {
         this.expected = expected;
     }
 
     @Override
-    protected boolean matchesSafely(Sheet actual, Description mismatch) {
-        mismatch.appendText("got ").appendValue(numberOfRowsIn(actual)).appendText(" row(s) in sheet ").appendValue(actual.getSheetName());
-        return expected.getLastRowNum() == actual.getLastRowNum();
+    protected boolean matchesSafely(Row actual, Description mismatch) {
+        mismatch.appendText("got ").appendValue(numberOfCellsIn(actual)).appendText(" cell(s) on row ").appendValue(asExcelRow(expected));
+        return expected.getLastCellNum() == actual.getLastCellNum();
     }
 
     @Override
     public void describeTo(Description description) {
-        description.appendValue(numberOfRowsIn(expected)).appendText(" row(s) in sheet ").appendValue(expected.getSheetName());
+        description.appendValue(numberOfCellsIn(expected)).appendText(" cell(s) on row ").appendValue(asExcelRow(expected));
     }
 
     /** POI is zero-based */
-    private static int numberOfRowsIn(Sheet sheet) {
-        return sheet.getLastRowNum() + 1;
+    private static int numberOfCellsIn(Row row) {
+        return row.getLastCellNum();
     }
 }

@@ -27,7 +27,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static bad.robot.excel.PoiToExcelCoordinateCoercions.asExcelCoordinate;
+import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
 import static java.lang.String.format;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 

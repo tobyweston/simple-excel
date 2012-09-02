@@ -23,8 +23,9 @@ package bad.robot.excel;
 
 import bad.robot.excel.valuetypes.ExcelColumnIndex;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
-public class PoiToExcelCoordinateCoercions {
+public class PoiToExcelCoercions {
 
     public static String asExcelCoordinate(Cell cell) {
         return asExcelColumn(cell) + asExcelRow(cell);
@@ -37,4 +38,9 @@ public class PoiToExcelCoordinateCoercions {
     private static int asExcelRow(Cell cell) {
         return cell.getRowIndex() + 1;
     }
+
+    public static int asExcelRow(Row row) {
+        return row.getRowNum() + 1;
+    }
+
 }

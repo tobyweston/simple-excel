@@ -41,4 +41,8 @@ public class WorkbookResource {
         return getWorkbook(file).getSheetAt(0);
     }
 
+    public static org.apache.poi.ss.usermodel.Row firstRowOf(String file) throws IOException {
+        return firstSheetOf(file).getRow(0);
+    }
+
 }
