@@ -44,10 +44,11 @@ public class CellEqualityMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
     @Override
     protected boolean matchesSafely(Row actual, Description mismatch) {
+        boolean mismatches = false;
         for (Cell cell : expected)
             if (!equal(cell, actual, mismatch))
-                return false;
-        return true;
+                mismatches = true;
+        return !mismatches;
     }
 
     private boolean equal(Cell expectedPoi, Row actualPoi, Description mismatch) {
