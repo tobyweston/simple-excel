@@ -21,16 +21,13 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
 import static bad.robot.excel.matchers.CellNumberMatcher.hasSameNumberOfCellsAs;
 import static java.lang.String.format;
-import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 
 public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
@@ -68,40 +65,11 @@ public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
         if (expectedRowIsMissingFrom(actual))
             throw new WorkbookDiscrepancyException(format("row %s is missing", expected.getRowNum() + 1));
 
-        if (!hasSameNumberOfCellsAs(expected).matches(actual))
+        if (!hasSameNumberOfCellsAs(expected).matchesSafely(actual, mismatch))
             throw new WorkbookDiscrepancyException(format("Different number of cells: expected: '%d' actual '%d'", expected.getLastCellNum(), actual.getLastCellNum()));
 
-        for (Cell cell : expected)
-            verify(cell, actual.getCell(cell.getColumnIndex()), mismatch);
-    }
-
-    private void verify(Cell expected, Cell actual, Description mismatch) throws WorkbookDiscrepancyException {
-        bad.robot.excel.Cell expectedCell = CellType.adaptPoi(expected);
-        bad.robot.excel.Cell actualCell = CellType.adaptPoi(actual);
-
-        if (!expectedCell.equals(actualCell)) {
-            mismatch.appendText("cell at ").appendValue(asExcelCoordinate(expected)).appendText(" contained ").appendValue(actualCell).appendText(" expected ").appendValue(expectedCell);
-            throw new WorkbookDiscrepancyException("");
-        }
-
-        // deprecated below this line
-
-//        if (isBothNull(expected, actual))
-//            return;
-//
-//        if (bothCellsAreNullOrBlank(expected, actual))
-//            return;
-//
-//        if (anyOfTheCellsAreNull(expected, actual))
-//            throw new WorkbookDiscrepancyException("One of cells was null");
-//
-//        DeprecatedCellType expectedCellType = DeprecatedCellType.valueOf(expected.getCellType());
-//        DeprecatedCellType actualCellType = DeprecatedCellType.valueOf(actual.getCellType());
-//
-//        if (expectedCellType != actualCellType) // DONE with equality
-//            throw new WorkbookDiscrepancyException(format("Cell at %s has different types: expected: '%s' actual '%s'", asExcelCoordinate(expected), expectedCellType, actualCellType));
-//
-//        expectedCellType.assertSameValue(expected, actual);
+        if (!CellEqualityMatcher.hasSameCellsAs(expected).matchesSafely(actual, mismatch))
+            throw new WorkbookDiscrepancyException("No idea");
     }
 
     private boolean isBothNull(Object first, Object second) {
@@ -110,18 +78,6 @@ public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     private boolean expectedRowIsMissingFrom(Row second) {
         return second == null;
-    }
-
-    private boolean bothCellsAreNullOrBlank(Cell expected, Cell actual) {
-        return cellIsNullOrBlank(expected) && cellIsNullOrBlank(actual);
-    }
-
-    private boolean anyOfTheCellsAreNull(Cell expectedCell, Cell actualCell) {
-        return actualCell == null || expectedCell == null;
-    }
-
-    private boolean cellIsNullOrBlank(Cell cell) {
-        return cell == null || cell.getCellType() == CELL_TYPE_BLANK;
     }
 
 }
