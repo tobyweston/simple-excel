@@ -32,7 +32,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static bad.robot.excel.WorkbookResource.*;
+import static bad.robot.excel.WorkbookResource.firstRowOf;
 import static bad.robot.excel.matchers.IndividualCellMatcher.hasSameCellAs;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -44,20 +44,10 @@ public class IndividualCellMatcherTest {
     private StringDescription description = new StringDescription();
 
     private Row row;
-    private Row secondRow;
-    private Row thirdRow;
-    private Row firstRowWithAlternateValues;
-    private Row secondRowWithAlternateValues;
-    private Row thirdRowWithAlternateValues;
 
     @Before
     public void loadWorkbookAndSheets() throws IOException {
         row = firstRowOf("rowWithThreeCells.xls");
-        secondRow = secondRowOf("rowWithThreeCells.xls");
-        thirdRow = thirdRowOf("rowWithThreeCells.xls");
-        firstRowWithAlternateValues = firstRowOf("rowWithThreeCellsAlternativeValues.xls");
-        secondRowWithAlternateValues = secondRowOf("rowWithThreeCellsAlternativeValues.xls");
-        thirdRowWithAlternateValues = thirdRowOf("rowWithThreeCellsAlternativeValues.xls");
     }
 
     @Test
