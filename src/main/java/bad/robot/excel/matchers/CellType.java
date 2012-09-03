@@ -43,6 +43,8 @@ public enum CellType implements CellAdapter {
     Formula(CELL_TYPE_FORMULA) {
         @Override
         public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
+            if (cell.getCachedFormulaResultType() == CELL_TYPE_ERROR)
+                return new ErrorCell(cell.getErrorCellValue());
             return new FormulaCell(cell.getCellFormula());
         }
     },
