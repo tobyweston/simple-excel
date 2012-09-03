@@ -30,6 +30,7 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 import java.util.ArrayList;
 import java.util.List;
 
+import static bad.robot.excel.matchers.CompositeMatcher.allOf;
 import static bad.robot.excel.matchers.RowMatcher.hasSameRow;
 
 public class RowsMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
@@ -48,10 +49,7 @@ public class RowsMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     @Override
     protected boolean matchesSafely(Sheet actual, Description mismatch) {
-        Mismatches<Sheet> mismatches = new Mismatches<Sheet>();
-        if (mismatches.discover(actual, rowsOnSheet))
-            mismatches.describeTo(mismatch, actual);
-        return !mismatches.found();
+        return allOf(rowsOnSheet).matchesSafely(actual, mismatch);
     }
 
     @Override

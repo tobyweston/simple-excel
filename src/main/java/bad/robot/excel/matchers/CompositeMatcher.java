@@ -33,7 +33,7 @@ class CompositeMatcher<T> extends TypeSafeDiagnosingMatcher<T> {
     private final Iterable<Matcher<T>> matchers;
 
     @Factory
-    static <T> TypeSafeDiagnosingMatcher<T> allOf(Iterable<Matcher<T>> matchers) {
+    static <T> CompositeMatcher<T> allOf(Iterable<Matcher<T>> matchers) {
         return new CompositeMatcher<T>(matchers);
     }
 

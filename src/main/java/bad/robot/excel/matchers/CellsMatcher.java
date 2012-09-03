@@ -32,6 +32,7 @@ import java.util.List;
 
 import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
 import static bad.robot.excel.matchers.CellMatcher.hasSameCell;
+import static bad.robot.excel.matchers.CompositeMatcher.allOf;
 
 public class CellsMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
@@ -49,10 +50,7 @@ public class CellsMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
     @Override
     protected boolean matchesSafely(Row actual, Description mismatch) {
-        Mismatches<Row> mismatches = new Mismatches<Row>();
-        if (mismatches.discover(actual, cellsOnRow))
-            mismatches.describeTo(mismatch, actual);
-        return !mismatches.found();
+        return allOf(cellsOnRow).matchesSafely(actual, mismatch);
     }
 
     @Override
