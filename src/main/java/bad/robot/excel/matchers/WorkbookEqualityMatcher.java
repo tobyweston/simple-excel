@@ -25,13 +25,13 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 import static bad.robot.excel.matchers.RowNumberMatcher.hasSameNumberOfRowAs;
 import static bad.robot.excel.matchers.RowsMatcher.hasSameRowsAs;
 import static bad.robot.excel.matchers.SheetMatcher.hasSameSheetsAs;
 
-public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
+public class WorkbookEqualityMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
 
     private final Workbook expectedWorkbook;
 
@@ -44,28 +44,27 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
     }
 
     @Override
-    public boolean matchesSafely(Workbook actual) {
-        if (!hasSameSheetsAs(expectedWorkbook).matches(actual))
+    protected boolean matchesSafely(Workbook actual, Description mismatch) {
+        if (!hasSameSheetsAs(expectedWorkbook).matchesSafely(actual, mismatch))
             return false;
 
         for (int a = 0; a < actual.getNumberOfSheets(); a++) {
             Sheet actualSheet = actual.getSheetAt(a);
             Sheet expectedSheet = expectedWorkbook.getSheetAt(a);
 
-            if (!hasSameNumberOfRowAs(expectedSheet).matches(actualSheet))
+            if (!hasSameNumberOfRowAs(expectedSheet).matchesSafely(actualSheet, mismatch))
                 return false;
 
-            if (!hasSameRowsAs(expectedSheet).matches(actualSheet))
+            if (!hasSameRowsAs(expectedSheet).matchesSafely(actualSheet, mismatch))
                 return false;
         }
 
         return true;
     }
 
+
     @Override
     public void describeTo(Description description) {
         description.appendText("entire workbook to be equal");
     }
-
-
 }

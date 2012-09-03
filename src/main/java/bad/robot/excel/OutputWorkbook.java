@@ -21,19 +21,28 @@
 
 package bad.robot.excel;
 
+import org.apache.poi.ss.usermodel.Workbook;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import static java.io.File.createTempFile;
-import static org.apache.poi.util.IOUtils.copy;
 
-public class OutputExcelWorkbook {
+public class OutputWorkbook {
 
-    public static void writeWorkbookToTemporaryFile(ExcelWorkbook workbook, String filename) throws IOException {
-        File file = createTempFile(filename, ".xls");
-        System.out.println("outputted xls: " + file.getAbsolutePath());
-        copy(workbook.getInputStream(), new FileOutputStream(file));
+    public static void writeWorkbookToTemporaryFile(Workbook workbook, String filename) throws IOException {
+        try {
+            File file = createTempFile(filename, ".xls");
+            System.out.println("outputted xls: " + file.getAbsolutePath());
+            FileOutputStream fileOut = new FileOutputStream(file);
+            workbook.write(fileOut);
+            fileOut.close();
+            System.out.println("wrote file as " + file.getAbsolutePath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }
