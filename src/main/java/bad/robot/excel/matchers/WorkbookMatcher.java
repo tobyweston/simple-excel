@@ -33,31 +33,23 @@ import static bad.robot.excel.matchers.SheetMatcher.hasSameSheetsAs;
 
 public class WorkbookMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
 
-    private final Workbook expectedWorkbook;
-
-    WorkbookMatcher(Workbook expectedWorkbook) {
-        this.expectedWorkbook = expectedWorkbook;
-    }
+    private final Workbook expected;
 
     public static Matcher<Workbook> sameWorkBook(Workbook expectedWorkbook) {
         return new WorkbookMatcher(expectedWorkbook);
     }
 
+    private WorkbookMatcher(Workbook expected) {
+        this.expected = expected;
+    }
+
     @Override
     protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        if (!hasSameSheetsAs(expectedWorkbook).matchesSafely(actual, mismatch))
+        if (!hasSameSheetsAs(expected).matchesSafely(actual, mismatch))
             return false;
 
-        for (int a = 0; a < actual.getNumberOfSheets(); a++) {
-            Sheet actualSheet = actual.getSheetAt(a);
-            Sheet expectedSheet = expectedWorkbook.getSheetAt(a);
-
-            if (!hasSameNumberOfRowAs(expectedSheet).matchesSafely(actualSheet, mismatch))
-                return false;
-
-            if (!hasSameRowsAs(expectedSheet).matchesSafely(actualSheet, mismatch))
-                return false;
-        }
+        if (!new SheetsMatcher(expected).matchesSafely(actual, mismatch))
+            return false;
 
         return true;
     }
@@ -66,5 +58,34 @@ public class WorkbookMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
     @Override
     public void describeTo(Description description) {
         description.appendText("entire workbook to be equal");
+    }
+
+    public class SheetsMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
+
+        private final Workbook expected;
+
+        public SheetsMatcher(Workbook expected) {
+            this.expected = expected;
+        }
+
+        @Override
+        protected boolean matchesSafely(Workbook actual, Description mismatch) {
+            for (int index = 0; index < actual.getNumberOfSheets(); index++) {
+                Sheet actualSheet = actual.getSheetAt(index);
+                Sheet expectedSheet = expected.getSheetAt(index);
+
+                if (!hasSameNumberOfRowAs(expectedSheet).matchesSafely(actualSheet, mismatch))
+                    return false;
+
+                if (!hasSameRowsAs(expectedSheet).matchesSafely(actualSheet, mismatch))
+                    return false;
+            }
+            return true;
+        }
+
+        @Override
+        public void describeTo(Description description) {
+            description.appendText("equality on all sheets in workbook");
+        }
     }
 }
