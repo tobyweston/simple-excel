@@ -26,7 +26,7 @@ import bad.robot.excel.AbstractValueType;
 public class DataFormat extends AbstractValueType<String> {
 
     public static DataFormat asDateFormatted() {
-        return dataFormat("m/d/yy h:mm");
+        return dataFormat("m/d/yy");
     }
 
     public static DataFormat dataFormat(String value) {
