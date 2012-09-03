@@ -21,10 +21,11 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.Date;
 
@@ -61,8 +62,13 @@ class StubCell {
     }
 
     static Cell createCell(int row, int column, Date date) {
-        Cell cell = create(row, column, CELL_TYPE_NUMERIC);
+        Workbook workbook = new HSSFWorkbook();
+        Sheet sheet = workbook.createSheet();
+        Cell cell = sheet.createRow(row).createCell(column, CELL_TYPE_NUMERIC);
         cell.setCellValue(date);
+        CellStyle style = workbook.createCellStyle();
+        style.setDataFormat(workbook.getCreationHelper().createDataFormat().getFormat("m/d/yy h:mm"));
+        cell.setCellStyle(style);
         return cell;
     }
 
@@ -74,9 +80,9 @@ class StubCell {
 
 
     private static Cell create(int row, int column, int type) {
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet();
-        HSSFCell cell = sheet.createRow(row).createCell(column, type);
+        Workbook workbook = new HSSFWorkbook();
+        Sheet sheet = workbook.createSheet();
+        Cell cell = sheet.createRow(row).createCell(column, type);
         return cell;
     }
 

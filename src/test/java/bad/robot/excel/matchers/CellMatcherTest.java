@@ -21,20 +21,19 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.hamcrest.StringDescription;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 import static bad.robot.excel.WorkbookResource.firstRowOf;
 import static bad.robot.excel.matchers.CellMatcher.hasSameCellAs;
-import static bad.robot.excel.matchers.StubCell.createCell;
-import static bad.robot.excel.matchers.StubCell.createFormulaCell;
-import static java.lang.String.format;
+import static bad.robot.excel.matchers.StubCell.*;
+import static java.util.Calendar.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -58,18 +57,24 @@ public class CellMatcherTest {
 
     @Test
     public void matches() {
-//        assertThat(hasSameCellAs(createBlankCell(0, 0)).matches(row), is(true));
-//        assertThat(hasSameCellAs(createCell(0, 1, true)).matches(row), is(true));
+        assertThat(hasSameCellAs(createBlankCell(0, 0)).matches(row), is(true));
+        assertThat(hasSameCellAs(createCell(0, 1, true)).matches(row), is(true));
         assertThat(hasSameCellAs(createCell(0, 2, (byte) 0x07)).matches(row), is(true));
         assertThat(hasSameCellAs(createFormulaCell(0, 3, "2+3")).matches(row), is(true));
         assertThat(hasSameCellAs(createCell(0, 4, 34.5D)).matches(row), is(true));
-        assertThat(hasSameCellAs(createCell(0, 5, new Date(2012, 8, 22))).matches(row), is(true));
+        assertThat(hasSameCellAs(createCell(0, 5, createDate(22, AUGUST, 2012))).matches(row), is(true));
         assertThat(hasSameCellAs(createCell(0, 6, "Text")).matches(row), is(true));
     }
 
     @Test
     public void doesNotMatch() {
-        assertThat(hasSameCellAs(createCell(0, 0, "C3, R1")).matches(row), is(false));
+        assertThat(hasSameCellAs(createBlankCell(0, 1)).matches(row), is(false));
+        assertThat(hasSameCellAs(createCell(0, 1, false)).matches(row), is(false));
+        assertThat(hasSameCellAs(createCell(0, 3, (byte) 0x07)).matches(row), is(false));
+        assertThat(hasSameCellAs(createFormulaCell(0, 3, "21*3")).matches(row), is(false));
+        assertThat(hasSameCellAs(createCell(0, 4, 342.5D)).matches(row), is(false));
+        assertThat(hasSameCellAs(createCell(0, 5, createDate(22, AUGUST, 2011))).matches(row), is(false));
+        assertThat(hasSameCellAs(createCell(0, 6, "text")).matches(row), is(false));
     }
 
     @Test
@@ -110,14 +115,26 @@ public class CellMatcherTest {
 
     @Test
     public void mismatchDateCell() {
-        hasSameCellAs(createCell(0, 5, new Date(2012, 8, 22))).matchesSafely(row, description);
-        assertThat(description.toString(), is(format("cell at \"F1\" contained <nothing> expected <%s>", HSSFDateUtil.getExcelDate(new Date(2012, 8, 22)))));
+        hasSameCellAs(createCell(0, 5, createDate(21, AUGUST, 2012))).matchesSafely(row, description);
+        assertThat(description.toString(), is("cell at \"F1\" contained <Wed Aug 22 00:00:00 BST 2012> expected <Tue Aug 21 00:00:00 BST 2012>"));
     }
 
     @Test
     public void mismatchStringCell() {
         hasSameCellAs(createCell(0, 6, "XXX")).matchesSafely(row, description);
         assertThat(description.toString(), is("cell at \"G1\" contained <\"Text\"> expected <\"XXX\">"));
+    }
+
+    private Date createDate(int day, int month, int year) {
+        Calendar calendar = getInstance();
+        calendar.set(DAY_OF_MONTH, day);
+        calendar.set(MONTH, month);
+        calendar.set(YEAR, year);
+        calendar.set(HOUR, 0);
+        calendar.set(MINUTE, 0);
+        calendar.set(SECOND, 0);
+        calendar.set(MILLISECOND, 0);
+        return calendar.getTime();
     }
 
 

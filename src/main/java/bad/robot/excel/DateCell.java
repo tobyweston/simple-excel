@@ -27,6 +27,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.Date;
 
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC;
+
 public class DateCell extends Cell {
 
     private final Date value;
@@ -42,7 +44,7 @@ public class DateCell extends Cell {
 
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
-        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value()); // what poi type is the date cell?
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_NUMERIC);
         this.getStyle().applyTo(cell, workbook);
         cell.setCellValue(value);
     }

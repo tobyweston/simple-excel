@@ -25,6 +25,7 @@ package bad.robot.excel.matchers;
 import bad.robot.excel.*;
 
 import static org.apache.poi.ss.usermodel.Cell.*;
+import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
 
 public enum CellType implements CellAdapter {
 
@@ -51,6 +52,8 @@ public enum CellType implements CellAdapter {
     Numeric(CELL_TYPE_NUMERIC) {
         @Override
         public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
+            if (isCellDateFormatted(cell))
+                return new DateCell(cell.getDateCellValue());
             return new DoubleCell(cell.getNumericCellValue());
         }
     },
