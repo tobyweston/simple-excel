@@ -26,6 +26,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
+import static bad.robot.excel.WorkbookSheetIterable.sheetsOf;
 import static bad.robot.excel.matchers.RowNumberMatcher.hasSameNumberOfRowAs;
 import static bad.robot.excel.matchers.RowsMatcher.hasSameRowsAs;
 
@@ -39,9 +40,8 @@ public class SheetsMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
 
     @Override
     protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        for (int index = 0; index < actual.getNumberOfSheets(); index++) {
-            Sheet actualSheet = actual.getSheetAt(index);
-            Sheet expectedSheet = expected.getSheetAt(index);
+        for (Sheet expectedSheet : sheetsOf(expected)) {
+            Sheet actualSheet = actual.getSheet(expectedSheet.getSheetName());
 
             if (!hasSameNumberOfRowAs(expectedSheet).matchesSafely(actualSheet, mismatch))
                 return false;
