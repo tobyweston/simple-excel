@@ -25,9 +25,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-/**
- * Assert the number of sheets in two workbooks are the same.
- */
 public class RowNumberMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     private final Sheet expected;
@@ -42,8 +39,11 @@ public class RowNumberMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     @Override
     protected boolean matchesSafely(Sheet actual, Description mismatch) {
-        mismatch.appendText("got ").appendValue(numberOfRowsIn(actual)).appendText(" row(s) in sheet ").appendValue(actual.getSheetName());
-        return expected.getLastRowNum() == actual.getLastRowNum();
+        if (expected.getLastRowNum() != actual.getLastRowNum()) {
+            mismatch.appendText("got ").appendValue(numberOfRowsIn(actual)).appendText(" row(s) in sheet ").appendValue(actual.getSheetName());
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class RowNumberMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
         description.appendValue(numberOfRowsIn(expected)).appendText(" row(s) in sheet ").appendValue(expected.getSheetName());
     }
 
-    /** POI is zero-based */
+    /* POI is zero-based */
     private static int numberOfRowsIn(Sheet sheet) {
         return sheet.getLastRowNum() + 1;
     }

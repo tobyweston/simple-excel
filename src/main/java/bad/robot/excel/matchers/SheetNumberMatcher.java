@@ -25,24 +25,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-/**
- * Assert the number of sheets in two workbooks are the same.
- *
- * Will return something like the following using (old style) {@link org.junit.Assert#assertThat(Object, org.hamcrest.Matcher)}
- * <code>
- *     java.lang.AssertionError:
- *     Expected: '2' sheets
- *          got: &lt;org.apache.poi.hssf.usermodel.HSSFWorkbook@3b6f0be8&gt;
- * </code>
- *
- * and, something like the following for {@link org.hamcrest.MatcherAssert#assertThat(Object, org.hamcrest.Matcher)}
- *
- * <code>
- *     java.lang.AssertionError:
- *     Expected: <2> sheet(s)
- *          but: got <1> sheet(s)
- * </code>
- */
 public class SheetNumberMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
 
     private final Workbook expected;
@@ -57,8 +39,11 @@ public class SheetNumberMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
 
     @Override
     protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        mismatch.appendText("got " ).appendValue(actual.getNumberOfSheets()).appendText(" sheet(s)");
-        return expected.getNumberOfSheets() == actual.getNumberOfSheets();
+        if (expected.getNumberOfSheets() != actual.getNumberOfSheets()) {
+            mismatch.appendText("got " ).appendValue(actual.getNumberOfSheets()).appendText(" sheet(s)");
+            return false;
+        }
+        return true;
     }
 
     @Override
