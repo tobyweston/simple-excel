@@ -33,13 +33,13 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static bad.robot.excel.WorkbookResource.firstRowOf;
-import static bad.robot.excel.matchers.IndividualCellMatcher.hasSameCellAs;
+import static bad.robot.excel.matchers.CellMatcher.hasSameCellAs;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class IndividualCellMatcherTest {
+public class CellMatcherTest {
 
     private StringDescription description = new StringDescription();
 

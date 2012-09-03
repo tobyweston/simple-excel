@@ -29,20 +29,20 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
 import static bad.robot.excel.matchers.CellType.adaptPoi;
 
-public class IndividualCellMatcher extends TypeSafeDiagnosingMatcher<Row> {
+public class CellMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
     private final Cell expected;
     private final int columnIndex;
     private final String coordinate;
 
-    private IndividualCellMatcher(org.apache.poi.ss.usermodel.Cell expectedPoi) {
+    private CellMatcher(org.apache.poi.ss.usermodel.Cell expectedPoi) {
         this.expected = adaptPoi(expectedPoi);
         this.coordinate = asExcelCoordinate(expectedPoi);
         this.columnIndex = expectedPoi.getColumnIndex();
     }
 
-    public static IndividualCellMatcher hasSameCellAs(org.apache.poi.ss.usermodel.Cell expected) {
-        return new IndividualCellMatcher(expected);
+    public static CellMatcher hasSameCellAs(org.apache.poi.ss.usermodel.Cell expected) {
+        return new CellMatcher(expected);
     }
 
     @Override
