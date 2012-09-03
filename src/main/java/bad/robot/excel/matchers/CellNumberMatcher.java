@@ -21,50 +21,40 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
-import static bad.robot.excel.matchers.IndividualCellMatcher.hasSameCellAs;
 
-public class CellEqualityMatcher extends TypeSafeDiagnosingMatcher<Row> {
+/**
+ * Assert the number of cells in two workbooks are the same.
+ */
+public class CellNumberMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
     private final Row expected;
-    private final List<Matcher<Row>> cellsOnRow;
 
-    public static CellEqualityMatcher hasSameCellsAs(Row expected) {
-        return new CellEqualityMatcher(expected);
+    public static CellNumberMatcher hasSameNumberOfCellsAs(Row expected) {
+        return new CellNumberMatcher(expected);
     }
 
-    private CellEqualityMatcher(Row expected) {
+    private CellNumberMatcher(Row expected) {
         this.expected = expected;
-        this.cellsOnRow = createCellMatchers(expected);
     }
 
     @Override
     protected boolean matchesSafely(Row actual, Description mismatch) {
-        Mismatches<Row> mismatches = new Mismatches<Row>();
-        if (mismatches.discover(actual, cellsOnRow))
-            mismatches.describeTo(mismatch, actual);
-        return !mismatches.found();
+        mismatch.appendText("got ").appendValue(numberOfCellsIn(actual)).appendText(" cell(s) on row ").appendValue(asExcelRow(expected));
+        return expected.getLastCellNum() == actual.getLastCellNum();
     }
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("equality of all cells on row ").appendValue(asExcelRow(expected));
+        description.appendValue(numberOfCellsIn(expected)).appendText(" cell(s) on row ").appendValue(asExcelRow(expected));
     }
 
-    private static List<Matcher<Row>> createCellMatchers(Row row) {
-        List<Matcher<Row>> matchers = new ArrayList<Matcher<Row>>();
-        for (Cell expected : row)
-            matchers.add(hasSameCellAs(expected));
-        return matchers;
+    /** POI is zero-based */
+    private static int numberOfCellsIn(Row row) {
+        return row.getLastCellNum();
     }
-
 }

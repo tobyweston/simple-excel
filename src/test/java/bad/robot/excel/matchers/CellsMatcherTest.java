@@ -22,58 +22,78 @@
 package bad.robot.excel.matchers;
 
 import org.apache.poi.ss.usermodel.Row;
-import org.hamcrest.Description;
 import org.hamcrest.StringDescription;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static bad.robot.excel.WorkbookResource.firstRowOf;
-import static bad.robot.excel.matchers.CellsMatcher.hasSameNumberOfCellsAs;
+import static bad.robot.excel.WorkbookResource.*;
+import static bad.robot.excel.matchers.CellsMatcher.hasSameCellsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 public class CellsMatcherTest {
 
-    private Row rowWithThreeCells;
-    private Row rowWithTwoCells;
+    private StringDescription description = new StringDescription();
+
+    private Row firstRow;
+    private Row secondRow;
+    private Row thirdRow;
+    private Row firstRowWithAlternateValues;
+    private Row secondRowWithAlternateValues;
+    private Row thirdRowWithAlternateValues;
 
     @Before
     public void loadWorkbookAndSheets() throws IOException {
-        rowWithThreeCells = firstRowOf("rowWithThreeCells.xls");
-        rowWithTwoCells = firstRowOf("rowWithTwoCells.xls");
+        firstRow = firstRowOf("rowWithThreeCells.xls");
+        secondRow = secondRowOf("rowWithThreeCells.xls");
+        thirdRow = thirdRowOf("rowWithThreeCells.xls");
+        firstRowWithAlternateValues = firstRowOf("rowWithThreeCellsAlternativeValues.xls");
+        secondRowWithAlternateValues = secondRowOf("rowWithThreeCellsAlternativeValues.xls");
+        thirdRowWithAlternateValues = thirdRowOf("rowWithThreeCellsAlternativeValues.xls");
     }
 
     @Test
-    public void exampleUsages() throws Exception {
-        assertThat(rowWithThreeCells, hasSameNumberOfCellsAs(rowWithThreeCells));
-        assertThat(rowWithTwoCells, not(hasSameNumberOfCellsAs(rowWithThreeCells)));
+    public void exampleUsage() {
+        assertThat(firstRow, hasSameCellsAs(firstRow));
+        assertThat(firstRowWithAlternateValues, not(hasSameCellsAs(firstRow)));
+        assertThat(secondRowWithAlternateValues, not(hasSameCellsAs(secondRow)));
+        assertThat(thirdRowWithAlternateValues, not(hasSameCellsAs(thirdRow)));
     }
 
     @Test
     public void matches() {
-        assertThat(hasSameNumberOfCellsAs(rowWithThreeCells).matches(rowWithThreeCells), is(true));
+        assertThat(hasSameCellsAs(firstRow).matches(firstRow), is(true));
     }
 
     @Test
     public void doesNotMatch() {
-        assertThat(hasSameNumberOfCellsAs(rowWithThreeCells).matches(rowWithTwoCells), is(false));
+        assertThat(hasSameCellsAs(firstRowWithAlternateValues).matches(firstRow), is(false));
     }
 
     @Test
     public void description() {
-        Description description = new StringDescription();
-        hasSameNumberOfCellsAs(rowWithThreeCells).describeTo(description);
-        assertThat(description.toString(), is("<3> cell(s) on row <1>"));
+        hasSameCellsAs(firstRow).describeTo(description);
+        assertThat(description.toString(), is("equality of all cells on row <1>"));
     }
 
     @Test
     public void mismatch() {
-        Description description = new StringDescription();
-        hasSameNumberOfCellsAs(rowWithThreeCells).matchesSafely(rowWithTwoCells, description);
-        assertThat(description.toString(), is("got <2> cell(s) on row <1>"));
+        hasSameCellsAs(firstRow).matchesSafely(firstRowWithAlternateValues, description);
+        assertThat(description.toString(), is("cell at \"B1\" contained <3.14D> expected <\"C2, R1\">"));
     }
 
+    @Test
+    public void mismatchOnMissingCell() {
+        hasSameCellsAs(secondRow).matchesSafely(secondRowWithAlternateValues, description);
+        assertThat(description.toString(), is("cell at \"B2\" contained <nothing> expected <\"C2, R2\">"));
+    }
+
+    @Test
+    public void mismatchMultipleValues() {
+        hasSameCellsAs(thirdRow).matchesSafely(thirdRowWithAlternateValues, description);
+        assertThat(description.toString(), is("cell at \"A3\" contained <40940.0D> expected <\"C1, R3\">, cell at \"B3\" contained <Formula:2+2> expected <\"C2, R3\">"));
+    }
 }
