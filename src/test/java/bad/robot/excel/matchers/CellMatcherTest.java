@@ -130,7 +130,7 @@ public class CellMatcherTest {
         calendar.set(DAY_OF_MONTH, day);
         calendar.set(MONTH, month);
         calendar.set(YEAR, year);
-        calendar.set(HOUR, 0);
+        calendar.set(HOUR_OF_DAY, 0);
         calendar.set(MINUTE, 0);
         calendar.set(SECOND, 0);
         calendar.set(MILLISECOND, 0);
