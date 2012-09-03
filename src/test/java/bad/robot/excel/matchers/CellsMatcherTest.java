@@ -94,6 +94,6 @@ public class CellsMatcherTest {
     @Test
     public void mismatchMultipleValues() {
         hasSameCellsAs(thirdRow).matchesSafely(thirdRowWithAlternateValues, description);
-        assertThat(description.toString(), is("cell at \"A3\" contained <40940.0D> expected <\"C1, R3\">, cell at \"B3\" contained <Formula:2+2> expected <\"C2, R3\">"));
+        assertThat(description.toString(), is("cell at \"A3\" contained <Wed Feb 01 00:00:00 GMT 2012> expected <\"C1, R3\">, cell at \"B3\" contained <Formula:2+2> expected <\"C2, R3\">"));
     }
 }
