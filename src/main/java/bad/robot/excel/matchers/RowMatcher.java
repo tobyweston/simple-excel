@@ -22,35 +22,44 @@
 package bad.robot.excel.matchers;
 
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static bad.robot.excel.matchers.RowMatcher.hasSameRowAs;
+import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
+import static bad.robot.excel.matchers.CellNumberMatcher.hasSameNumberOfCellsAs;
+import static bad.robot.excel.matchers.CellsMatcher.hasSameCellsAs;
+import static bad.robot.excel.matchers.RowMissingMatcher.rowIsPresent;
 
-public class RowsMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
+public class RowMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
-    private final Sheet expected;
+    private final Row expected;
 
-    public static RowsMatcher hasSameRowsAs(Sheet expected) {
-        return new RowsMatcher(expected);
+    public static RowMatcher hasSameRowAs(Row expected) {
+        return new RowMatcher(expected);
     }
 
-    private RowsMatcher(Sheet expected) {
+    private RowMatcher(Row expected) {
         this.expected = expected;
     }
 
     @Override
-    protected boolean matchesSafely(Sheet actual, Description mismatch) {
-        for (Row row : expected)
-            if (!hasSameRowAs(row).matchesSafely(actual.getRow(row.getRowNum()), mismatch))
-                return false;
+    protected boolean matchesSafely(Row actual, Description mismatch) {
+        if (!rowIsPresent(expected).matchesSafely(actual, mismatch))
+            return false;
+
+        if (!hasSameNumberOfCellsAs(expected).matchesSafely(actual, mismatch))
+            return false;
+
+        if (!hasSameCellsAs(expected).matchesSafely(actual, mismatch))
+            return false;
+
         return true;
     }
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("equality on all rows in ").appendValue(expected.getSheetName());
+        description.appendText("equality of row ").appendValue(asExcelRow(expected));
     }
+
 
 }

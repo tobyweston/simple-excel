@@ -22,35 +22,34 @@
 package bad.robot.excel.matchers;
 
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static bad.robot.excel.matchers.RowMatcher.hasSameRowAs;
+import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
 
-public class RowsMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
+public class RowMissingMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
-    private final Sheet expected;
+    private final Row expected;
 
-    public static RowsMatcher hasSameRowsAs(Sheet expected) {
-        return new RowsMatcher(expected);
+    public static RowMissingMatcher rowIsPresent(Row expected) {
+        return new RowMissingMatcher(expected);
     }
 
-    private RowsMatcher(Sheet expected) {
+    private RowMissingMatcher(Row expected) {
         this.expected = expected;
     }
 
     @Override
-    protected boolean matchesSafely(Sheet actual, Description mismatch) {
-        for (Row row : expected)
-            if (!hasSameRowAs(row).matchesSafely(actual.getRow(row.getRowNum()), mismatch))
-                return false;
+    protected boolean matchesSafely(Row actual, Description mismatch) {
+        if (actual == null) {
+            mismatch.appendText("row ").appendValue(asExcelRow(expected)).appendText(" is missing");
+            return false;
+        }
         return true;
     }
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("equality on all rows in ").appendValue(expected.getSheetName());
+        description.appendText("row ").appendValue(asExcelRow(expected)).appendText(" to be present");
     }
-
 }
