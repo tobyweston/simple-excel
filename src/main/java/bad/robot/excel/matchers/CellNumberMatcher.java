@@ -44,8 +44,11 @@ public class CellNumberMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
     @Override
     protected boolean matchesSafely(Row actual, Description mismatch) {
-        mismatch.appendText("got ").appendValue(numberOfCellsIn(actual)).appendText(" cell(s) on row ").appendValue(asExcelRow(expected));
-        return expected.getLastCellNum() == actual.getLastCellNum();
+        if (expected.getLastCellNum() != actual.getLastCellNum()) {
+            mismatch.appendText("got ").appendValue(numberOfCellsIn(actual)).appendText(" cell(s) on row ").appendValue(asExcelRow(expected));
+            return false;
+        }
+        return true;
     }
 
     @Override

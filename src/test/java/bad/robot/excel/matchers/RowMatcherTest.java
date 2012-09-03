@@ -74,6 +74,6 @@ public class RowMatcherTest {
     @Test
     public void mismatch() {
         hasSameRowAs(rowWithThreeCells).matchesSafely(rowWithThreeCellsAlternativeValues, description);
-        assertThat(description.toString(), is("got <3> cell(s) on row <1>cell at \"B1\" contained <3.14D> expected <\"C2, R1\">"));
+        assertThat(description.toString(), is("cell at \"B1\" contained <3.14D> expected <\"C2, R1\">"));
     }
 }

@@ -31,8 +31,7 @@ import java.io.IOException;
 import static bad.robot.excel.WorkbookResource.firstSheetOf;
 import static bad.robot.excel.matchers.RowsMatcher.hasSameRowsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 public class RowsMatcherTest {
 
@@ -69,18 +68,18 @@ public class RowsMatcherTest {
     @Test
     public void description() throws IOException {
         hasSameRowsAs(sheetWithThreeRows).describeTo(description);
-        assertThat(description.toString(), is("equality on all rows in \"Sheet1\""));
+        assertThat(description.toString(), containsString("equality on all rows in \"Sheet1\""));
     }
 
     @Test
     public void mismatch() throws IOException {
         hasSameRowsAs(sheetWithThreeRows).matchesSafely(sheetWithDifferingValues, description);
-        assertThat(description.toString(), is("cell at \"A2\" contained <\"XXX\"> expected <\"Row 2\">"));
+        assertThat(description.toString(), containsString("cell at \"A2\" contained <\"XXX\"> expected <\"Row 2\">"));
     }
 
     @Test
-    public void mismatchOn() {
+    public void mismatchOnMissingRow() {
         hasSameRowsAs(sheetWithThreeRows).matchesSafely(sheetWithTwoRows, description);
-        assertThat(description.toString(), is("row 3 is missing"));
+        assertThat(description.toString(), is("row <3> is missing"));
     }
 }
