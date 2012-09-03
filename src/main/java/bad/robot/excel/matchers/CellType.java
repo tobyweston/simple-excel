@@ -63,12 +63,6 @@ public enum CellType implements CellAdapter {
         public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
             return new BlankCell();
         }
-    },
-    Missing(-1) {
-        @Override
-        public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
-            return new MissingCell();
-        }
     };
 
     private final Integer poiType;
@@ -79,7 +73,7 @@ public enum CellType implements CellAdapter {
 
     private static CellAdapter getAdapterFor(org.apache.poi.ss.usermodel.Cell poi) {
         if (poi == null)
-            return Missing;
+            return Blank;
 
         for (CellType type : values()) {
             if (type.poiType == poi.getCellType())

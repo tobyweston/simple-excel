@@ -46,6 +46,6 @@ public class BlankCell extends Cell {
 
     @Override
     public String toString() {
-        return "blank";
+        return "nothing";
     }
 }
