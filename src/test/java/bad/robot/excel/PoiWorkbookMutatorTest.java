@@ -21,14 +21,13 @@
 
 package bad.robot.excel;
 
-import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Date;
 
+import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.RowBuilder.aRow;
 import static bad.robot.excel.WorkbookResource.getWorkbook;
 import static bad.robot.excel.matchers.WorkbookEqualityMatcher.sameWorkBook;
@@ -36,7 +35,7 @@ import static bad.robot.excel.valuetypes.ColumnIndex.column;
 import static bad.robot.excel.valuetypes.Coordinate.coordinate;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.*;
 import static bad.robot.excel.valuetypes.RowIndex.row;
-import static org.apache.commons.lang3.time.DateUtils.parseDateStrictly;
+import static java.util.Calendar.FEBRUARY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -97,15 +96,11 @@ public class PoiWorkbookMutatorTest {
                 .withString(column(K), "smart")
                 .withString(column(N), "Programmer")
                 .withInteger(column(L), 1)
-                .withDate(column(P), fromSimpleString("79-02-11"))
+                .withDate(column(P), createDate(11, FEBRUARY, 1979))
                 .withDouble(column(O), new Double("0.123456789"));
         new PoiWorkbookMutator(workbook).appendRowToFirstSheet(row.build());
 
         assertThat(workbook, is(sameWorkBook(getWorkbook("shouldAppendRowTemplateExpected.xls"))));
-    }
-
-    public static Date fromSimpleString(String date) throws ParseException {
-        return parseDateStrictly(date, new String[]{FastDateFormat.getInstance("yy-MM-dd").getPattern()});
     }
 
 }

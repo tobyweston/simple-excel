@@ -27,13 +27,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
 
+import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.WorkbookResource.firstRowOf;
 import static bad.robot.excel.matchers.CellMatcher.hasSameCellAs;
 import static bad.robot.excel.matchers.StubCell.*;
-import static java.util.Calendar.*;
+import static java.util.Calendar.AUGUST;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -124,18 +123,5 @@ public class CellMatcherTest {
         hasSameCellAs(createCell(0, 6, "XXX")).matchesSafely(row, description);
         assertThat(description.toString(), is("cell at \"G1\" contained <\"Text\"> expected <\"XXX\">"));
     }
-
-    private Date createDate(int day, int month, int year) {
-        Calendar calendar = getInstance();
-        calendar.set(DAY_OF_MONTH, day);
-        calendar.set(MONTH, month);
-        calendar.set(YEAR, year);
-        calendar.set(HOUR_OF_DAY, 0);
-        calendar.set(MINUTE, 0);
-        calendar.set(SECOND, 0);
-        calendar.set(MILLISECOND, 0);
-        return calendar.getTime();
-    }
-
 
 }
