@@ -30,7 +30,7 @@ import java.text.ParseException;
 import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.RowBuilder.aRow;
 import static bad.robot.excel.WorkbookResource.getWorkbook;
-import static bad.robot.excel.matchers.WorkbookEqualityMatcher.sameWorkBook;
+import static bad.robot.excel.matchers.WorkbookMatcher.sameWorkBook;
 import static bad.robot.excel.valuetypes.ColumnIndex.column;
 import static bad.robot.excel.valuetypes.Coordinate.coordinate;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.*;
