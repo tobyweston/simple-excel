@@ -27,8 +27,8 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import static bad.robot.excel.matchers.RowEqualityMatcher.rowsEqual;
 import static bad.robot.excel.matchers.RowNumberMatcher.hasSameNumberOfRowAs;
+import static bad.robot.excel.matchers.RowsMatcher.hasSameRowsAs;
 import static bad.robot.excel.matchers.SheetMatcher.hasSameSheetsAs;
 
 public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
@@ -55,7 +55,7 @@ public class WorkbookEqualityMatcher extends TypeSafeMatcher<Workbook> {
             if (!hasSameNumberOfRowAs(expectedSheet).matches(actualSheet))
                 return false;
 
-            if (!rowsEqual(expectedSheet).matches(actualSheet))
+            if (!hasSameRowsAs(expectedSheet).matches(actualSheet))
                 return false;
         }
 

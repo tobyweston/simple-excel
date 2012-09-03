@@ -30,15 +30,15 @@ import static bad.robot.excel.matchers.CellNumberMatcher.hasSameNumberOfCellsAs;
 import static bad.robot.excel.matchers.CellsMatcher.hasSameCellsAs;
 import static java.lang.String.format;
 
-public class RowEqualityMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
+public class RowsMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     private final Sheet expected;
 
-    public static RowEqualityMatcher rowsEqual(Sheet expected) {
-        return new RowEqualityMatcher(expected);
+    public static RowsMatcher hasSameRowsAs(Sheet expected) {
+        return new RowsMatcher(expected);
     }
 
-    private RowEqualityMatcher(Sheet expected) {
+    private RowsMatcher(Sheet expected) {
         this.expected = expected;
     }
 

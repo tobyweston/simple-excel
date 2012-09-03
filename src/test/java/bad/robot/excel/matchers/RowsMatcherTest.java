@@ -29,12 +29,12 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static bad.robot.excel.WorkbookResource.firstSheetOf;
-import static bad.robot.excel.matchers.RowEqualityMatcher.rowsEqual;
+import static bad.robot.excel.matchers.RowsMatcher.hasSameRowsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class RowEqualityMatcherTest {
+public class RowsMatcherTest {
 
     private final StringDescription description = new StringDescription();
 
@@ -51,36 +51,36 @@ public class RowEqualityMatcherTest {
 
     @Test
     public void exampleUsage() throws IOException {
-        assertThat(sheetWithDifferingValues, not(rowsEqual(sheetWithThreeRows)));
-        assertThat(sheetWithTwoRows, not(rowsEqual(sheetWithThreeRows)));
-        assertThat(sheetWithThreeRows, rowsEqual(sheetWithTwoRows));
+        assertThat(sheetWithDifferingValues, not(hasSameRowsAs(sheetWithThreeRows)));
+        assertThat(sheetWithTwoRows, not(hasSameRowsAs(sheetWithThreeRows)));
+        assertThat(sheetWithThreeRows, hasSameRowsAs(sheetWithTwoRows));
     }
 
     @Test
     public void matches() throws IOException {
-        assertThat(rowsEqual(sheetWithThreeRows).matches(sheetWithThreeRows), is(true));
+        assertThat(hasSameRowsAs(sheetWithThreeRows).matches(sheetWithThreeRows), is(true));
     }
 
     @Test
     public void doesNotMatch() {
-        assertThat(rowsEqual(sheetWithThreeRows).matches(sheetWithDifferingValues), is(false));
+        assertThat(hasSameRowsAs(sheetWithThreeRows).matches(sheetWithDifferingValues), is(false));
     }
 
     @Test
     public void description() throws IOException {
-        rowsEqual(sheetWithThreeRows).describeTo(description);
+        hasSameRowsAs(sheetWithThreeRows).describeTo(description);
         assertThat(description.toString(), is("equality on all rows in \"Sheet1\""));
     }
 
     @Test
     public void mismatch() throws IOException {
-        rowsEqual(sheetWithThreeRows).matchesSafely(sheetWithDifferingValues, description);
+        hasSameRowsAs(sheetWithThreeRows).matchesSafely(sheetWithDifferingValues, description);
         assertThat(description.toString(), is("cell at \"A2\" contained <\"XXX\"> expected <\"Row 2\">"));
     }
 
     @Test
     public void mismatchOn() {
-        rowsEqual(sheetWithThreeRows).matchesSafely(sheetWithTwoRows, description);
+        hasSameRowsAs(sheetWithThreeRows).matchesSafely(sheetWithTwoRows, description);
         assertThat(description.toString(), is("row 3 is missing"));
     }
 }
