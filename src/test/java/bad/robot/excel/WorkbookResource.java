@@ -53,4 +53,8 @@ public class WorkbookResource {
         return firstSheetOf(file).getRow(2);
     }
 
+    public static org.apache.poi.ss.usermodel.Row firstRowOf(Sheet sheet) {
+        return sheet.getRow(0);
+    }
+
 }

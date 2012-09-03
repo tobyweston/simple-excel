@@ -24,13 +24,18 @@ package bad.robot.excel.matchers;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static bad.robot.excel.matchers.RowMatcher.hasSameRowAs;
+import java.util.ArrayList;
+import java.util.List;
+
+import static bad.robot.excel.matchers.RowMatcher.hasSameRow;
 
 public class RowsMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     private final Sheet expected;
+    private final List<Matcher<Sheet>> rowsOnSheet;
 
     public static RowsMatcher hasSameRowsAs(Sheet expected) {
         return new RowsMatcher(expected);
@@ -38,19 +43,27 @@ public class RowsMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     private RowsMatcher(Sheet expected) {
         this.expected = expected;
+        this.rowsOnSheet = createRowMatchers(expected);
     }
 
     @Override
     protected boolean matchesSafely(Sheet actual, Description mismatch) {
-        for (Row row : expected)
-            if (!hasSameRowAs(row).matchesSafely(actual.getRow(row.getRowNum()), mismatch))
-                return false;
-        return true;
+        Mismatches<Sheet> mismatches = new Mismatches<Sheet>();
+        if (mismatches.discover(actual, rowsOnSheet))
+            mismatches.describeTo(mismatch, actual);
+        return !mismatches.found();
     }
 
     @Override
     public void describeTo(Description description) {
         description.appendText("equality on all rows in ").appendValue(expected.getSheetName());
+    }
+
+    private static List<Matcher<Sheet>> createRowMatchers(Sheet sheet) {
+        List<Matcher<Sheet>> matchers = new ArrayList<Matcher<Sheet>>();
+        for (Row expected : sheet)
+            matchers.add(hasSameRow(expected));
+        return matchers;
     }
 
 }

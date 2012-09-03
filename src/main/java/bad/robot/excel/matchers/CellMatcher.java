@@ -41,7 +41,7 @@ public class CellMatcher extends TypeSafeDiagnosingMatcher<Row> {
         this.columnIndex = expectedPoi.getColumnIndex();
     }
 
-    public static CellMatcher hasSameCellAs(org.apache.poi.ss.usermodel.Cell expected) {
+    public static CellMatcher hasSameCell(org.apache.poi.ss.usermodel.Cell expected) {
         return new CellMatcher(expected);
     }
 

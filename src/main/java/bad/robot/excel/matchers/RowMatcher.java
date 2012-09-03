@@ -22,6 +22,7 @@
 package bad.robot.excel.matchers;
 
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
@@ -30,20 +31,24 @@ import static bad.robot.excel.matchers.CellNumberMatcher.hasSameNumberOfCellsAs;
 import static bad.robot.excel.matchers.CellsMatcher.hasSameCellsAs;
 import static bad.robot.excel.matchers.RowMissingMatcher.rowIsPresent;
 
-public class RowMatcher extends TypeSafeDiagnosingMatcher<Row> {
+public class RowMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     private final Row expected;
+    private int rowIndex;
 
-    public static RowMatcher hasSameRowAs(Row expected) {
+    public static RowMatcher hasSameRow(Row expected) {
         return new RowMatcher(expected);
     }
 
     private RowMatcher(Row expected) {
         this.expected = expected;
+        this.rowIndex = expected.getRowNum();
     }
 
     @Override
-    protected boolean matchesSafely(Row actual, Description mismatch) {
+    protected boolean matchesSafely(Sheet actualSheet, Description mismatch) {
+        Row actual = actualSheet.getRow(rowIndex);
+
         if (!rowIsPresent(expected).matchesSafely(actual, mismatch))
             return false;
 

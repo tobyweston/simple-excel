@@ -73,7 +73,7 @@ public class CellNumberMatcherTest {
     public void mismatch() {
         Description description = new StringDescription();
         hasSameNumberOfCellsAs(rowWithThreeCells).matchesSafely(rowWithTwoCells, description);
-        assertThat(description.toString(), is("got <2> cell(s) on row <1>"));
+        assertThat(description.toString(), is("got <2> cell(s) on row <1> expected <3>"));
     }
 
 }
