@@ -30,15 +30,15 @@ import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
 /**
  * Assert the number of cells in two workbooks are the same.
  */
-public class CellNumberMatcher extends TypeSafeDiagnosingMatcher<Row> {
+public class CellsMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
     private final Row expected;
 
-    public static CellNumberMatcher hasSameNumberOfCellsAs(Row expected) {
-        return new CellNumberMatcher(expected);
+    public static CellsMatcher hasSameNumberOfCellsAs(Row expected) {
+        return new CellsMatcher(expected);
     }
 
-    private CellNumberMatcher(Row expected) {
+    private CellsMatcher(Row expected) {
         this.expected = expected;
     }
 

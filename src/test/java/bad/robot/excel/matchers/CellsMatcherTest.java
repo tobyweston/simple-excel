@@ -30,12 +30,12 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static bad.robot.excel.WorkbookResource.firstRowOf;
-import static bad.robot.excel.matchers.CellNumberMatcher.hasSameNumberOfCellsAs;
+import static bad.robot.excel.matchers.CellsMatcher.hasSameNumberOfCellsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class CellNumberMatcherTest {
+public class CellsMatcherTest {
 
     private Row rowWithThreeCells;
     private Row rowWithTwoCells;
