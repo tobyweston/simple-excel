@@ -49,7 +49,7 @@ public class BooleanCell extends Cell {
 
     @Override
     public String toString() {
-        return value.toString();
+        return value.toString().toUpperCase();
     }
 
 }

@@ -21,44 +21,49 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.hamcrest.StringDescription;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Date;
 
 import static bad.robot.excel.WorkbookResource.firstRowOf;
 import static bad.robot.excel.matchers.CellMatcher.hasSameCellAs;
-import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING;
+import static bad.robot.excel.matchers.StubCell.*;
+import static java.lang.String.format;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 public class CellMatcherTest {
 
-    private StringDescription description = new StringDescription();
+    private final StringDescription description = new StringDescription();
 
     private Row row;
 
     @Before
     public void loadWorkbookAndSheets() throws IOException {
-        row = firstRowOf("rowWithThreeCells.xls");
+        row = firstRowOf("rowWithVariousCells.xls");
     }
 
     @Test
     public void exampleUsage() {
-        assertThat(row, hasSameCellAs(createCell(0, 0, "C1, R1")));
-        assertThat(row, not(hasSameCellAs(createCell(0, 0, "XXX"))));
+        assertThat(row, hasSameCellAs(createCell(0, 6, "Text")));
+        assertThat(row, not(hasSameCellAs(createCell(0, 6, "XXX"))));
     }
 
     @Test
     public void matches() {
-        assertThat(hasSameCellAs(createCell(0, 1, "C2, R1")).matches(row), is(true));
+        assertThat(hasSameCellAs(createBlankCell(0, 0)).matches(row), is(true));
+        assertThat(hasSameCellAs(createCell(0, 1, true)).matches(row), is(true));
+        assertThat(hasSameCellAs(createCell(0, 2, (byte) 0x07)).matches(row), is(true));
+        assertThat(hasSameCellAs(createFormulaCell(0, 3, "2+3")).matches(row), is(true));
+        assertThat(hasSameCellAs(createCell(0, 4, 34.5D)).matches(row), is(true));
+        assertThat(hasSameCellAs(createCell(0, 5, new Date(2012, 8, 22))).matches(row), is(true));
+        assertThat(hasSameCellAs(createCell(0, 6, "Text")).matches(row), is(true));
     }
 
     @Test
@@ -73,16 +78,46 @@ public class CellMatcherTest {
     }
 
     @Test
-    public void mismatch() {
+    public void mismatchMissingCell() {
         hasSameCellAs(createCell(0, 0, "XXX")).matchesSafely(row, description);
-        assertThat(description.toString(), is("cell at \"A1\" contained <\"C1, R1\"> expected <\"XXX\">"));
+        assertThat(description.toString(), is("cell at \"A1\" contained <nothing> expected <\"XXX\">"));
     }
 
-    public static Cell createCell(int row, int column, String value) {
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet();
-        HSSFCell cell = sheet.createRow(row).createCell(column, CELL_TYPE_STRING);
-        cell.setCellValue(value);
-        return cell;
+    @Test
+    public void mismatchBooleanCell() {
+        hasSameCellAs(createCell(0, 1, false)).matchesSafely(row, description);
+        assertThat(description.toString(), is("cell at \"B1\" contained <TRUE> expected <FALSE>"));
     }
+
+    @Test
+    public void mismatchErrorCell() {
+        hasSameCellAs(createCell(0, 2, (byte) 0x07)).matchesSafely(row, description);
+        assertThat(description.toString(), is("cell at \"C1\" contained <nothing> expected <\"DIV/0\">"));
+    }
+
+    @Test
+    public void mismatchFormulaCell() {
+        hasSameCellAs(createFormulaCell(0, 3, "2+2")).matchesSafely(row, description);
+        assertThat(description.toString(), is("cell at \"D1\" contained <Formula:2+3> expected <Formula:2+2>"));
+    }
+
+    @Test
+    public void mismatchNumericCell() {
+        hasSameCellAs(createCell(0, 4, 341.5D)).matchesSafely(row, description);
+        assertThat(description.toString(), is("cell at \"E1\" contained <34.5D> expected <341.5D>"));
+    }
+
+    @Test
+    public void mismatchDateCell() {
+        hasSameCellAs(createCell(0, 5, new Date(2012, 8, 22))).matchesSafely(row, description);
+        assertThat(description.toString(), is(format("cell at \"F1\" contained <nothing> expected <%s>", HSSFDateUtil.getExcelDate(new Date(2012, 8, 22)))));
+    }
+
+    @Test
+    public void mismatchStringCell() {
+        hasSameCellAs(createCell(0, 6, "XXX")).matchesSafely(row, description);
+        assertThat(description.toString(), is("cell at \"G1\" contained <\"Text\"> expected <\"XXX\">"));
+    }
+
+
 }
