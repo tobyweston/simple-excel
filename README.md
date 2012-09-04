@@ -82,14 +82,15 @@ When, using `MatcherAssert`, you'd see something like this.
 ``` java
 java.lang.AssertionError:
 Expected: entire workbook to be equal
-     but: cell at "C14" contained <"bananas"> expected <nothing>
+     but: cell at "C14" contained <"bananas"> expected <nothing>,
+          cell at "C15" contained <"1,850,000 EUR"> expected <"1,850,000.00 EUR">,
+          cell at "D16" contained <nothing> expected <"Tue Sep 04 06:30:00">
 	at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)
 ```
 
-
 ### Caveats
 
-   - Currently, matching doesn't take into account styling. A cell is equal to another regardless of if one has a border for example, and the other doesn't.
+   - Currently, matching doesn't take into account styling. A cell is equal to another regardless of style. If one has a border for example, and the other doesn't but they have the same values, they are considered equal.
 
 ## More
 
