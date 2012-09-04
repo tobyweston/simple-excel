@@ -21,16 +21,18 @@ public void shouldReplaceCellsInComplicatedAlternateSyntaxExample() throws IOExc
             .replaceCell(coordinate(J, 10), "total")
             .replaceCell(coordinate(M, 15), 99.99d);
 
-    assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls"))));
+    assertThat(workbook, sameWorkBook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls")));
 }
 ```
 
 A break in the matcher would show something like
 
-    java.lang.AssertionError:
-    Expected: value 'Templated' at Cell J10
-         got: value 'templated'
-
+``` java
+java.lang.AssertionError:
+Expected: equality of cell "G1"
+     but: cell at "G1" contained <"Text"> expected <99.99D>
+	at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)
+```
 
 
 ### Adding Styling
