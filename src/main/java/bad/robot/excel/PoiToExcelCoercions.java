@@ -21,12 +21,26 @@
 
 package bad.robot.excel;
 
-public class Assertions {
+import bad.robot.excel.valuetypes.ExcelColumnIndex;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 
-    public static <T> T assertNotNull(T object) {
-        if (object == null)
-            throw new IllegalArgumentException("object can not be null");
-        return object;
+public class PoiToExcelCoercions {
+
+    public static String asExcelCoordinate(Cell cell) {
+        return asExcelColumn(cell) + asExcelRow(cell);
+    }
+
+    public static String asExcelColumn(Cell cell) {
+        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
+    }
+
+    public static int asExcelRow(Cell cell) {
+        return cell.getRowIndex() + 1;
+    }
+
+    public static int asExcelRow(Row row) {
+        return row.getRowNum() + 1;
     }
 
 }

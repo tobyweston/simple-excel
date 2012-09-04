@@ -21,26 +21,36 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.ss.usermodel.Workbook;
+import bad.robot.excel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class SheetNumberMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
+import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
+import static bad.robot.excel.matchers.CellType.adaptPoi;
 
-    private final Workbook expected;
+public class CellMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
-    private SheetNumberMatcher(Workbook expected) {
-        this.expected = expected;
+    private final Cell expected;
+    private final int columnIndex;
+    private final String coordinate;
+
+    private CellMatcher(org.apache.poi.ss.usermodel.Cell expectedPoi) {
+        this.expected = adaptPoi(expectedPoi);
+        this.coordinate = asExcelCoordinate(expectedPoi);
+        this.columnIndex = expectedPoi.getColumnIndex();
     }
 
-    public static SheetNumberMatcher hasSameNumberOfSheetsAs(Workbook expected) {
-        return new SheetNumberMatcher(expected);
+    public static CellMatcher hasSameCell(org.apache.poi.ss.usermodel.Cell expected) {
+        return new CellMatcher(expected);
     }
 
     @Override
-    protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        if (expected.getNumberOfSheets() != actual.getNumberOfSheets()) {
-            mismatch.appendText("got " ).appendValue(actual.getNumberOfSheets()).appendText(" sheet(s)");
+    protected boolean matchesSafely(Row row, Description mismatch) {
+        Cell actual = adaptPoi(row.getCell(columnIndex));
+
+        if (!expected.equals(actual)) {
+            mismatch.appendText("cell at ").appendValue(coordinate).appendText(" contained ").appendValue(actual).appendText(" expected ").appendValue(expected);
             return false;
         }
         return true;
@@ -48,6 +58,6 @@ public class SheetNumberMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendValue(expected.getNumberOfSheets()).appendText(" sheet(s)");
+        description.appendText("equality of cell ").appendValue(coordinate);
     }
 }

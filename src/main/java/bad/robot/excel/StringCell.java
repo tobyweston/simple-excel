@@ -47,4 +47,8 @@ public class StringCell extends Cell {
         cell.setCellValue(value);
     }
 
+    @Override
+    public String toString() {
+        return "\"" + value + "\"";
+    }
 }

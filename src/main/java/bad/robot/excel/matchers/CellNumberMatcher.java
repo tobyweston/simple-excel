@@ -21,26 +21,36 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Row;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class RowNumberMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
+import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
 
-    private final Sheet expected;
+/**
+ * Assert the number of cells in two workbooks are the same.
+ */
+public class CellNumberMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
-    public static RowNumberMatcher hasSameNumberOfRowAs(Sheet expected) {
-        return new RowNumberMatcher(expected);
+    private final Row expected;
+
+    public static CellNumberMatcher hasSameNumberOfCellsAs(Row expected) {
+        return new CellNumberMatcher(expected);
     }
 
-    private RowNumberMatcher(Sheet expected) {
+    private CellNumberMatcher(Row expected) {
         this.expected = expected;
     }
 
     @Override
-    protected boolean matchesSafely(Sheet actual, Description mismatch) {
-        if (expected.getLastRowNum() != actual.getLastRowNum()) {
-            mismatch.appendText("got ").appendValue(numberOfRowsIn(actual)).appendText(" row(s) in sheet ").appendValue(actual.getSheetName());
+    protected boolean matchesSafely(Row actual, Description mismatch) {
+        if (expected.getLastCellNum() != actual.getLastCellNum()) {
+            mismatch.appendText("got ")
+                .appendValue(numberOfCellsIn(actual))
+                .appendText(" cell(s) on row ")
+                .appendValue(asExcelRow(expected))
+                .appendText(" expected ")
+                .appendValue(numberOfCellsIn(expected));
             return false;
         }
         return true;
@@ -48,11 +58,11 @@ public class RowNumberMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendValue(numberOfRowsIn(expected)).appendText(" row(s) in sheet ").appendValue(expected.getSheetName());
+        description.appendValue(numberOfCellsIn(expected)).appendText(" cell(s) on row ").appendValue(asExcelRow(expected));
     }
 
-    /* POI is zero-based */
-    private static int numberOfRowsIn(Sheet sheet) {
-        return sheet.getLastRowNum() + 1;
+    /** POI is zero-based */
+    private static int numberOfCellsIn(Row row) {
+        return row.getLastCellNum();
     }
 }

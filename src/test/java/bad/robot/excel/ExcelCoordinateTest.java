@@ -21,13 +21,8 @@
 
 package bad.robot.excel;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.*;
-
-import static java.io.File.createTempFile;
-import static org.apache.poi.util.IOUtils.copy;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -83,26 +78,6 @@ public class ExcelCoordinateTest {
             column = (column / 26) - 1;
         }
         return converted;
-    }
-
-
-    @Test
-    @Ignore
-    public void splitColumnIntoRanges() throws IOException {
-        File file = createTempFile("columns-1-", ".txt");
-        FileOutputStream stream = new FileOutputStream(file);
-        for (int i = 0, j = 1; i < 18278; i++) {
-            if (i % 1500 == 0) {
-                stream.close();
-                System.out.println("outputted: " + file.getAbsolutePath());
-                j++;
-                file = createTempFile("columns-" + j + "-", ".txt");
-                stream = new FileOutputStream(file);
-            }
-            String line = "public static final ExcelColumnIndex " + asColumn(i) + " = new ExcelColumnIndex(" + i + ");\n";
-            copy(new ByteArrayInputStream(line.getBytes()), stream);
-        }
-
     }
 
 }

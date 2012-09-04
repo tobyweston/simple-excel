@@ -21,33 +21,39 @@
 
 package bad.robot.excel.matchers;
 
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class SheetNumberMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
+import static bad.robot.excel.WorkbookSheetIterable.sheetsOf;
+import static bad.robot.excel.matchers.RowNumberMatcher.hasSameNumberOfRowAs;
+import static bad.robot.excel.matchers.RowsMatcher.hasSameRowsAs;
+
+public class SheetsMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
 
     private final Workbook expected;
 
-    private SheetNumberMatcher(Workbook expected) {
+    public SheetsMatcher(Workbook expected) {
         this.expected = expected;
-    }
-
-    public static SheetNumberMatcher hasSameNumberOfSheetsAs(Workbook expected) {
-        return new SheetNumberMatcher(expected);
     }
 
     @Override
     protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        if (expected.getNumberOfSheets() != actual.getNumberOfSheets()) {
-            mismatch.appendText("got " ).appendValue(actual.getNumberOfSheets()).appendText(" sheet(s)");
-            return false;
+        for (Sheet expectedSheet : sheetsOf(expected)) {
+            Sheet actualSheet = actual.getSheet(expectedSheet.getSheetName());
+
+            if (!hasSameNumberOfRowAs(expectedSheet).matchesSafely(actualSheet, mismatch))
+                return false;
+
+            if (!hasSameRowsAs(expectedSheet).matchesSafely(actualSheet, mismatch))
+                return false;
         }
         return true;
     }
 
     @Override
     public void describeTo(Description description) {
-        description.appendValue(expected.getNumberOfSheets()).appendText(" sheet(s)");
+        description.appendText("equality on all sheets in workbook");
     }
 }

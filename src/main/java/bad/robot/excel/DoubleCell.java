@@ -25,6 +25,7 @@ import bad.robot.excel.valuetypes.ColumnIndex;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import static java.lang.String.format;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC;
 
 public class DoubleCell extends Cell {
@@ -47,4 +48,8 @@ public class DoubleCell extends Cell {
         cell.setCellValue(value);
     }
 
+    @Override
+    public String toString() {
+        return format("%sD", value.toString());
+    }
 }

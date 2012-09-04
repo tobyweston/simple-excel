@@ -25,6 +25,8 @@ import bad.robot.excel.valuetypes.ColumnIndex;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
+
 public abstract class Cell {
 
     private final Style style;
@@ -35,6 +37,11 @@ public abstract class Cell {
 
     public Style getStyle() {
         return style;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        return reflectionEquals(this, that, false, this.getClass());
     }
 
     public abstract void addTo(Row row, ColumnIndex column, Workbook workbook);

@@ -21,38 +21,47 @@
 
 package bad.robot.excel.matchers;
 
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class RowNumberMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
+import java.util.ArrayList;
+import java.util.List;
+
+import static bad.robot.excel.matchers.CompositeMatcher.allOf;
+import static bad.robot.excel.matchers.RowMatcher.hasSameRow;
+
+public class RowsMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     private final Sheet expected;
+    private final List<Matcher<Sheet>> rowsOnSheet;
 
-    public static RowNumberMatcher hasSameNumberOfRowAs(Sheet expected) {
-        return new RowNumberMatcher(expected);
+    public static RowsMatcher hasSameRowsAs(Sheet expected) {
+        return new RowsMatcher(expected);
     }
 
-    private RowNumberMatcher(Sheet expected) {
+    private RowsMatcher(Sheet expected) {
         this.expected = expected;
+        this.rowsOnSheet = createRowMatchers(expected);
     }
 
     @Override
     protected boolean matchesSafely(Sheet actual, Description mismatch) {
-        if (expected.getLastRowNum() != actual.getLastRowNum()) {
-            mismatch.appendText("got ").appendValue(numberOfRowsIn(actual)).appendText(" row(s) in sheet ").appendValue(actual.getSheetName());
-            return false;
-        }
-        return true;
+        return allOf(rowsOnSheet).matchesSafely(actual, mismatch);
     }
 
     @Override
     public void describeTo(Description description) {
-        description.appendValue(numberOfRowsIn(expected)).appendText(" row(s) in sheet ").appendValue(expected.getSheetName());
+        description.appendText("equality on all rows in ").appendValue(expected.getSheetName());
     }
 
-    /* POI is zero-based */
-    private static int numberOfRowsIn(Sheet sheet) {
-        return sheet.getLastRowNum() + 1;
+    private static List<Matcher<Sheet>> createRowMatchers(Sheet sheet) {
+        List<Matcher<Sheet>> matchers = new ArrayList<Matcher<Sheet>>();
+        for (Row expected : sheet)
+            matchers.add(hasSameRow(expected));
+        return matchers;
     }
+
 }

@@ -21,38 +21,50 @@
 
 package bad.robot.excel.matchers;
 
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class RowNumberMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
+import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
+import static bad.robot.excel.matchers.CellNumberMatcher.hasSameNumberOfCellsAs;
+import static bad.robot.excel.matchers.CellsMatcher.hasSameCellsAs;
+import static bad.robot.excel.matchers.RowMissingMatcher.rowIsPresent;
 
-    private final Sheet expected;
+public class RowMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
-    public static RowNumberMatcher hasSameNumberOfRowAs(Sheet expected) {
-        return new RowNumberMatcher(expected);
+    private final Row expected;
+    private int rowIndex;
+
+    public static RowMatcher hasSameRow(Row expected) {
+        return new RowMatcher(expected);
     }
 
-    private RowNumberMatcher(Sheet expected) {
+    private RowMatcher(Row expected) {
         this.expected = expected;
+        this.rowIndex = expected.getRowNum();
     }
 
     @Override
-    protected boolean matchesSafely(Sheet actual, Description mismatch) {
-        if (expected.getLastRowNum() != actual.getLastRowNum()) {
-            mismatch.appendText("got ").appendValue(numberOfRowsIn(actual)).appendText(" row(s) in sheet ").appendValue(actual.getSheetName());
+    protected boolean matchesSafely(Sheet actualSheet, Description mismatch) {
+        Row actual = actualSheet.getRow(rowIndex);
+
+        if (!rowIsPresent(expected).matchesSafely(actual, mismatch))
             return false;
-        }
+
+        if (!hasSameNumberOfCellsAs(expected).matchesSafely(actual, mismatch))
+            return false;
+
+        if (!hasSameCellsAs(expected).matchesSafely(actual, mismatch))
+            return false;
+
         return true;
     }
 
     @Override
     public void describeTo(Description description) {
-        description.appendValue(numberOfRowsIn(expected)).appendText(" row(s) in sheet ").appendValue(expected.getSheetName());
+        description.appendText("equality of row ").appendValue(asExcelRow(expected));
     }
 
-    /* POI is zero-based */
-    private static int numberOfRowsIn(Sheet sheet) {
-        return sheet.getLastRowNum() + 1;
-    }
+
 }

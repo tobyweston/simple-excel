@@ -19,35 +19,33 @@
  * under the License.
  */
 
-package bad.robot.excel.matchers;
+package bad.robot.excel;
 
+import bad.robot.excel.valuetypes.ColumnIndex;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.hamcrest.Description;
-import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class SheetNumberMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA;
 
-    private final Workbook expected;
+public class MissingCell extends Cell {
 
-    private SheetNumberMatcher(Workbook expected) {
-        this.expected = expected;
+    public MissingCell() {
+        this(new NoStyle());
     }
 
-    public static SheetNumberMatcher hasSameNumberOfSheetsAs(Workbook expected) {
-        return new SheetNumberMatcher(expected);
-    }
-
-    @Override
-    protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        if (expected.getNumberOfSheets() != actual.getNumberOfSheets()) {
-            mismatch.appendText("got " ).appendValue(actual.getNumberOfSheets()).appendText(" sheet(s)");
-            return false;
-        }
-        return true;
+    public MissingCell(Style style) {
+        super(style);
     }
 
     @Override
-    public void describeTo(Description description) {
-        description.appendValue(expected.getNumberOfSheets()).appendText(" sheet(s)");
+    public void addTo(Row row, ColumnIndex column, Workbook workbook) {
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_FORMULA);
+        this.getStyle().applyTo(cell, workbook);
+        cell.setCellValue("");
+    }
+
+    @Override
+    public String toString() {
+        return "nothing";
     }
 }

@@ -19,35 +19,37 @@
  * under the License.
  */
 
-package bad.robot.excel.matchers;
+package bad.robot.excel;
 
+import bad.robot.excel.valuetypes.ColumnIndex;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.hamcrest.Description;
-import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class SheetNumberMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BOOLEAN;
 
-    private final Workbook expected;
+public class BooleanCell extends Cell {
 
-    private SheetNumberMatcher(Workbook expected) {
-        this.expected = expected;
+    private final Boolean value;
+
+    public BooleanCell(Boolean value) {
+        this(value, new NoStyle());
     }
 
-    public static SheetNumberMatcher hasSameNumberOfSheetsAs(Workbook expected) {
-        return new SheetNumberMatcher(expected);
-    }
-
-    @Override
-    protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        if (expected.getNumberOfSheets() != actual.getNumberOfSheets()) {
-            mismatch.appendText("got " ).appendValue(actual.getNumberOfSheets()).appendText(" sheet(s)");
-            return false;
-        }
-        return true;
+    public BooleanCell(Boolean value, Style style) {
+        super(style);
+        this.value = value;
     }
 
     @Override
-    public void describeTo(Description description) {
-        description.appendValue(expected.getNumberOfSheets()).appendText(" sheet(s)");
+    public void addTo(Row row, ColumnIndex column, Workbook workbook) {
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_BOOLEAN);
+        this.getStyle().applyTo(cell, workbook);
+        cell.setCellValue(value);
     }
+
+    @Override
+    public String toString() {
+        return value.toString().toUpperCase();
+    }
+
 }

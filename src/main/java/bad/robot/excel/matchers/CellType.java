@@ -21,72 +21,74 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.ss.usermodel.Cell;
 
-import static bad.robot.excel.PoiToExcelCoordinateCoercions.asExcelCoordinate;
-import static java.lang.String.format;
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import bad.robot.excel.*;
+
 import static org.apache.poi.ss.usermodel.Cell.*;
+import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
 
-enum CellType {
+public enum CellType implements CellAdapter {
+
     Boolean(CELL_TYPE_BOOLEAN) {
         @Override
-        public void assertSameValue(Cell expectedCell, Cell actualCell) throws WorkbookDiscrepancyException {
-            if (expectedCell.getBooleanCellValue() != actualCell.getBooleanCellValue())
-                throw new WorkbookDiscrepancyException(format("Cell at %s has different values: expected '%s' actual '%s'", asExcelCoordinate(expectedCell), expectedCell.getBooleanCellValue(), actualCell.getBooleanCellValue()));
-
+        public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
+            return new BooleanCell(cell.getBooleanCellValue());
         }
     },
     Error(CELL_TYPE_ERROR) {
         @Override
-        public void assertSameValue(Cell expectedCell, Cell actualCell) throws WorkbookDiscrepancyException {
-            if (expectedCell.getErrorCellValue() != actualCell.getErrorCellValue()) {
-                throw new WorkbookDiscrepancyException(format("Cell at %s has different values: expected '%s' actual '%s'", asExcelCoordinate(expectedCell), expectedCell.getErrorCellValue(), actualCell.getErrorCellValue()));
-            }
-
+        public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
+            return new ErrorCell(cell.getErrorCellValue());
         }
     },
     Formula(CELL_TYPE_FORMULA) {
         @Override
-        public void assertSameValue(Cell expectedCell, Cell actualCell) throws WorkbookDiscrepancyException {
-            if (!expectedCell.getCellFormula().equals(actualCell.getCellFormula())) {
-                throw new WorkbookDiscrepancyException(format("Cell at %s has different values: expected '%s' actual '%s'", asExcelCoordinate(expectedCell), expectedCell.getCellFormula(), actualCell.getCellFormula()));
-            }
-
+        public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
+            if (cell.getCachedFormulaResultType() == CELL_TYPE_ERROR)
+                return new ErrorCell(cell.getErrorCellValue());
+            return new FormulaCell(cell.getCellFormula());
         }
     },
     Numeric(CELL_TYPE_NUMERIC) {
         @Override
-        public void assertSameValue(Cell expectedCell, Cell actualCell) throws WorkbookDiscrepancyException {
-            if (expectedCell.getNumericCellValue() != actualCell.getNumericCellValue())
-                throw new WorkbookDiscrepancyException(format("Cell at %s has different values: expected '%s' actual '%s'", asExcelCoordinate(expectedCell), expectedCell.getNumericCellValue(), actualCell.getNumericCellValue()));
+        public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
+            if (isCellDateFormatted(cell))
+                return new DateCell(cell.getDateCellValue());
+            return new DoubleCell(cell.getNumericCellValue());
         }
     },
-    String(CELL_TYPE_STRING, CELL_TYPE_BLANK) {
+    String(CELL_TYPE_STRING) {
         @Override
-        public void assertSameValue(Cell expected, Cell actual) throws WorkbookDiscrepancyException {
-            if (actual.getCellType() == CELL_TYPE_BLANK && isBlank(expected.getStringCellValue()))
-                return;
-            if (!expected.getStringCellValue().equals(actual.getStringCellValue()))
-                throw new WorkbookDiscrepancyException(format("Cell at %s has different values: expected '%s' actual '%s'", asExcelCoordinate(expected), expected.getStringCellValue(), actual.getStringCellValue()));
+        public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
+            return new StringCell(cell.getStringCellValue());
+        }
+    },
+    Blank(CELL_TYPE_BLANK) {
+        @Override
+        public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
+            return new BlankCell();
         }
     };
 
-    private Integer[] poiValues;
+    private final Integer poiType;
 
-    CellType(Integer... poiValues) {
-        this.poiValues = poiValues;
+    CellType(Integer poiType) {
+        this.poiType = poiType;
     }
 
-    static CellType valueOf(int cellType) {
+    private static CellAdapter getAdapterFor(org.apache.poi.ss.usermodel.Cell poi) {
+        if (poi == null)
+            return Blank;
+
         for (CellType type : values()) {
-            for (Integer poiValue : type.poiValues) {
-                if (poiValue == cellType)
-                    return type;
-            }
+            if (type.poiType == poi.getCellType())
+                return type;
         }
-        throw new RuntimeException("Unknown poi type " + cellType);
+        throw new RuntimeException("Unknown poi type " + poi.getCellType());
     }
 
-    public abstract void assertSameValue(Cell expectedCell, Cell actualCell) throws WorkbookDiscrepancyException;
+    public static Cell adaptPoi(org.apache.poi.ss.usermodel.Cell cell) {
+        return getAdapterFor(cell).adapt(cell);
+    }
+
 }

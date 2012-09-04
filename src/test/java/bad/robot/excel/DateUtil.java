@@ -21,12 +21,22 @@
 
 package bad.robot.excel;
 
-public class Assertions {
+import java.util.Calendar;
+import java.util.Date;
 
-    public static <T> T assertNotNull(T object) {
-        if (object == null)
-            throw new IllegalArgumentException("object can not be null");
-        return object;
+import static java.util.Calendar.*;
+
+public class DateUtil {
+
+    public static Date createDate(int day, int month, int year) {
+        Calendar calendar = getInstance();
+        calendar.set(DAY_OF_MONTH, day);
+        calendar.set(MONTH, month);
+        calendar.set(YEAR, year);
+        calendar.set(HOUR_OF_DAY, 0);
+        calendar.set(MINUTE, 0);
+        calendar.set(SECOND, 0);
+        calendar.set(MILLISECOND, 0);
+        return calendar.getTime();
     }
-
 }

@@ -19,10 +19,29 @@
  * under the License.
  */
 
-package bad.robot.excel.matchers;
+package bad.robot.excel;
 
-class WorkbookDiscrepancyException extends Exception {
-    public WorkbookDiscrepancyException(String message) {
-        super(message);
+import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
+public class StringCellTest {
+
+    @Test
+    public void stringRepresentation() {
+        assertThat(new StringCell("Value").toString(), is("\"Value\""));
     }
+
+    @Test
+    public void equalityOfDifferingTypes() {
+        assertThat(new StringCell("Foo").equals(new BlankCell()), is(false));
+    }
+
+    @Test
+    public void basicEquality() {
+        assertThat(new StringCell("Bar").equals(new StringCell("Bar")), is(true));
+    }
+
+
 }

@@ -21,26 +21,28 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.Row;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class SheetNumberMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
+import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
 
-    private final Workbook expected;
+public class RowMissingMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
-    private SheetNumberMatcher(Workbook expected) {
+    private final Row expected;
+
+    public static RowMissingMatcher rowIsPresent(Row expected) {
+        return new RowMissingMatcher(expected);
+    }
+
+    private RowMissingMatcher(Row expected) {
         this.expected = expected;
     }
 
-    public static SheetNumberMatcher hasSameNumberOfSheetsAs(Workbook expected) {
-        return new SheetNumberMatcher(expected);
-    }
-
     @Override
-    protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        if (expected.getNumberOfSheets() != actual.getNumberOfSheets()) {
-            mismatch.appendText("got " ).appendValue(actual.getNumberOfSheets()).appendText(" sheet(s)");
+    protected boolean matchesSafely(Row actual, Description mismatch) {
+        if (actual == null) {
+            mismatch.appendText("row ").appendValue(asExcelRow(expected)).appendText(" is missing");
             return false;
         }
         return true;
@@ -48,6 +50,6 @@ public class SheetNumberMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendValue(expected.getNumberOfSheets()).appendText(" sheet(s)");
+        description.appendText("row ").appendValue(asExcelRow(expected)).appendText(" to be present");
     }
 }

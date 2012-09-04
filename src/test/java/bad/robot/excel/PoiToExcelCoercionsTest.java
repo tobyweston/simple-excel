@@ -27,12 +27,12 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Test;
 
-import static bad.robot.excel.PoiToExcelCoordinateCoercions.asExcelCoordinate;
-import static bad.robot.excel.PoiToExcelCoordinateCoercionsTest.PoiCoordinate.coordinate;
+import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
+import static bad.robot.excel.PoiToExcelCoercionsTest.PoiCoordinate.coordinate;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-public class PoiToExcelCoordinateCoercionsTest {
+public class PoiToExcelCoercionsTest {
 
     private final Mockery context = new Mockery();
     private final Cell cell = context.mock(Cell.class);

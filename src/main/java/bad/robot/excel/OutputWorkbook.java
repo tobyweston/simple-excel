@@ -21,12 +21,28 @@
 
 package bad.robot.excel;
 
-public class Assertions {
+import org.apache.poi.ss.usermodel.Workbook;
 
-    public static <T> T assertNotNull(T object) {
-        if (object == null)
-            throw new IllegalArgumentException("object can not be null");
-        return object;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import static java.io.File.createTempFile;
+
+public class OutputWorkbook {
+
+    public static void writeWorkbookToTemporaryFile(Workbook workbook, String filename) throws IOException {
+        try {
+            File file = createTempFile(filename, ".xls");
+            System.out.println("outputted xls: " + file.getAbsolutePath());
+            FileOutputStream fileOut = new FileOutputStream(file);
+            workbook.write(fileOut);
+            fileOut.close();
+            System.out.println("wrote file as " + file.getAbsolutePath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }

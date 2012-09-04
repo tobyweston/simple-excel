@@ -27,6 +27,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.Date;
 
+import static bad.robot.excel.StyleBuilder.aStyle;
+import static bad.robot.excel.valuetypes.DataFormat.asDateFormatted;
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC;
+
 public class DateCell extends Cell {
 
     private final Date value;
@@ -42,9 +46,18 @@ public class DateCell extends Cell {
 
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
-        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value()); // what poi type is the date cell?
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_NUMERIC);
         this.getStyle().applyTo(cell, workbook);
+        overrideWithDateFormatting(workbook, cell);
         cell.setCellValue(value);
     }
 
+    private void overrideWithDateFormatting(Workbook workbook, org.apache.poi.ss.usermodel.Cell cell) {
+        aStyle().with(asDateFormatted()).build().applyTo(cell, workbook);
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
 }

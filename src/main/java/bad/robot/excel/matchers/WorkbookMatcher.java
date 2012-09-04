@@ -23,31 +23,38 @@ package bad.robot.excel.matchers;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class SheetNumberMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
+import static bad.robot.excel.matchers.SheetMatcher.hasSameSheetsAs;
+
+public class WorkbookMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
 
     private final Workbook expected;
 
-    private SheetNumberMatcher(Workbook expected) {
-        this.expected = expected;
+    public static Matcher<Workbook> sameWorkBook(Workbook expectedWorkbook) {
+        return new WorkbookMatcher(expectedWorkbook);
     }
 
-    public static SheetNumberMatcher hasSameNumberOfSheetsAs(Workbook expected) {
-        return new SheetNumberMatcher(expected);
+    private WorkbookMatcher(Workbook expected) {
+        this.expected = expected;
     }
 
     @Override
     protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        if (expected.getNumberOfSheets() != actual.getNumberOfSheets()) {
-            mismatch.appendText("got " ).appendValue(actual.getNumberOfSheets()).appendText(" sheet(s)");
+        if (!hasSameSheetsAs(expected).matchesSafely(actual, mismatch))
             return false;
-        }
+
+        if (!new SheetsMatcher(expected).matchesSafely(actual, mismatch))
+            return false;
+
         return true;
     }
 
+
     @Override
     public void describeTo(Description description) {
-        description.appendValue(expected.getNumberOfSheets()).appendText(" sheet(s)");
+        description.appendText("entire workbook to be equal");
     }
+
 }

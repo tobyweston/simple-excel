@@ -21,20 +21,35 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.ExcelColumnIndex;
-import org.apache.poi.ss.usermodel.Cell;
+import bad.robot.excel.valuetypes.ColumnIndex;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 
-public class PoiToExcelCoordinateCoercions {
+import static java.lang.String.format;
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR;
 
-    public static String asExcelCoordinate(Cell cell) {
-        return asExcelColumn(cell) + asExcelRow(cell);
+public class ErrorCell extends Cell {
+
+    private final Byte value;
+
+    public ErrorCell(Byte text) {
+        this(text, new NoStyle());
     }
 
-    private static String asExcelColumn(Cell cell) {
-        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
+    public ErrorCell(Byte text, Style style) {
+        super(style);
+        this.value = text;
     }
 
-    private static int asExcelRow(Cell cell) {
-        return cell.getRowIndex() + 1;
+    @Override
+    public void addTo(Row row, ColumnIndex column, Workbook workbook) {
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_ERROR);
+        this.getStyle().applyTo(cell, workbook);
+        cell.setCellErrorValue(value);
+    }
+
+    @Override
+    public String toString() {
+        return format("Error:%s", value);
     }
 }
