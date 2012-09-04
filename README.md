@@ -92,6 +92,9 @@ Expected: entire workbook to be equal
 
    - Currently, matching doesn't take into account styling. A cell is equal to another regardless of style. If one has a border for example, and the other doesn't but they have the same values, they are considered equal.
 
-## More
 
-For more tools, see [robotooling.com](http://www.robotooling.com)
+# Download
+
+Available via my [Maven repository](http://robotooling.com/maven/).
+
+For more tools, see [robotooling.com](http://www.robotooling.com) and visit my [blog](http://baddotrobot.com).
