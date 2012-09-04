@@ -57,22 +57,22 @@ public class SheetNameMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
             if (actual.getSheet(sheet.getSheetName()) == null)
                 missingSheets.add(sheet.getSheetName());
         }
-        mismatch.appendValueList("", ", ", notFound(missingSheets), missingSheets);
+        mismatch.appendValueList("sheet(s) ", ", ", notFound(missingSheets), missingSheets);
         return missingSheets.isEmpty();
     }
 
     @Override
     public void describeTo(Description description) {
-        if (!previousDescriptionsIncludedIn(description))
+        if (!anyPreviousDescriptionsIncludedIn(description))
             description.appendText("workbook to contain sheets ");
         description.appendText("named ").appendValueList("", ", ", "", sheetNamesOf(expected));
     }
 
-    private static boolean previousDescriptionsIncludedIn(Description description) {
+    private static boolean anyPreviousDescriptionsIncludedIn(Description description) {
         return !description.toString().endsWith("Expected: ");
     }
 
-    private String notFound(List<String> values) {
-        return format(" %s not found", values.size() == 1 ? "was" : "were");
+    private static String notFound(List<String> values) {
+        return format(" %s missing", values.size() == 1 ? "was" : "were");
     }
 }

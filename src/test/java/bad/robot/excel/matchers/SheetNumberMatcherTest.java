@@ -73,6 +73,6 @@ public class SheetNumberMatcherTest {
     @Test
     public void mismatch() {
         hasSameNumberOfSheetsAs(workbookWithOneSheet).matchesSafely(workbookWithTwoSheets, description);
-        assertThat(description.toString(), is("got <2> sheet(s)"));
+        assertThat(description.toString(), is("got <2> sheet(s) expected <1>"));
     }
 }

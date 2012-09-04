@@ -40,7 +40,7 @@ public class SheetNumberMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
     @Override
     protected boolean matchesSafely(Workbook actual, Description mismatch) {
         if (expected.getNumberOfSheets() != actual.getNumberOfSheets()) {
-            mismatch.appendText("got " ).appendValue(actual.getNumberOfSheets()).appendText(" sheet(s)");
+            mismatch.appendText("got " ).appendValue(actual.getNumberOfSheets()).appendText(" sheet(s) expected ").appendValue(expected.getNumberOfSheets());
             return false;
         }
         return true;

@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.lang.String.format;
+
 class Mismatches<T> implements MismatchDetector<T> {
 
     private final List<Matcher<T>> mismatches = new ArrayList<Matcher<T>>();
@@ -46,7 +48,7 @@ class Mismatches<T> implements MismatchDetector<T> {
         while (iterator.hasNext()) {
             iterator.next().describeMismatch(actual, description);
             if (iterator.hasNext())
-                description.appendText(", ");
+                description.appendText(format(",\n%1$10s", ""));
         }
     }
 

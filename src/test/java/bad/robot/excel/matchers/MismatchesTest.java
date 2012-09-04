@@ -113,6 +113,6 @@ public class MismatchesTest {
         mismatches.discover(actual, asList(matcher1, matcher2));
         mismatches.describeTo(description, actual);
         assertThat(mismatches.found(), is(true));
-        assertThat(description.toString(), containsString(", "));
+        assertThat(description.toString(), containsString(",\n          "));
     }
 }

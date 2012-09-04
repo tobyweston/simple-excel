@@ -32,8 +32,7 @@ import java.io.IOException;
 import static bad.robot.excel.WorkbookResource.getWorkbook;
 import static bad.robot.excel.matchers.SheetMatcher.hasSameSheetsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 public class SheetMatcherTest {
 
@@ -74,12 +73,15 @@ public class SheetMatcherTest {
     @Test
     public void mismatchOnNumberOfSheets() {
         hasSameSheetsAs(workbookWithManyNamedSheets).matchesSafely(workbookWithOneNamedSheet, description);
-        assertThat(description.toString(), is("got <1> sheet(s), \"Another Sheet\", \"Yet Another Sheet\", \"Sheet5\" were not found"));
+        assertThat(description.toString(), allOf(
+            containsString("got <1> sheet(s) expected <4>,"),
+            containsString("sheet(s) \"Another Sheet\", \"Yet Another Sheet\", \"Sheet5\" were missing")
+        ));
     }
 
     @Test
     public void mismatchOnNameOfSheets() {
         hasSameSheetsAs(workbookWithManyNamedSheets).matchesSafely(workbookWithMultipleAlternativelyNamedSheets, description);
-        assertThat(description.toString(), is("\"Yet Another Sheet\" was not found"));
+        assertThat(description.toString(), is("sheet(s) \"Yet Another Sheet\" was missing"));
     }
 }

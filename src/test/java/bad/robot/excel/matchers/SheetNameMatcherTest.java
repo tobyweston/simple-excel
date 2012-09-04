@@ -82,12 +82,12 @@ public class SheetNameMatcherTest {
     @Test
     public void singularMismatch() {
         containsSameNamedSheetsAs(workbookWithManyNamedSheets).matchesSafely(workbookWithMultipleAlternativelyNamedSheets, description);
-        assertThat(description.toString(), is("\"Yet Another Sheet\" was not found"));
+        assertThat(description.toString(), is("sheet(s) \"Yet Another Sheet\" was missing"));
     }
 
     @Test
     public void multipleMismatch() {
         containsSameNamedSheetsAs(workbookWithManyNamedSheets).matchesSafely(workbookWithOneNamedSheet, description);
-        assertThat(description.toString(), is("\"Another Sheet\", \"Yet Another Sheet\", \"Sheet5\" were not found"));
+        assertThat(description.toString(), is("sheet(s) \"Another Sheet\", \"Yet Another Sheet\", \"Sheet5\" were missing"));
     }
 }

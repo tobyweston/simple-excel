@@ -31,8 +31,8 @@ import java.io.IOException;
 import static bad.robot.excel.WorkbookResource.*;
 import static bad.robot.excel.matchers.CellsMatcher.hasSameCellsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.core.AllOf.allOf;
 
 public class CellsMatcherTest {
 
@@ -94,6 +94,9 @@ public class CellsMatcherTest {
     @Test
     public void mismatchMultipleValues() {
         hasSameCellsAs(thirdRow).matchesSafely(thirdRowWithAlternateValues, description);
-        assertThat(description.toString(), is("cell at \"A3\" contained <Wed Feb 01 00:00:00 GMT 2012> expected <\"C1, R3\">, cell at \"B3\" contained <Formula:2+2> expected <\"C2, R3\">"));
+        assertThat(description.toString(), allOf(
+            containsString("cell at \"A3\" contained <Wed Feb 01 00:00:00 GMT 2012> expected <\"C1, R3\">,"),
+            containsString("cell at \"B3\" contained <Formula:2+2> expected <\"C2, R3\">")
+        ));
     }
 }
