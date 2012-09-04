@@ -87,7 +87,7 @@ Expected: entire workbook to be equal
 
 ### Caveats
 
-   # Currently, matching doesn't take into account styling. A cell is equal to another regardless of if one has a border for example, and the other doesn't.
+   - Currently, matching doesn't take into account styling. A cell is equal to another regardless of if one has a border for example, and the other doesn't.
 
 ## More
 
