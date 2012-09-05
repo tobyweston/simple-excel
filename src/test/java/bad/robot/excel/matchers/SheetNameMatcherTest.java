@@ -21,7 +21,7 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Description;
 import org.hamcrest.StringDescription;
 import org.junit.Before;
@@ -39,9 +39,9 @@ public class SheetNameMatcherTest {
 
     private final Description description = new StringDescription();
 
-    private HSSFWorkbook workbookWithOneNamedSheet;
-    private HSSFWorkbook workbookWithManyNamedSheets;
-    private HSSFWorkbook workbookWithMultipleAlternativelyNamedSheets;
+    private Workbook workbookWithOneNamedSheet;
+    private Workbook workbookWithManyNamedSheets;
+    private Workbook workbookWithMultipleAlternativelyNamedSheets;
 
     @Before
     public void loadWorkbooks() throws IOException {

@@ -23,6 +23,7 @@ package bad.robot.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -30,7 +31,7 @@ import java.io.InputStream;
 
 public class WorkbookResource {
 
-    public static HSSFWorkbook getWorkbook(String file) throws IOException {
+    public static Workbook getWorkbook(String file) throws IOException {
         InputStream stream = PoiWorkbookMutatorTest.class.getResourceAsStream(file);
         if (stream == null)
             throw new FileNotFoundException(file);

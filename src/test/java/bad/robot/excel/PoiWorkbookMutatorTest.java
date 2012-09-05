@@ -21,7 +21,7 @@
 
 package bad.robot.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -36,6 +36,7 @@ import static bad.robot.excel.valuetypes.Coordinate.coordinate;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.*;
 import static bad.robot.excel.valuetypes.RowIndex.row;
 import static java.util.Calendar.FEBRUARY;
+import static java.util.Calendar.MAY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -48,15 +49,23 @@ public class PoiWorkbookMutatorTest {
 
     @Test
     public void shouldReplaceCell() throws IOException {
-        HSSFWorkbook workbook = getWorkbook("shouldReplaceCellTemplate.xls");
+        Workbook workbook = getWorkbook("shouldReplaceCellTemplate.xls");
         new PoiWorkbookMutator(workbook).replaceCell(coordinate(column(A), row(1)), "Hello World");
 
         assertThat(workbook, is(sameWorkbook(getWorkbook("shouldReplaceCellTemplateExpected.xls"))));
     }
 
     @Test
+    public void shouldReplaceDateCell() throws IOException {
+        Workbook workbook = getWorkbook("shouldReplaceDateCellTemplate.xls");
+        new PoiWorkbookMutator(workbook).replaceCell(coordinate(column(A), row(1)), createDate(22, MAY, 1997));
+
+        assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceDateCellTemplateExpected.xls"))));
+    }
+
+    @Test
     public void shouldReplaceCellsInComplicatedExample() throws IOException {
-        HSSFWorkbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
+        Workbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
         new PoiWorkbookMutator(workbook)
                 .replaceCell(coordinate(column(C), row(5)), "Very")
                 .replaceCell(coordinate(column(D), row(11)), "Complicated")
@@ -70,7 +79,7 @@ public class PoiWorkbookMutatorTest {
 
     @Test
     public void shouldReplaceCellsInComplicatedAlternateSyntaxExample() throws IOException {
-        HSSFWorkbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
+        Workbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
         new PoiWorkbookMutator(workbook)
                 .replaceCell(coordinate(C, 5), "Very")
                 .replaceCell(coordinate(D, 11), "Complicated")
@@ -84,7 +93,7 @@ public class PoiWorkbookMutatorTest {
 
     @Test
     public void shouldAppendRow() throws IOException, ParseException {
-        HSSFWorkbook workbook = getWorkbook("shouldAppendRowTemplate.xls");
+        Workbook workbook = getWorkbook("shouldAppendRowTemplate.xls");
         RowBuilder row = aRow()
                 .withString(column(A), "This")
                 .withString(column(C), "Row")

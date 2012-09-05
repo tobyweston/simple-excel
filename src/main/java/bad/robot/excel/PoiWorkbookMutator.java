@@ -32,6 +32,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.Date;
 
+import static bad.robot.excel.StyleBuilder.aStyle;
+import static bad.robot.excel.valuetypes.DataFormat.asDateFormatted;
 import static org.apache.poi.ss.usermodel.Row.CREATE_NULL_AS_BLANK;
 
 
@@ -59,7 +61,9 @@ public class PoiWorkbookMutator implements WorkbookMutator {
 
     @Override
     public WorkbookMutator replaceCell(Coordinate coordinate, Date value) {
-        getCellForCoordinate(coordinate).setCellValue(value);
+        Cell cell = getCellForCoordinate(coordinate);
+        aStyle().with(asDateFormatted()).build().applyTo(cell, workbook);
+        cell.setCellValue(value);
         return this;
     }
 
