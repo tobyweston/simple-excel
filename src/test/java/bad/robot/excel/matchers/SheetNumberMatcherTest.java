@@ -21,7 +21,7 @@
 
 package bad.robot.excel.matchers;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Description;
 import org.hamcrest.StringDescription;
 import org.junit.Before;
@@ -39,8 +39,8 @@ public class SheetNumberMatcherTest {
 
     private final Description description = new StringDescription();
 
-    private HSSFWorkbook workbookWithOneSheet;
-    private HSSFWorkbook workbookWithTwoSheets;
+    private Workbook workbookWithOneSheet;
+    private Workbook workbookWithTwoSheets;
 
     @Before
     public void loadWorkbooks() throws IOException {

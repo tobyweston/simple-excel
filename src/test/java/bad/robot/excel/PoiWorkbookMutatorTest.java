@@ -21,7 +21,7 @@
 
 package bad.robot.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -48,7 +48,7 @@ public class PoiWorkbookMutatorTest {
 
     @Test
     public void shouldReplaceCell() throws IOException {
-        HSSFWorkbook workbook = getWorkbook("shouldReplaceCellTemplate.xls");
+        Workbook workbook = getWorkbook("shouldReplaceCellTemplate.xls");
         new PoiWorkbookMutator(workbook).replaceCell(coordinate(column(A), row(1)), "Hello World");
 
         assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellTemplateExpected.xls"))));
@@ -56,7 +56,7 @@ public class PoiWorkbookMutatorTest {
 
     @Test
     public void shouldReplaceCellsInComplicatedExample() throws IOException {
-        HSSFWorkbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
+        Workbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
         new PoiWorkbookMutator(workbook)
                 .replaceCell(coordinate(column(C), row(5)), "Very")
                 .replaceCell(coordinate(column(D), row(11)), "Complicated")
@@ -70,7 +70,7 @@ public class PoiWorkbookMutatorTest {
 
     @Test
     public void shouldReplaceCellsInComplicatedAlternateSyntaxExample() throws IOException {
-        HSSFWorkbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
+        Workbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
         new PoiWorkbookMutator(workbook)
                 .replaceCell(coordinate(C, 5), "Very")
                 .replaceCell(coordinate(D, 11), "Complicated")
@@ -84,7 +84,7 @@ public class PoiWorkbookMutatorTest {
 
     @Test
     public void shouldAppendRow() throws IOException, ParseException {
-        HSSFWorkbook workbook = getWorkbook("shouldAppendRowTemplate.xls");
+        Workbook workbook = getWorkbook("shouldAppendRowTemplate.xls");
         RowBuilder row = aRow()
                 .withString(column(A), "This")
                 .withString(column(C), "Row")
