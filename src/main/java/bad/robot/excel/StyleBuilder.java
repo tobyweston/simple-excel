@@ -62,7 +62,7 @@ public class StyleBuilder implements Style {
         return this;
     }
 
-    public DefaultStyle build() {
+    private DefaultStyle build() {
         return new DefaultStyle(border, format, alignment, fontSize);
     }
 

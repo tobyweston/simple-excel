@@ -29,6 +29,10 @@ public class DataFormat extends AbstractValueType<String> {
         return dataFormat("m/d/yy");
     }
 
+    public static DataFormat asNumberFormat() {
+        return dataFormat("#,##0.00");
+    }
+
     public static DataFormat dataFormat(String value) {
         return new DataFormat(value);
     }
