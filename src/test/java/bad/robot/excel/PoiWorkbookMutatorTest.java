@@ -36,6 +36,7 @@ import static bad.robot.excel.valuetypes.Coordinate.coordinate;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.*;
 import static bad.robot.excel.valuetypes.RowIndex.row;
 import static java.util.Calendar.FEBRUARY;
+import static java.util.Calendar.MAY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -52,6 +53,14 @@ public class PoiWorkbookMutatorTest {
         new PoiWorkbookMutator(workbook).replaceCell(coordinate(column(A), row(1)), "Hello World");
 
         assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellTemplateExpected.xls"))));
+    }
+
+    @Test
+    public void shouldReplaceDateCell() throws IOException {
+        Workbook workbook = getWorkbook("shouldReplaceDateCellTemplate.xls");
+        new PoiWorkbookMutator(workbook).replaceCell(coordinate(column(A), row(1)), createDate(22, MAY, 1997));
+
+        assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceDateCellTemplateExpected.xls"))));
     }
 
     @Test
