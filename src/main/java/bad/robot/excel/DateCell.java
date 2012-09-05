@@ -53,7 +53,7 @@ public class DateCell extends Cell {
     }
 
     private void overrideWithDateFormatting(Workbook workbook, org.apache.poi.ss.usermodel.Cell cell) {
-        aStyle().with(asDateFormatted()).build().applyTo(cell, workbook);
+        aStyle().with(asDateFormatted()).applyTo(cell, workbook);
     }
 
     @Override

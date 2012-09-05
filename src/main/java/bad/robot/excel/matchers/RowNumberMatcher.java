@@ -40,7 +40,12 @@ public class RowNumberMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
     @Override
     protected boolean matchesSafely(Sheet actual, Description mismatch) {
         if (expected.getLastRowNum() != actual.getLastRowNum()) {
-            mismatch.appendText("got ").appendValue(numberOfRowsIn(actual)).appendText(" row(s) in sheet ").appendValue(actual.getSheetName());
+            mismatch.appendText("got ")
+                    .appendValue(numberOfRowsIn(actual))
+                    .appendText(" row(s) in sheet ")
+                    .appendValue(actual.getSheetName())
+                    .appendText(" expected ")
+                    .appendValue(numberOfRowsIn(expected));
             return false;
         }
         return true;

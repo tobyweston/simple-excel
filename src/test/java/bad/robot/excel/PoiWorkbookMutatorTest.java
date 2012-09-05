@@ -38,7 +38,6 @@ import static bad.robot.excel.valuetypes.RowIndex.row;
 import static java.util.Calendar.FEBRUARY;
 import static java.util.Calendar.MAY;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 
 public class PoiWorkbookMutatorTest {
 
@@ -52,7 +51,7 @@ public class PoiWorkbookMutatorTest {
         Workbook workbook = getWorkbook("shouldReplaceCellTemplate.xls");
         new PoiWorkbookMutator(workbook).replaceCell(coordinate(column(A), row(1)), "Hello World");
 
-        assertThat(workbook, is(sameWorkbook(getWorkbook("shouldReplaceCellTemplateExpected.xls"))));
+        assertThat(workbook, sameWorkbook(getWorkbook("shouldReplaceCellTemplateExpected.xls")));
     }
 
     @Test
@@ -60,7 +59,7 @@ public class PoiWorkbookMutatorTest {
         Workbook workbook = getWorkbook("shouldReplaceDateCellTemplate.xls");
         new PoiWorkbookMutator(workbook).replaceCell(coordinate(column(A), row(1)), createDate(22, MAY, 1997));
 
-        assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceDateCellTemplateExpected.xls"))));
+        assertThat(workbook, sameWorkbook(getWorkbook("shouldReplaceDateCellTemplateExpected.xls")));
     }
 
     @Test
@@ -74,7 +73,7 @@ public class PoiWorkbookMutatorTest {
                 .replaceCell(coordinate(column(J), row(10)), "Templated")
                 .replaceCell(coordinate(column(M), row(15)), "Spreadsheet");
 
-        assertThat(workbook, is(sameWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls"))));
+        assertThat(workbook, sameWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls")));
     }
 
     @Test
@@ -88,7 +87,7 @@ public class PoiWorkbookMutatorTest {
                 .replaceCell(coordinate(J, 10), "Templated")
                 .replaceCell(coordinate(M, 15), "Spreadsheet");
 
-        assertThat(workbook, is(sameWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls"))));
+        assertThat(workbook, sameWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls")));
     }
 
     @Test
@@ -109,7 +108,7 @@ public class PoiWorkbookMutatorTest {
                 .withDouble(column(O), new Double("0.123456789"));
         new PoiWorkbookMutator(workbook).appendRowToFirstSheet(row.build());
 
-        assertThat(workbook, is(sameWorkbook(getWorkbook("shouldAppendRowTemplateExpected.xls"))));
+        assertThat(workbook, sameWorkbook(getWorkbook("shouldAppendRowTemplateExpected.xls")));
     }
 
 }

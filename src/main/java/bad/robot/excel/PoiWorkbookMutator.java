@@ -62,7 +62,7 @@ public class PoiWorkbookMutator implements WorkbookMutator {
     @Override
     public WorkbookMutator replaceCell(Coordinate coordinate, Date value) {
         Cell cell = getCellForCoordinate(coordinate);
-        aStyle().with(asDateFormatted()).build().applyTo(cell, workbook);
+        aStyle().with(asDateFormatted()).applyTo(cell, workbook);
         cell.setCellValue(value);
         return this;
     }

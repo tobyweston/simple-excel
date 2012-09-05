@@ -35,17 +35,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-// Using Assert (from JUnit)
-//java.lang.AssertionError:
-//        Expected: <3> row(s) in sheet "Sheet1"
-//        got: <org.apache.poi.hssf.usermodel.HSSFSheet@47d62270>
-
-// Using MatcherAssert:
-//java.lang.AssertionError:
-//        Expected: <3> row(s) in sheet "Sheet1"
-//        but: got <2> row(s) in sheet "Sheet1"
-//        at org.hamcrest.MatcherAssert.assertThat(MatcherAssert.java:20)
-
 public class RowNumberMatcherTest {
 
     private Sheet sheetWithThreeRows;
@@ -84,6 +73,6 @@ public class RowNumberMatcherTest {
     public void mismatch() {
         Description description = new StringDescription();
         hasSameNumberOfRowAs(sheetWithThreeRows).matchesSafely(sheetWithTwoRows, description);
-        assertThat(description.toString(), is("got <2> row(s) in sheet \"Sheet1\""));
+        assertThat(description.toString(), is("got <2> row(s) in sheet \"Sheet1\" expected <3>"));
     }
 }

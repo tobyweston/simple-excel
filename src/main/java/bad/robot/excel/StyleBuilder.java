@@ -25,8 +25,10 @@ import bad.robot.excel.valuetypes.Alignment;
 import bad.robot.excel.valuetypes.Border;
 import bad.robot.excel.valuetypes.DataFormat;
 import bad.robot.excel.valuetypes.FontSize;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Workbook;
 
-public class StyleBuilder {
+public class StyleBuilder implements Style {
     
     private DataFormat format;
     private Alignment alignment;
@@ -62,5 +64,10 @@ public class StyleBuilder {
 
     public DefaultStyle build() {
         return new DefaultStyle(border, format, alignment, fontSize);
+    }
+
+    @Override
+    public void applyTo(Cell cell, Workbook workbook) {
+        build().applyTo(cell, workbook);
     }
 }
