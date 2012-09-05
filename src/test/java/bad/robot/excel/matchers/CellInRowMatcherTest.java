@@ -30,14 +30,14 @@ import java.io.IOException;
 
 import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.WorkbookResource.firstRowOf;
-import static bad.robot.excel.matchers.CellMatcher.hasSameCell;
+import static bad.robot.excel.matchers.CellInRowMatcher.hasSameCell;
 import static bad.robot.excel.matchers.StubCell.*;
 import static java.util.Calendar.AUGUST;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class CellMatcherTest {
+public class CellInRowMatcherTest {
 
     private final StringDescription description = new StringDescription();
 

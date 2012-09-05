@@ -30,12 +30,12 @@ import java.io.IOException;
 
 import static bad.robot.excel.WorkbookResource.firstRowOf;
 import static bad.robot.excel.WorkbookResource.firstSheetOf;
-import static bad.robot.excel.matchers.RowMatcher.hasSameRow;
+import static bad.robot.excel.matchers.RowInSheetMatcher.hasSameRow;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class RowMatcherTest {
+public class RowInSheetMatcherTest {
 
     private final StringDescription description = new StringDescription();
 

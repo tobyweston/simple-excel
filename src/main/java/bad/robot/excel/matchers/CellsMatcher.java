@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
-import static bad.robot.excel.matchers.CellMatcher.hasSameCell;
+import static bad.robot.excel.matchers.CellInRowMatcher.hasSameCell;
 import static bad.robot.excel.matchers.CompositeMatcher.allOf;
 
 public class CellsMatcher extends TypeSafeDiagnosingMatcher<Row> {

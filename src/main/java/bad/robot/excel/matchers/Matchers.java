@@ -21,40 +21,18 @@
 
 package bad.robot.excel.matchers;
 
+import bad.robot.excel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static bad.robot.excel.matchers.SheetMatcher.hasSameSheetsAs;
+public class Matchers {
 
-public class WorkbookMatcher extends TypeSafeDiagnosingMatcher<Workbook> {
-
-    private final Workbook expected;
-
-    public static Matcher<Workbook> sameWorkbook(Workbook expectedWorkbook) {
-        return new WorkbookMatcher(expectedWorkbook);
+    public static Matcher<Workbook> sameWorkbook(Workbook expected) {
+        return WorkbookMatcher.sameWorkbook(expected);
     }
 
-    private WorkbookMatcher(Workbook expected) {
-        this.expected = expected;
-    }
-
-    @Override
-    protected boolean matchesSafely(Workbook actual, Description mismatch) {
-        if (!hasSameSheetsAs(expected).matchesSafely(actual, mismatch))
-            return false;
-
-        if (!new SheetsMatcher(expected).matchesSafely(actual, mismatch))
-            return false;
-
-        return true;
-    }
-
-
-    @Override
-    public void describeTo(Description description) {
-        description.appendText("entire workbook to be equal");
+    public static Matcher<Cell> sameCell(Cell expected) {
+        return null;
     }
 
 }

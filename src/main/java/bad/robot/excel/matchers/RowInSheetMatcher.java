@@ -31,16 +31,16 @@ import static bad.robot.excel.matchers.CellNumberMatcher.hasSameNumberOfCellsAs;
 import static bad.robot.excel.matchers.CellsMatcher.hasSameCellsAs;
 import static bad.robot.excel.matchers.RowMissingMatcher.rowIsPresent;
 
-public class RowMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
+public class RowInSheetMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     private final Row expected;
     private int rowIndex;
 
-    public static RowMatcher hasSameRow(Row expected) {
-        return new RowMatcher(expected);
+    public static RowInSheetMatcher hasSameRow(Row expected) {
+        return new RowInSheetMatcher(expected);
     }
 
-    private RowMatcher(Row expected) {
+    private RowInSheetMatcher(Row expected) {
         this.expected = expected;
         this.rowIndex = expected.getRowNum();
     }

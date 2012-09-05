@@ -30,7 +30,7 @@ import java.text.ParseException;
 import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.RowBuilder.aRow;
 import static bad.robot.excel.WorkbookResource.getWorkbook;
-import static bad.robot.excel.matchers.WorkbookMatcher.sameWorkBook;
+import static bad.robot.excel.matchers.WorkbookMatcher.sameWorkbook;
 import static bad.robot.excel.valuetypes.ColumnIndex.column;
 import static bad.robot.excel.valuetypes.Coordinate.coordinate;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.*;
@@ -51,7 +51,7 @@ public class PoiWorkbookMutatorTest {
         HSSFWorkbook workbook = getWorkbook("shouldReplaceCellTemplate.xls");
         new PoiWorkbookMutator(workbook).replaceCell(coordinate(column(A), row(1)), "Hello World");
 
-        assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellTemplateExpected.xls"))));
+        assertThat(workbook, is(sameWorkbook(getWorkbook("shouldReplaceCellTemplateExpected.xls"))));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class PoiWorkbookMutatorTest {
                 .replaceCell(coordinate(column(J), row(10)), "Templated")
                 .replaceCell(coordinate(column(M), row(15)), "Spreadsheet");
 
-        assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls"))));
+        assertThat(workbook, is(sameWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls"))));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class PoiWorkbookMutatorTest {
                 .replaceCell(coordinate(J, 10), "Templated")
                 .replaceCell(coordinate(M, 15), "Spreadsheet");
 
-        assertThat(workbook, is(sameWorkBook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls"))));
+        assertThat(workbook, is(sameWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls"))));
     }
 
     @Test
@@ -100,7 +100,7 @@ public class PoiWorkbookMutatorTest {
                 .withDouble(column(O), new Double("0.123456789"));
         new PoiWorkbookMutator(workbook).appendRowToFirstSheet(row.build());
 
-        assertThat(workbook, is(sameWorkBook(getWorkbook("shouldAppendRowTemplateExpected.xls"))));
+        assertThat(workbook, is(sameWorkbook(getWorkbook("shouldAppendRowTemplateExpected.xls"))));
     }
 
 }
