@@ -30,6 +30,7 @@ import java.util.Date;
 import static bad.robot.excel.StyleBuilder.aStyle;
 import static bad.robot.excel.valuetypes.DataFormat.asDateFormatted;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC;
+import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
 
 public class DateCell extends Cell {
 
@@ -53,7 +54,8 @@ public class DateCell extends Cell {
 
     @Override
     public void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
-        overrideWithDateFormatting(workbook, cell);
+        if (!isCellDateFormatted(cell))
+            overrideWithDateFormatting(workbook, cell);
         cell.setCellValue(date);
     }
 
@@ -64,5 +66,9 @@ public class DateCell extends Cell {
     @Override
     public String toString() {
         return date.toString();
+    }
+
+    private static boolean isCellDateFormatted(org.apache.poi.ss.usermodel.Cell cell) {
+        return cell.getCellType() == CELL_TYPE_NUMERIC && isCellDateFormatted(cell);
     }
 }

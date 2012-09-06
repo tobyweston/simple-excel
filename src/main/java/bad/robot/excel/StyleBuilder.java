@@ -42,6 +42,10 @@ public class StyleBuilder implements Style {
         return new StyleBuilder();
     }
 
+    public static StyleBuilder updatedStyle() {X
+        return new StyleBuilder();
+    }
+
     public StyleBuilder with(DataFormat format) {
         this.format = format;
         return this;

@@ -46,11 +46,10 @@ public class DefaultStyle implements Style {
 
     @Override
     public void applyTo(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
-        cell.setCellStyle(createStyle(workbook));
+        updateStyle(cell.getCellStyle(), workbook);
     }
 
-    private CellStyle createStyle(Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
+    private CellStyle updateStyle(CellStyle style, Workbook workbook) {
         applyBorderTo(style);
         applyAlignmentTo(style);
         applyDataFormatTo(style, workbook);

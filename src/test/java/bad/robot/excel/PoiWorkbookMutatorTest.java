@@ -21,6 +21,7 @@
 
 package bad.robot.excel;
 
+import bad.robot.excel.matchers.Matchers;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
@@ -110,5 +111,24 @@ public class PoiWorkbookMutatorTest {
 
         assertThat(workbook, sameWorkbook(getWorkbook("shouldAppendRowTemplateExpected.xls")));
     }
+
+    @Test
+    public void replaceCellWithSameCell() throws IOException {
+        Workbook workbook = getWorkbook("cellTypes.xls");
+        new PoiWorkbookMutator(workbook).replaceCell(coordinate(B, 4), "value");
+        assertThat(workbook, Matchers.sameWorkbook(getWorkbook("cellTypes.xls")));
+    }
+
+    @Test
+    public void replaceCellWithSameRow() throws IOException {
+        Workbook workbook = getWorkbook("cellTypes.xls");
+        RowBuilder row = aRow()
+                .withString(column(A), "String")
+                .withString(column(B), "value");
+
+        new PoiWorkbookMutator(workbook).appendRowToFirstSheet(row.build());
+        assertThat(workbook, Matchers.sameWorkbook(getWorkbook("replaceCellWithSameRowExpected.xls")));
+    }
+
 
 }

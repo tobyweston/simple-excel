@@ -30,7 +30,9 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
+import static bad.robot.excel.WorkbookResource.*;
 import static bad.robot.excel.matchers.CellType.adaptPoi;
+import static bad.robot.excel.matchers.Matchers.sameWorkbook;
 import static bad.robot.excel.valuetypes.Coordinate.coordinate;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.B;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.C;
@@ -87,7 +89,7 @@ public class CellTypeTest {
     }
 
     private static org.apache.poi.ss.usermodel.Row getRowForCoordinate(Coordinate coordinate) throws IOException {
-        Workbook workbook = WorkbookResource.getWorkbook("cellTypes.xls");
+        Workbook workbook = getWorkbook("cellTypes.xls");
         Sheet sheet = workbook.getSheetAt(coordinate.getSheet().value());
         org.apache.poi.ss.usermodel.Row row = sheet.getRow(coordinate.getRow().value());
         if (row == null)
