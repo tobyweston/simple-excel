@@ -43,6 +43,10 @@ class StubCell {
         return cell;
     }
 
+    static Cell createCell(Boolean aBoolean) {
+        return createCell(0, 0, aBoolean);
+    }
+
     static Cell createCell(int row, int column, Byte value) {
         Cell cell = create(row, column, CELL_TYPE_ERROR);
         cell.setCellErrorValue(value);
@@ -61,7 +65,11 @@ class StubCell {
         return cell;
     }
 
-    static Cell createCell(int row, int column, Date date) {
+    static Cell createCell(Double aDouble) {
+        return createCell(0, 0, aDouble);
+    }
+
+        static Cell createCell(int row, int column, Date date) {
         Workbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet();
         Cell cell = sheet.createRow(row).createCell(column, CELL_TYPE_NUMERIC);
@@ -78,6 +86,9 @@ class StubCell {
         return cell;
     }
 
+    static Cell createCell(String value) {
+        return createCell(0, 0, value);
+    }
 
     private static Cell create(int row, int column, int type) {
         Workbook workbook = new HSSFWorkbook();

@@ -25,6 +25,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
+import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
 import static bad.robot.excel.matchers.CellType.adaptPoi;
 
 public class CellMatcher extends TypeSafeDiagnosingMatcher<Cell> {
@@ -35,14 +36,14 @@ public class CellMatcher extends TypeSafeDiagnosingMatcher<Cell> {
         this.expected = expected;
     }
 
-    public static CellMatcher hasSameCell(bad.robot.excel.Cell expected) {
+    public static CellMatcher isEqualTo(bad.robot.excel.Cell expected) {
         return new CellMatcher(expected);
     }
 
     @Override
     protected boolean matchesSafely(Cell cell, Description mismatch) {
         if (!adaptPoi(cell).equals(expected)) {
-            mismatch.appendText("cell was ").appendValue(adaptPoi(cell)).appendText(" expected ").appendValue(expected);
+            mismatch.appendText("cell at ").appendValue(asExcelCoordinate(cell)).appendText(" contained ").appendValue(adaptPoi(cell)).appendText(" expected ").appendValue(expected);
             return false;
         }
         return true;
@@ -50,6 +51,6 @@ public class CellMatcher extends TypeSafeDiagnosingMatcher<Cell> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("equality of cell ").appendValue(expected);
+        description.appendValue(expected);
     }
 }

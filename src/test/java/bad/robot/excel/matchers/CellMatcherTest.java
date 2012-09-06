@@ -21,14 +21,46 @@
 
 package bad.robot.excel.matchers;
 
+import bad.robot.excel.BooleanCell;
+import bad.robot.excel.DoubleCell;
+import bad.robot.excel.StringCell;
+import org.hamcrest.StringDescription;
 import org.junit.Test;
 
-import static org.junit.Assert.fail;
+import static bad.robot.excel.matchers.CellMatcher.isEqualTo;
+import static bad.robot.excel.matchers.StubCell.createCell;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 public class CellMatcherTest {
 
+    private final StringDescription description = new StringDescription();
+
     @Test
-    public void doSomething() {
-        fail();
+    public void usageExample() {
+        assertThat(createCell("Text"), isEqualTo(new StringCell("Text")));
     }
+
+    @Test
+    public void matches() {
+        assertThat(isEqualTo(new DoubleCell(0.44444d)).matches(createCell(0.44444d)), is(true));
+    }
+
+    @Test
+    public void doesNotMatch() {
+        assertThat(isEqualTo(new DoubleCell(0.44444d)).matches(createCell(0.4444d)), is(false));
+    }
+
+    @Test
+    public void description() {
+        isEqualTo(new DoubleCell(0.44444d)).describeTo(description);
+        assertThat(description.toString(), is("<0.44444D>"));
+    }
+
+    @Test
+    public void mismatch() {
+        isEqualTo(new BooleanCell(false)).matchesSafely(createCell(true), description);
+        assertThat(description.toString(), is("cell at \"A1\" contained <TRUE> expected <FALSE>"));
+    }
+
 }
