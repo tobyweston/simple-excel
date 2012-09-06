@@ -21,7 +21,7 @@
 
 package bad.robot.excel.matchers;
 
-import bad.robot.excel.Cell;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Matcher;
 
@@ -31,8 +31,8 @@ public class Matchers {
         return WorkbookMatcher.sameWorkbook(expected);
     }
 
-    public static Matcher<Cell> sameCell(Cell expected) {
-        return null;
+    public static Matcher<Cell> isEqualTo(bad.robot.excel.Cell expected) {
+        return CellMatcher.isEqualTo(expected);
     }
 
 }

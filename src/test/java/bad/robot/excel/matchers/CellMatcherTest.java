@@ -59,7 +59,7 @@ public class CellMatcherTest {
 
     @Test
     public void mismatch() {
-        isEqualTo(new BooleanCell(false)).matchesSafely(createCell(true), description);
+        ((CellMatcher) isEqualTo(new BooleanCell(false))).matchesSafely(createCell(true), description);
         assertThat(description.toString(), is("cell at \"A1\" contained <TRUE> expected <FALSE>"));
     }
 

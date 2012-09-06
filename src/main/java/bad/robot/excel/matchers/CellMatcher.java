@@ -23,6 +23,7 @@ package bad.robot.excel.matchers;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
@@ -36,7 +37,7 @@ public class CellMatcher extends TypeSafeDiagnosingMatcher<Cell> {
         this.expected = expected;
     }
 
-    public static CellMatcher isEqualTo(bad.robot.excel.Cell expected) {
+    public static Matcher<Cell> isEqualTo(bad.robot.excel.Cell expected) {
         return new CellMatcher(expected);
     }
 

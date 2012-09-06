@@ -19,32 +19,39 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.matchers;
 
-import bad.robot.excel.valuetypes.ColumnIndex;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.junit.Test;
 
-import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
+public class CellTypeTest {
 
-public abstract class Cell {
+    @Test
+    public void adaptStringCell() throws Exception {
 
-    private final Style style;
-
-    protected Cell(Style style) {
-        this.style = style;
     }
 
-    public Style getStyle() {
-        return style;
+    @Test
+    public void adaptHyperlinkCell() throws Exception {
+
     }
 
-    @Override
-    public boolean equals(Object that) {
-        return reflectionEquals(this, that, false, this.getClass());
+    @Test
+    public void adaptDoubleCell() {
+
     }
 
-    public abstract void addTo(Row row, ColumnIndex column, Workbook workbook);
+    @Test
+    public void adaptDateCell() {
 
-    public abstract void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook);
+    }
+
+    @Test
+    public void adaptFormulaCell() {
+
+    }
+
+    @Test
+    public void adaptFormulaError() {
+
+    }
 }

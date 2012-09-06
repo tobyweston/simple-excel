@@ -25,6 +25,7 @@ import bad.robot.excel.valuetypes.ColumnIndex;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import static java.lang.String.format;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA;
 
 public class FormulaCell extends Cell {
@@ -33,6 +34,10 @@ public class FormulaCell extends Cell {
 
     public FormulaCell(String formula) {
         this(formula, new NoStyle());
+    }
+
+    public FormulaCell(Formula formula) {
+        this(formula.value());
     }
 
     public FormulaCell(String text, Style style) {
@@ -44,12 +49,17 @@ public class FormulaCell extends Cell {
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
         org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_FORMULA);
         this.getStyle().applyTo(cell, workbook);
+        update(cell, workbook);
+    }
+
+    @Override
+    public void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
         cell.setCellFormula(formula);
     }
 
     @Override
     public String toString() {
-        return String.format("Formula:%s", formula);
+        return format("Formula:%s", formula);
     }
 
 }

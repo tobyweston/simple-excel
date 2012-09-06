@@ -30,7 +30,7 @@ import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR;
 
 public class ErrorCell extends Cell {
 
-    private final Byte value;
+    private final Byte errorCode;
 
     public ErrorCell(Byte text) {
         this(text, new NoStyle());
@@ -38,18 +38,23 @@ public class ErrorCell extends Cell {
 
     public ErrorCell(Byte text, Style style) {
         super(style);
-        this.value = text;
+        this.errorCode = text;
     }
 
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
         org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_ERROR);
         this.getStyle().applyTo(cell, workbook);
-        cell.setCellErrorValue(value);
+        update(cell, workbook);
+    }
+
+    @Override
+    public void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
+        cell.setCellErrorValue(errorCode);
     }
 
     @Override
     public String toString() {
-        return format("Error:%s", value);
+        return format("Error:%s", errorCode);
     }
 }

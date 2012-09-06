@@ -39,6 +39,8 @@ public interface WorkbookMutator {
 
     WorkbookMutator replaceCell(Coordinate coordinate, Double value);
 
+    WorkbookMutator replaceCell(Coordinate coordinate, Hyperlink value);
+
     WorkbookMutator copyRow(Workbook workbook, Sheet worksheet, RowIndex from, RowIndex to);
 
     WorkbookMutator insertRowToFirstSheet(Row row, RowIndex index);

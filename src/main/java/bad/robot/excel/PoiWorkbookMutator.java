@@ -26,14 +26,11 @@ import bad.robot.excel.valuetypes.RowIndex;
 import bad.robot.excel.valuetypes.SheetIndex;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.Date;
 
-import static bad.robot.excel.StyleBuilder.aStyle;
-import static bad.robot.excel.valuetypes.DataFormat.asDateFormatted;
 import static org.apache.poi.ss.usermodel.Row.CREATE_NULL_AS_BLANK;
 
 
@@ -48,30 +45,36 @@ public class PoiWorkbookMutator implements WorkbookMutator {
     }
 
     @Override
-    public WorkbookMutator replaceCell(Coordinate coordinate, String value) {
-        getCellForCoordinate(coordinate).setCellValue(value);
+    public WorkbookMutator replaceCell(Coordinate coordinate, String text) {
+        new StringCell(text).update(getCellForCoordinate(coordinate), workbook);
         return this;
     }
 
     @Override
     public WorkbookMutator replaceCell(Coordinate coordinate, Formula formula) {
-        getCellForCoordinate(coordinate).setCellFormula(formula.value());
+        new FormulaCell(formula).update(getCellForCoordinate(coordinate), workbook);
         return this;
     }
 
     @Override
-    public WorkbookMutator replaceCell(Coordinate coordinate, Date value) {
-        Cell cell = getCellForCoordinate(coordinate);
-        aStyle().with(asDateFormatted()).applyTo(cell, workbook);
-        cell.setCellValue(value);
+    public WorkbookMutator replaceCell(Coordinate coordinate, Date date) {
+        new DateCell(date).update(getCellForCoordinate(coordinate), workbook);
         return this;
     }
 
     @Override
     public WorkbookMutator replaceCell(Coordinate coordinate, Double value) {
-        getCellForCoordinate(coordinate).setCellValue(value.doubleValue());
+        new DoubleCell(value).update(getCellForCoordinate(coordinate), workbook);
         return this;
     }
+
+    @Override
+    public WorkbookMutator replaceCell(Coordinate coordinate, Hyperlink link) {
+        new HyperlinkCell(link).update(getCellForCoordinate(coordinate), workbook);
+        return this;
+    }
+
+    // TODO add more types to "replace" methods
 
     @Override
     public WorkbookMutator copyRow(Workbook workbook, Sheet worksheet, RowIndex from, RowIndex to) {
@@ -109,11 +112,16 @@ public class PoiWorkbookMutator implements WorkbookMutator {
         return this;
     }
 
-    private Cell getCellForCoordinate(Coordinate coordinate) {
+    private org.apache.poi.ss.usermodel.Cell getCellForCoordinate(Coordinate coordinate) {
+        org.apache.poi.ss.usermodel.Row row = getRowForCoordinate(coordinate);
+        return row.getCell(coordinate.getColumn().value(), CREATE_NULL_AS_BLANK);
+    }
+
+    private org.apache.poi.ss.usermodel.Row getRowForCoordinate(Coordinate coordinate) {
         Sheet sheet = workbook.getSheetAt(coordinate.getSheet().value());
         org.apache.poi.ss.usermodel.Row row = sheet.getRow(coordinate.getRow().value());
         if (row == null)
             row = sheet.createRow(coordinate.getRow().value());
-        return row.getCell(coordinate.getColumn().value(), CREATE_NULL_AS_BLANK);
+        return row;
     }
 }

@@ -21,31 +21,33 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.ColumnIndex;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Workbook;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA;
+import static java.lang.String.format;
 
-public class MissingCell extends Cell {
+public class Hyperlink extends AbstractValueType<URL> {
 
-    public MissingCell() {
-        this(new NoStyle());
+    private final String text;
+
+    public static Hyperlink hyperlink(String text, URL link) {
+        return new Hyperlink(text, link);
     }
 
-    public MissingCell(Style style) {
-        super(style);
+    public static Hyperlink hyperlink(String text, String url) {
+        try {
+            return new Hyperlink(text, new URL(url));
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(format("%s is not a valid URL", url), e);
+        }
     }
 
-    @Override
-    public void addTo(Row row, ColumnIndex column, Workbook workbook) {
-        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_FORMULA);
-        this.getStyle().applyTo(cell, workbook);
-        cell.setCellValue("");
+    private Hyperlink(String text, URL url) {
+        super(url);
+        this.text = text;
     }
 
-    @Override
-    public String toString() {
-        return "nothing";
+    public String text() {
+        return text;
     }
 }

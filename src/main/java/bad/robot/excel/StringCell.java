@@ -29,7 +29,7 @@ import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING;
 
 public class StringCell extends Cell {
 
-    private final String value;
+    private final String text;
 
     public StringCell(String text) {
         this(text, new NoStyle());
@@ -37,18 +37,23 @@ public class StringCell extends Cell {
 
     public StringCell(String text, Style style) {
         super(style);
-        this.value = text;
+        this.text = text;
     }
 
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
         org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_STRING);
         this.getStyle().applyTo(cell, workbook);
-        cell.setCellValue(value);
+        update(cell, workbook);
+    }
+
+    @Override
+    public void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
+        cell.setCellValue(text);
     }
 
     @Override
     public String toString() {
-        return "\"" + value + "\"";
+        return "\"" + text + "\"";
     }
 }

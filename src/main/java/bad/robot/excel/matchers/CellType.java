@@ -24,6 +24,7 @@ package bad.robot.excel.matchers;
 
 import bad.robot.excel.*;
 
+import static bad.robot.excel.Hyperlink.hyperlink;
 import static org.apache.poi.ss.usermodel.Cell.*;
 import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
 
@@ -60,6 +61,8 @@ public enum CellType implements CellAdapter {
     String(CELL_TYPE_STRING) {
         @Override
         public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
+            if (cell.getHyperlink() != null)
+                return new HyperlinkCell(hyperlink(cell.getStringCellValue(), cell.getHyperlink().getAddress()));
             return new StringCell(cell.getStringCellValue());
         }
     },

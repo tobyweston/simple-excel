@@ -33,7 +33,7 @@ import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC;
 
 public class DateCell extends Cell {
 
-    private final Date value;
+    private final Date date;
 
     public DateCell(Date date) {
         this(date, new NoStyle());
@@ -41,15 +41,20 @@ public class DateCell extends Cell {
 
     public DateCell(Date date, Style style) {
         super(style);
-        this.value = date;
+        this.date = date;
     }
 
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
         org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_NUMERIC);
         this.getStyle().applyTo(cell, workbook);
+        update(cell, workbook);
+    }
+
+    @Override
+    public void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
         overrideWithDateFormatting(workbook, cell);
-        cell.setCellValue(value);
+        cell.setCellValue(date);
     }
 
     private void overrideWithDateFormatting(Workbook workbook, org.apache.poi.ss.usermodel.Cell cell) {
@@ -58,6 +63,6 @@ public class DateCell extends Cell {
 
     @Override
     public String toString() {
-        return value.toString();
+        return date.toString();
     }
 }

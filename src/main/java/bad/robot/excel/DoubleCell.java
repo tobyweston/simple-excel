@@ -30,26 +30,31 @@ import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC;
 
 public class DoubleCell extends Cell {
 
-    private final Double value;
+    private final Double number;
 
-    public DoubleCell(Double value) {
-        this(value, new NoStyle());
+    public DoubleCell(Double number) {
+        this(number, new NoStyle());
     }
 
-    public DoubleCell(Double value, Style style) {
+    public DoubleCell(Double number, Style style) {
         super(style);
-        this.value = value;
+        this.number = number;
     }
 
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
         org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_NUMERIC);
         this.getStyle().applyTo(cell, workbook);
-        cell.setCellValue(value);
+        update(cell, workbook);
+    }
+
+    @Override
+    public void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
+        cell.setCellValue(number);
     }
 
     @Override
     public String toString() {
-        return format("%sD", value.toString());
+        return format("%sD", number.toString());
     }
 }

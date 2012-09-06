@@ -45,6 +45,10 @@ public class HyperlinkCell extends Cell {
         this(text, link, new NoStyle());
     }
 
+    public HyperlinkCell(bad.robot.excel.Hyperlink link) {
+        this(link.text(), link.value());
+    }
+
     public HyperlinkCell(String text, URL link, Style style) {
         super(style);
         this.text = text;
@@ -55,6 +59,11 @@ public class HyperlinkCell extends Cell {
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
         org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_STRING);
         this.getStyle().applyTo(cell, workbook);
+        update(cell, workbook);
+    }
+
+    @Override
+    public void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
         cell.setCellValue(text);
         cell.setHyperlink(createHyperlink());
     }
