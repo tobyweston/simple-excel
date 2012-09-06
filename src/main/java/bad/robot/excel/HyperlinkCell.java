@@ -74,7 +74,7 @@ public class HyperlinkCell extends Cell {
     }
 
     private Hyperlink createHyperlink() {
-        HSSFHyperlink hyperlink = new HSSFHyperlink(LINK_URL);
+        Hyperlink hyperlink = new HSSFHyperlink(LINK_URL);
         hyperlink.setAddress(link.toExternalForm());
         return hyperlink;
     }
