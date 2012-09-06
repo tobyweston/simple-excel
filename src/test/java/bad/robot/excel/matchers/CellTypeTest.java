@@ -33,11 +33,38 @@ import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
 import static bad.robot.excel.matchers.CellType.adaptPoi;
 import static bad.robot.excel.valuetypes.Coordinate.coordinate;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.B;
+import static bad.robot.excel.valuetypes.ExcelColumnIndex.C;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 public class CellTypeTest {
+
+    @Test
+    public void adaptBooleanCell() throws IOException {
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 6))), is(instanceOf(BooleanCell.class)));
+    }
+
+    @Test
+    public void adaptFormulaCell() throws IOException {
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 7))), is(instanceOf(FormulaCell.class)));
+    }
+
+    @Test
+    public void adaptFormulaTypeToError() throws IOException {
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 8))), is(instanceOf(ErrorCell.class)));
+    }
+
+    @Test
+    public void adaptNumericTypeToDoubleCell() throws IOException {
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 2))), is(instanceOf(DoubleCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 3))), is(instanceOf(DoubleCell.class)));
+    }
+
+    @Test
+    public void adaptNumericTypeToDateCell() throws IOException {
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 1))), is(instanceOf(DateCell.class)));
+    }
 
     @Test
     public void adaptStringCell() throws Exception {
@@ -50,24 +77,8 @@ public class CellTypeTest {
     }
 
     @Test
-    public void adaptDoubleCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 2))), is(instanceOf(DoubleCell.class)));
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 3))), is(instanceOf(DoubleCell.class)));
-    }
-
-    @Test
-    public void adaptDateCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 1))), is(instanceOf(DateCell.class)));
-    }
-
-    @Test
-    public void adaptFormulaCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 7))), is(instanceOf(FormulaCell.class)));
-    }
-
-    @Test
-    public void adaptFormulaError() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 8))), is(instanceOf(ErrorCell.class)));
+    public void adaptBlankCell() throws IOException {
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(C, 1))), is(instanceOf(BlankCell.class)));
     }
 
     private static org.apache.poi.ss.usermodel.Cell getCellForCoordinate(Coordinate coordinate) throws IOException {
