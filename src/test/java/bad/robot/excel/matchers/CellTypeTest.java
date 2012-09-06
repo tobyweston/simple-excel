@@ -21,37 +21,67 @@
 
 package bad.robot.excel.matchers;
 
+import bad.robot.excel.*;
+import bad.robot.excel.valuetypes.Coordinate;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
+
+import java.io.IOException;
+
+import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
+import static bad.robot.excel.matchers.CellType.adaptPoi;
+import static bad.robot.excel.valuetypes.Coordinate.coordinate;
+import static bad.robot.excel.valuetypes.ExcelColumnIndex.B;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
 public class CellTypeTest {
 
     @Test
     public void adaptStringCell() throws Exception {
-
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 4))), is(instanceOf(StringCell.class)));
     }
 
     @Test
     public void adaptHyperlinkCell() throws Exception {
-
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 5))), is(instanceOf(HyperlinkCell.class)));
     }
 
     @Test
-    public void adaptDoubleCell() {
-
+    public void adaptDoubleCell() throws IOException {
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 2))), is(instanceOf(DoubleCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 3))), is(instanceOf(DoubleCell.class)));
     }
 
     @Test
-    public void adaptDateCell() {
-
+    public void adaptDateCell() throws IOException {
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 1))), is(instanceOf(DateCell.class)));
     }
 
     @Test
-    public void adaptFormulaCell() {
-
+    public void adaptFormulaCell() throws IOException {
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 7))), is(instanceOf(FormulaCell.class)));
     }
 
     @Test
-    public void adaptFormulaError() {
-
+    public void adaptFormulaError() throws IOException {
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 8))), is(instanceOf(ErrorCell.class)));
     }
+
+    private static org.apache.poi.ss.usermodel.Cell getCellForCoordinate(Coordinate coordinate) throws IOException {
+        org.apache.poi.ss.usermodel.Row row = getRowForCoordinate(coordinate);
+        return row.getCell(coordinate.getColumn().value());
+    }
+
+    private static org.apache.poi.ss.usermodel.Row getRowForCoordinate(Coordinate coordinate) throws IOException {
+        Workbook workbook = WorkbookResource.getWorkbook("cellTypes.xls");
+        Sheet sheet = workbook.getSheetAt(coordinate.getSheet().value());
+        org.apache.poi.ss.usermodel.Row row = sheet.getRow(coordinate.getRow().value());
+        if (row == null)
+            throw new IllegalStateException("expected to find a row at " + asExcelRow(row));
+        return row;
+    }
+
 }
