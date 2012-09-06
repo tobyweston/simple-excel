@@ -63,18 +63,22 @@ public class PoiWorkbookMutator implements WorkbookMutator {
     }
 
     @Override
-    public WorkbookMutator replaceCell(Coordinate coordinate, Double value) {
-        new DoubleCell(value).update(getCellForCoordinate(coordinate), workbook);
+    public WorkbookMutator replaceCell(Coordinate coordinate, Double number) {
+        new DoubleCell(number).update(getCellForCoordinate(coordinate), workbook);
         return this;
     }
 
     @Override
-    public WorkbookMutator replaceCell(Coordinate coordinate, Hyperlink link) {
-        new HyperlinkCell(link).update(getCellForCoordinate(coordinate), workbook);
+    public WorkbookMutator replaceCell(Coordinate coordinate, Hyperlink hyperlink) {
+        new HyperlinkCell(hyperlink).update(getCellForCoordinate(coordinate), workbook);
         return this;
     }
 
-    // TODO add more types to "replace" methods
+    @Override
+    public WorkbookMutator replaceCell(Coordinate coordinate, Boolean value) {
+        new BooleanCell(value).update(getCellForCoordinate(coordinate), workbook);
+        return this;
+    }
 
     @Override
     public WorkbookMutator copyRow(Workbook workbook, Sheet worksheet, RowIndex from, RowIndex to) {

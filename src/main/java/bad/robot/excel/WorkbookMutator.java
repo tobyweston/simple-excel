@@ -35,11 +35,13 @@ public interface WorkbookMutator {
 
     WorkbookMutator replaceCell(Coordinate coordinate, Formula formula);
 
-    WorkbookMutator replaceCell(Coordinate coordinate, Date value);
+    WorkbookMutator replaceCell(Coordinate coordinate, Date date);
 
-    WorkbookMutator replaceCell(Coordinate coordinate, Double value);
+    WorkbookMutator replaceCell(Coordinate coordinate, Double number);
 
-    WorkbookMutator replaceCell(Coordinate coordinate, Hyperlink value);
+    WorkbookMutator replaceCell(Coordinate coordinate, Hyperlink hyperlink);
+
+    WorkbookMutator replaceCell(Coordinate coordinate, Boolean value);
 
     WorkbookMutator copyRow(Workbook workbook, Sheet worksheet, RowIndex from, RowIndex to);
 
