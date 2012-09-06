@@ -29,7 +29,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Workbook;
 
-public class DefaultStyle implements Style {
+public class BasicStyling implements Style {
 
     private final DataFormat format;
     private final Alignment alignment;
@@ -37,7 +37,7 @@ public class DefaultStyle implements Style {
     private final Border border;
 
     /** package protected. use {@link StyleBuilder} instead */
-    DefaultStyle(Border border, DataFormat format, Alignment alignment, FontSize fontSize) {
+    BasicStyling(Border border, DataFormat format, Alignment alignment, FontSize fontSize) {
         this.border = border;
         this.format = format;
         this.alignment = alignment;

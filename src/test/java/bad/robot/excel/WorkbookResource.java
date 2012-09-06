@@ -21,6 +21,7 @@
 
 package bad.robot.excel;
 
+import bad.robot.excel.valuetypes.Coordinate;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -58,4 +59,20 @@ public class WorkbookResource {
         return sheet.getRow(0);
     }
 
+    public static org.apache.poi.ss.usermodel.Cell getCellForCoordinate(Coordinate coordinate, Workbook workbook) throws IOException {
+        org.apache.poi.ss.usermodel.Row row = getRowForCoordinate(coordinate, workbook);
+        return row.getCell(coordinate.getColumn().value());
+    }
+
+    public static org.apache.poi.ss.usermodel.Row getRowForCoordinate(Coordinate coordinate, Workbook workbook) throws IOException {
+        Sheet sheet = workbook.getSheetAt(coordinate.getSheet().value());
+        org.apache.poi.ss.usermodel.Row row = sheet.getRow(coordinate.getRow().value());
+        if (row == null)
+            throw new IllegalStateException("expected to find a row");
+        return row;
+    }
+
+    public static String getCellDataFormatAtCoordinate(Coordinate coordinate, Workbook workbook) throws IOException {
+        return getCellForCoordinate(coordinate, workbook).getCellStyle().getDataFormatString();
+    }
 }

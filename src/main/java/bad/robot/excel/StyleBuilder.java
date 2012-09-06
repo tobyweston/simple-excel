@@ -29,7 +29,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
 
 public class StyleBuilder implements Style {
-    
+
     private DataFormat format;
     private Alignment alignment;
     private FontSize fontSize;
@@ -39,10 +39,6 @@ public class StyleBuilder implements Style {
     }
 
     public static StyleBuilder aStyle() {
-        return new StyleBuilder();
-    }
-
-    public static StyleBuilder updatedStyle() {X
         return new StyleBuilder();
     }
 
@@ -66,8 +62,8 @@ public class StyleBuilder implements Style {
         return this;
     }
 
-    private DefaultStyle build() {
-        return new DefaultStyle(border, format, alignment, fontSize);
+    private BasicStyling build() {
+        return new BasicStyling(border, format, alignment, fontSize);
     }
 
     @Override

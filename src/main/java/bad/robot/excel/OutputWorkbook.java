@@ -38,7 +38,6 @@ public class OutputWorkbook {
             FileOutputStream fileOut = new FileOutputStream(file);
             workbook.write(fileOut);
             fileOut.close();
-            System.out.println("wrote file as " + file.getAbsolutePath());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

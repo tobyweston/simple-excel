@@ -22,14 +22,18 @@
 package bad.robot.excel.valuetypes;
 
 import bad.robot.excel.AbstractValueType;
+import bad.robot.excel.Style;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Workbook;
 
-public class DataFormat extends AbstractValueType<String> {
+public class DataFormat extends AbstractValueType<String> implements Style {
 
-    public static DataFormat asDateFormatted() {
-        return dataFormat("m/d/yy");
+    public static DataFormat asDayMonthYear() {
+        return dataFormat("dd-MMM-yyyy");
     }
 
-    public static DataFormat asNumberFormat() {
+    public static DataFormat asTwoDecimalPlacesNumber() {
         return dataFormat("#,##0.00");
     }
 
@@ -40,4 +44,17 @@ public class DataFormat extends AbstractValueType<String> {
     private DataFormat(String value) {
         super(value);
     }
+
+    @Override
+    public void applyTo(Cell cell, Workbook workbook) {
+        updateDataFormat(cell, workbook);
+    }
+
+    private void updateDataFormat(Cell cell, Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+        style.cloneStyleFrom(cell.getCellStyle());
+        style.setDataFormat(workbook.createDataFormat().getFormat(value()));
+        cell.setCellStyle(style);
+    }
+
 }

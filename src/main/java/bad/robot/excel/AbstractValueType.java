@@ -27,6 +27,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
+import static bad.robot.excel.Assertions.assertNotNull;
 import static org.apache.commons.lang3.builder.CompareToBuilder.reflectionCompare;
 import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
@@ -35,7 +36,7 @@ public abstract class AbstractValueType<T extends Serializable> implements Value
     private final T value;
 
     public AbstractValueType(T value) {
-        Assertions.assertNotNull(value);
+        assertNotNull(value);
         this.value = value;
     }
 

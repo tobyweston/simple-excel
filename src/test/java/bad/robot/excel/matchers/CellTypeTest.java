@@ -22,17 +22,15 @@
 package bad.robot.excel.matchers;
 
 import bad.robot.excel.*;
-import bad.robot.excel.valuetypes.Coordinate;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static bad.robot.excel.PoiToExcelCoercions.asExcelRow;
-import static bad.robot.excel.WorkbookResource.*;
+import static bad.robot.excel.WorkbookResource.getCellForCoordinate;
+import static bad.robot.excel.WorkbookResource.getWorkbook;
 import static bad.robot.excel.matchers.CellType.adaptPoi;
-import static bad.robot.excel.matchers.Matchers.sameWorkbook;
 import static bad.robot.excel.valuetypes.Coordinate.coordinate;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.B;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.C;
@@ -42,59 +40,52 @@ import static org.hamcrest.Matchers.is;
 
 public class CellTypeTest {
 
+    private Workbook workbook;
+
+    @Before
+    public void loadWorkbook() throws IOException {
+        workbook = getWorkbook("cellTypes.xls");
+    }
+
     @Test
     public void adaptBooleanCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 6))), is(instanceOf(BooleanCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 6), workbook)), is(instanceOf(BooleanCell.class)));
     }
 
     @Test
     public void adaptFormulaCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 7))), is(instanceOf(FormulaCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 7), workbook)), is(instanceOf(FormulaCell.class)));
     }
 
     @Test
     public void adaptFormulaTypeToError() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 8))), is(instanceOf(ErrorCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 8), workbook)), is(instanceOf(ErrorCell.class)));
     }
 
     @Test
     public void adaptNumericTypeToDoubleCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 2))), is(instanceOf(DoubleCell.class)));
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 3))), is(instanceOf(DoubleCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 2), workbook)), is(instanceOf(DoubleCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 3), workbook)), is(instanceOf(DoubleCell.class)));
     }
 
     @Test
     public void adaptNumericTypeToDateCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 1))), is(instanceOf(DateCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 1), workbook)), is(instanceOf(DateCell.class)));
     }
 
     @Test
     public void adaptStringCell() throws Exception {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 4))), is(instanceOf(StringCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 4), workbook)), is(instanceOf(StringCell.class)));
     }
 
     @Test
     public void adaptHyperlinkCell() throws Exception {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 5))), is(instanceOf(HyperlinkCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 5), workbook)), is(instanceOf(HyperlinkCell.class)));
     }
 
     @Test
     public void adaptBlankCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(C, 1))), is(instanceOf(BlankCell.class)));
-    }
-
-    private static org.apache.poi.ss.usermodel.Cell getCellForCoordinate(Coordinate coordinate) throws IOException {
-        org.apache.poi.ss.usermodel.Row row = getRowForCoordinate(coordinate);
-        return row.getCell(coordinate.getColumn().value());
-    }
-
-    private static org.apache.poi.ss.usermodel.Row getRowForCoordinate(Coordinate coordinate) throws IOException {
-        Workbook workbook = getWorkbook("cellTypes.xls");
-        Sheet sheet = workbook.getSheetAt(coordinate.getSheet().value());
-        org.apache.poi.ss.usermodel.Row row = sheet.getRow(coordinate.getRow().value());
-        if (row == null)
-            throw new IllegalStateException("expected to find a row at " + asExcelRow(row));
-        return row;
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(C, 1), workbook)), is(instanceOf(BlankCell.class)));
     }
 
 }

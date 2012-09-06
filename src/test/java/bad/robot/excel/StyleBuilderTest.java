@@ -37,7 +37,7 @@ import static bad.robot.excel.matchers.WorkbookMatcher.sameWorkbook;
 import static bad.robot.excel.valuetypes.Border.border;
 import static bad.robot.excel.valuetypes.BottomBorder.bottom;
 import static bad.robot.excel.valuetypes.ColumnIndex.column;
-import static bad.robot.excel.valuetypes.DataFormat.asNumberFormat;
+import static bad.robot.excel.valuetypes.DataFormat.asTwoDecimalPlacesNumber;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.A;
 import static bad.robot.excel.valuetypes.LeftBorder.left;
 import static bad.robot.excel.valuetypes.RightBorder.right;
@@ -47,10 +47,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class StyleBuilderTest {
 
     private final Border border = border(top(NONE), right(NONE), bottom(THIN_SOLID), left(THIN_SOLID));
-    private final DataFormat numberFormat = asNumberFormat();
+    private final DataFormat numberFormat = asTwoDecimalPlacesNumber();
 
     @Test
-    public void exampleUsage() throws Exception {
+    public void exampleOfCreatingARow() throws Exception {
         Cell cell = new DoubleCell(9999.99d, aStyle().with(border).with(numberFormat));
 
         HashMap<ColumnIndex, Cell> columns = new HashMap<ColumnIndex, Cell>();
@@ -63,4 +63,5 @@ public class StyleBuilderTest {
 
         assertThat(workbook, sameWorkbook(getWorkbook("sheetWithSingleCell.xls")));
     }
+
 }

@@ -22,15 +22,14 @@
 package bad.robot.excel;
 
 import bad.robot.excel.valuetypes.ColumnIndex;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.Date;
 
-import static bad.robot.excel.StyleBuilder.aStyle;
-import static bad.robot.excel.valuetypes.DataFormat.asDateFormatted;
+import static bad.robot.excel.valuetypes.DataFormat.asDayMonthYear;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC;
-import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
 
 public class DateCell extends Cell {
 
@@ -49,18 +48,19 @@ public class DateCell extends Cell {
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
         org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_NUMERIC);
         this.getStyle().applyTo(cell, workbook);
-        update(cell, workbook);
+        overrideAsDateFormatting(workbook, cell);
+        cell.setCellValue(date);
     }
 
     @Override
     public void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
         if (!isCellDateFormatted(cell))
-            overrideWithDateFormatting(workbook, cell);
+            overrideAsDateFormatting(workbook, cell);
         cell.setCellValue(date);
     }
 
-    private void overrideWithDateFormatting(Workbook workbook, org.apache.poi.ss.usermodel.Cell cell) {
-        aStyle().with(asDateFormatted()).applyTo(cell, workbook);
+    private void overrideAsDateFormatting(Workbook workbook, org.apache.poi.ss.usermodel.Cell cell) {
+        asDayMonthYear().applyTo(cell, workbook);
     }
 
     @Override
@@ -69,6 +69,6 @@ public class DateCell extends Cell {
     }
 
     private static boolean isCellDateFormatted(org.apache.poi.ss.usermodel.Cell cell) {
-        return cell.getCellType() == CELL_TYPE_NUMERIC && isCellDateFormatted(cell);
+        return cell.getCellType() == CELL_TYPE_NUMERIC && HSSFDateUtil.isCellDateFormatted(cell);
     }
 }
