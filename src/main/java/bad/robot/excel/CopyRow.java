@@ -23,9 +23,12 @@ package bad.robot.excel;
 
 import bad.robot.excel.valuetypes.RowIndex;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+
+import static bad.robot.excel.ClonedStyleFactory.newStyleBasedOn;
 
 public class CopyRow {
 
@@ -53,9 +56,7 @@ public class CopyRow {
     }
 
     private static void copyCellStyle(Workbook workbook, Cell oldCell, Cell newCell) {
-        CellStyle style = workbook.createCellStyle();
-        style.cloneStyleFrom(oldCell.getCellStyle());
-        newCell.setCellStyle(style);
+        newCell.setCellStyle(newStyleBasedOn(oldCell).create(workbook));
     }
 
     private static void copyCellComment(Cell oldCell, Cell newCell) {

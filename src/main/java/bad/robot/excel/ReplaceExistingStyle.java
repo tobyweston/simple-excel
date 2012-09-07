@@ -29,15 +29,19 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Workbook;
 
-public class BasicStyling implements Style {
+import static bad.robot.excel.ClonedStyleFactory.newStyleBasedOn;
+
+public class ReplaceExistingStyle implements Style {
 
     private final DataFormat format;
     private final Alignment alignment;
     private final FontSize fontSize;
     private final Border border;
 
-    /** package protected. use {@link StyleBuilder} instead */
-    BasicStyling(Border border, DataFormat format, Alignment alignment, FontSize fontSize) {
+    /**
+     * package protected. use {@link StyleBuilder} instead
+     */
+    ReplaceExistingStyle(Border border, DataFormat format, Alignment alignment, FontSize fontSize) {
         this.border = border;
         this.format = format;
         this.alignment = alignment;
@@ -46,15 +50,12 @@ public class BasicStyling implements Style {
 
     @Override
     public void applyTo(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
-        updateStyle(cell.getCellStyle(), workbook);
-    }
-
-    private CellStyle updateStyle(CellStyle style, Workbook workbook) {
+        CellStyle style = newStyleBasedOn(cell).create(workbook);
         applyBorderTo(style);
         applyAlignmentTo(style);
         applyDataFormatTo(style, workbook);
         applyFontTo(style, workbook);
-        return style;
+        cell.setCellStyle(style);
     }
 
     private void applyBorderTo(CellStyle style) {

@@ -27,6 +27,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import static bad.robot.excel.ClonedStyleFactory.newStyleBasedOn;
+
 public class DataFormat extends AbstractValueType<String> implements Style {
 
     public static DataFormat asDayMonthYear() {
@@ -51,8 +53,7 @@ public class DataFormat extends AbstractValueType<String> implements Style {
     }
 
     private void updateDataFormat(Cell cell, Workbook workbook) {
-        CellStyle style = workbook.createCellStyle();
-        style.cloneStyleFrom(cell.getCellStyle());
+        CellStyle style = newStyleBasedOn(cell).create(workbook);
         style.setDataFormat(workbook.createDataFormat().getFormat(value()));
         cell.setCellStyle(style);
     }

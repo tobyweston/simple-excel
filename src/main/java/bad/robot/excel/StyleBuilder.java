@@ -62,8 +62,8 @@ public class StyleBuilder implements Style {
         return this;
     }
 
-    private BasicStyling build() {
-        return new BasicStyling(border, format, alignment, fontSize);
+    private ReplaceExistingStyle build() {
+        return new ReplaceExistingStyle(border, format, alignment, fontSize);
     }
 
     @Override
