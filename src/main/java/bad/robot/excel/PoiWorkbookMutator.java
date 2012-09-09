@@ -45,6 +45,12 @@ public class PoiWorkbookMutator implements WorkbookMutator {
     }
 
     @Override
+    public WorkbookMutator blankCell(Coordinate coordinate) {
+        new BlankCell().update(getCellForCoordinate(coordinate), workbook);
+        return this;
+    }
+
+    @Override
     public WorkbookMutator replaceCell(Coordinate coordinate, String text) {
         new StringCell(text).update(getCellForCoordinate(coordinate), workbook);
         return this;

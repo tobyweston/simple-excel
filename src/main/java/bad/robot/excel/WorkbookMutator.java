@@ -31,6 +31,8 @@ import java.util.Date;
 
 public interface WorkbookMutator {
 
+    WorkbookMutator blankCell(Coordinate coordinate);
+
     WorkbookMutator replaceCell(Coordinate coordinate, String value);
 
     WorkbookMutator replaceCell(Coordinate coordinate, Formula formula);

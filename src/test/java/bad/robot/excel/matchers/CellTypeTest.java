@@ -87,5 +87,4 @@ public class CellTypeTest {
     public void adaptBlankCell() throws IOException {
         assertThat(adaptPoi(getCellForCoordinate(coordinate(C, 1), workbook)), is(instanceOf(BlankCell.class)));
     }
-
 }

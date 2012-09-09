@@ -30,7 +30,9 @@ import java.text.ParseException;
 
 import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.RowBuilder.aRow;
+import static bad.robot.excel.WorkbookResource.getCellForCoordinate;
 import static bad.robot.excel.WorkbookResource.getWorkbook;
+import static bad.robot.excel.matchers.CellType.adaptPoi;
 import static bad.robot.excel.matchers.WorkbookMatcher.sameWorkbook;
 import static bad.robot.excel.valuetypes.ColumnIndex.column;
 import static bad.robot.excel.valuetypes.Coordinate.coordinate;
@@ -39,6 +41,8 @@ import static bad.robot.excel.valuetypes.RowIndex.row;
 import static java.util.Calendar.FEBRUARY;
 import static java.util.Calendar.MAY;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
 public class PoiWorkbookMutatorTest {
 
@@ -130,5 +134,11 @@ public class PoiWorkbookMutatorTest {
         assertThat(workbook, Matchers.sameWorkbook(getWorkbook("replaceCellWithSameRowExpected.xls")));
     }
 
+    @Test
+    public void replaceThenLoadBlankCell() throws IOException {
+        Workbook workbook = getWorkbook("cellTypes.xls");
+        new PoiWorkbookMutator(workbook).blankCell(coordinate(A, 1));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(A, 1), workbook)), is(instanceOf(BlankCell.class)));
+    }
 
 }

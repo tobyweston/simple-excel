@@ -22,10 +22,12 @@
 package bad.robot.excel;
 
 import bad.robot.excel.valuetypes.ColumnIndex;
+import bad.robot.excel.valuetypes.ExcelColumnIndex;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import static bad.robot.excel.valuetypes.ColumnIndex.column;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 
 public class BlankCell extends bad.robot.excel.Cell {
@@ -42,12 +44,12 @@ public class BlankCell extends bad.robot.excel.Cell {
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
         Cell cell = row.createCell(column.value(), CELL_TYPE_BLANK);
         this.getStyle().applyTo(cell, workbook);
-        update(cell, workbook);
     }
 
     @Override
     public void update(Cell cell, Workbook workbook) {
-        cell.setCellValue("");
+        ColumnIndex column = column(ExcelColumnIndex.from(cell.getColumnIndex()));
+        addTo(cell.getRow(), column, workbook);
     }
 
     @Override
