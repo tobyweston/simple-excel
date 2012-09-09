@@ -26,7 +26,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA;
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 
 public class BlankCell extends bad.robot.excel.Cell {
 
@@ -40,7 +40,7 @@ public class BlankCell extends bad.robot.excel.Cell {
 
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
-        Cell cell = row.createCell(column.value(), CELL_TYPE_FORMULA);
+        Cell cell = row.createCell(column.value(), CELL_TYPE_BLANK);
         this.getStyle().applyTo(cell, workbook);
         update(cell, workbook);
     }
