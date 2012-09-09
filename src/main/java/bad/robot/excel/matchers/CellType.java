@@ -25,6 +25,7 @@ package bad.robot.excel.matchers;
 import bad.robot.excel.*;
 
 import static bad.robot.excel.Hyperlink.hyperlink;
+import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
 import static org.apache.poi.ss.usermodel.Cell.*;
 import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
 
@@ -91,7 +92,11 @@ public enum CellType implements CellAdapter {
     }
 
     public static Cell adaptPoi(org.apache.poi.ss.usermodel.Cell cell) {
-        return getAdapterFor(cell).adapt(cell);
+        try {
+            return getAdapterFor(cell).adapt(cell);
+        } catch (Exception e) {
+            throw new IllegalStateException("problem with cell " + asExcelCoordinate(cell), e);
+        }
     }
 
 }
