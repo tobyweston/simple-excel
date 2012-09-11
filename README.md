@@ -95,7 +95,33 @@ Expected: entire workbook to be equal
 
 # Download
 
-Available via my [Maven repository](http://robotooling.com/maven/).
+Available for manual download via my [Maven repository](http://robotooling.com/maven/) or add the repository to your 'pom.xml'.
+
+``` xml
+<repositories>
+    <repository>
+        <id>bad.robot</id>
+        <name>bad.robot repository on robotooling</name>
+        <url>http://www.robotooling.com/maven/</url>
+        <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+        </snapshots>
+    </repository>
+</repositories>
+```
+
+
+Then add a dependency (use `1.1-SNAPSHOT` for the `version` if you're feeling daring.
+
+``` xml
+<dependency>
+    <groupId>bad.robot</groupId>
+    <artifactId>simple-excel</artifactId>
+    <version>1.0</version>
+    <scope>compile</scope>
+</dependency>
+```
 
 For more tools, see [robotooling.com](http://www.robotooling.com) and visit my [blog](http://baddotrobot.com).
 
