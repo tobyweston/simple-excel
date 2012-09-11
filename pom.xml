@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>bad.robot</groupId>
     <artifactId>simple-excel</artifactId>
     <name>simple-excel</name>
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
 
     <distributionManagement>
         <repository>
@@ -17,8 +19,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/tobyweston/simple-excel.git</developerConnection>
-      <tag>simple-excel-1.0</tag>
-  </scm>
+    </scm>
 
     <dependencies>
         <dependency>
