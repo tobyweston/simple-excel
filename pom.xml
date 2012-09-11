@@ -26,7 +26,7 @@
     <groupId>bad.robot</groupId>
     <artifactId>simple-excel</artifactId>
     <name>simple-excel</name>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
 
     <distributionManagement>
         <repository>
@@ -38,7 +38,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/tobyweston/simple-excel.git</developerConnection>
-      <tag>simple-excel-1.0</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <properties>
