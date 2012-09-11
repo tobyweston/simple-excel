@@ -98,3 +98,7 @@ Expected: entire workbook to be equal
 Available via my [Maven repository](http://robotooling.com/maven/).
 
 For more tools, see [robotooling.com](http://www.robotooling.com) and visit my [blog](http://baddotrobot.com).
+
+# Releasing
+
+Take a look at the [release readme](simple-excel/blob/master/RELEASE.md).
