@@ -18,7 +18,7 @@
     </distributionManagement>
 
     <scm>
-        <developerConnection>scm:git:git://github.com/tobyweston/simple-excel.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:tobyweston/simple-excel.git</developerConnection>
     </scm>
 
     <dependencies>
