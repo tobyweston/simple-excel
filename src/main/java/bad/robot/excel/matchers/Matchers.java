@@ -31,8 +31,8 @@ public class Matchers {
         return WorkbookMatcher.sameWorkbook(expected);
     }
 
-    public static Matcher<Cell> isEqualTo(bad.robot.excel.Cell expected) {
-        return CellMatcher.isEqualTo(expected);
+    public static Matcher<Cell> equalTo(bad.robot.excel.Cell expected) {
+        return CellMatcher.equalTo(expected);
     }
 
 }

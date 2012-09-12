@@ -30,7 +30,7 @@ import java.io.IOException;
 
 import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.WorkbookResource.*;
-import static bad.robot.excel.matchers.CellMatcher.isEqualTo;
+import static bad.robot.excel.matchers.CellMatcher.equalTo;
 import static bad.robot.excel.valuetypes.Coordinate.coordinate;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.B;
 import static java.util.Calendar.MARCH;
@@ -64,10 +64,10 @@ public class DateCellTest {
         PoiWorkbookMutator sheet = new PoiWorkbookMutator(workbook);
         Coordinate coordinate = coordinate(B, 2);
 
-        assertThat(getCellForCoordinate(coordinate, workbook), isEqualTo(new DoubleCell(1001d)));
+        assertThat(getCellForCoordinate(coordinate, workbook), equalTo(new DoubleCell(1001d)));
         sheet.replaceCell(coordinate, createDate(15, MARCH, 2012));
 
-        assertThat(getCellForCoordinate(coordinate, workbook), isEqualTo(new DateCell(createDate(15, MARCH, 2012))));
+        assertThat(getCellForCoordinate(coordinate, workbook), equalTo(new DateCell(createDate(15, MARCH, 2012))));
         assertThat(getCellDataFormatAtCoordinate(coordinate, workbook), is("dd-MMM-yyyy"));
         assertThat("should not have affected a shared data format", getCellDataFormatAtCoordinate(coordinate(B, 7), workbook), is("General"));
     }

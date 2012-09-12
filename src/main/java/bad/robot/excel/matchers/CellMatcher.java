@@ -37,7 +37,7 @@ public class CellMatcher extends TypeSafeDiagnosingMatcher<Cell> {
         this.expected = expected;
     }
 
-    public static Matcher<Cell> isEqualTo(bad.robot.excel.Cell expected) {
+    public static Matcher<Cell> equalTo(bad.robot.excel.Cell expected) {
         return new CellMatcher(expected);
     }
 
