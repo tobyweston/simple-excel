@@ -112,7 +112,7 @@ Available for manual download via my [Maven repository](http://robotooling.com/m
 ```
 
 
-Then add a dependency (use `1.1-SNAPSHOT` for the `version` if you're feeling daring.
+Then add a dependency (use `1.1-SNAPSHOT` for the `version` if you're feeling daring).
 
 ``` xml
 <dependency>
