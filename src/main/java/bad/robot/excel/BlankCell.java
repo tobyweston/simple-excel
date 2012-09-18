@@ -49,6 +49,7 @@ public class BlankCell extends bad.robot.excel.Cell {
     @Override
     public void update(Cell cell, Workbook workbook) {
         ColumnIndex column = column(ExcelColumnIndex.from(cell.getColumnIndex()));
+        this.getStyle().applyTo(cell, workbook);
         addTo(cell.getRow(), column, workbook);
     }
 

@@ -34,6 +34,7 @@ public class StyleBuilder implements Style {
     private Alignment alignment;
     private FontSize fontSize;
     private Border border;
+    private Fill fill;
 
     private StyleBuilder() {
     }
@@ -62,8 +63,13 @@ public class StyleBuilder implements Style {
         return this;
     }
 
+    public StyleBuilder with(Fill fill) {
+        this.fill = fill;
+        return this;
+    }
+
     private ReplaceExistingStyle build() {
-        return new ReplaceExistingStyle(border, format, alignment, fontSize);
+        return new ReplaceExistingStyle(border, format, alignment, fontSize, fill);
     }
 
     @Override

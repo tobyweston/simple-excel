@@ -51,39 +51,39 @@ public class PoiWorkbookMutator implements WorkbookMutator {
     }
 
     @Override
-    public WorkbookMutator replaceCell(Coordinate coordinate, String text) {
-        new StringCell(text).update(getCellForCoordinate(coordinate), workbook);
+    public WorkbookMutator replaceCell(Coordinate coordinate, Cell cell) {
+        cell.update(getCellForCoordinate(coordinate), workbook);
         return this;
+    }
+
+    @Override
+    public WorkbookMutator replaceCell(Coordinate coordinate, String text) {
+        return replaceCell(coordinate, new StringCell(text));
     }
 
     @Override
     public WorkbookMutator replaceCell(Coordinate coordinate, Formula formula) {
-        new FormulaCell(formula).update(getCellForCoordinate(coordinate), workbook);
-        return this;
+        return replaceCell(coordinate, new FormulaCell(formula));
     }
 
     @Override
     public WorkbookMutator replaceCell(Coordinate coordinate, Date date) {
-        new DateCell(date).update(getCellForCoordinate(coordinate), workbook);
-        return this;
+        return replaceCell(coordinate, new DateCell(date));
     }
 
     @Override
     public WorkbookMutator replaceCell(Coordinate coordinate, Double number) {
-        new DoubleCell(number).update(getCellForCoordinate(coordinate), workbook);
-        return this;
+        return replaceCell(coordinate, new DoubleCell(number));
     }
 
     @Override
     public WorkbookMutator replaceCell(Coordinate coordinate, Hyperlink hyperlink) {
-        new HyperlinkCell(hyperlink).update(getCellForCoordinate(coordinate), workbook);
-        return this;
+        return replaceCell(coordinate, new HyperlinkCell(hyperlink));
     }
 
     @Override
     public WorkbookMutator replaceCell(Coordinate coordinate, Boolean value) {
-        new BooleanCell(value).update(getCellForCoordinate(coordinate), workbook);
-        return this;
+        return replaceCell(coordinate, new BooleanCell(value));
     }
 
     @Override

@@ -48,12 +48,12 @@ public class FormulaCell extends Cell {
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
         org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_FORMULA);
-        this.getStyle().applyTo(cell, workbook);
         update(cell, workbook);
     }
 
     @Override
     public void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
+        this.getStyle().applyTo(cell, workbook);
         cell.setCellFormula(formula);
     }
 

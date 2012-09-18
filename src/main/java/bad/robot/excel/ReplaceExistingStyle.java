@@ -30,28 +30,32 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import static bad.robot.excel.ClonedStyleFactory.newStyleBasedOn;
+import static org.apache.poi.ss.usermodel.CellStyle.SOLID_FOREGROUND;
 
 public class ReplaceExistingStyle implements Style {
 
     private final DataFormat format;
     private final Alignment alignment;
     private final FontSize fontSize;
+    private final Fill fill;
     private final Border border;
 
     /**
      * package protected. use {@link StyleBuilder} instead
      */
-    ReplaceExistingStyle(Border border, DataFormat format, Alignment alignment, FontSize fontSize) {
+    ReplaceExistingStyle(Border border, DataFormat format, Alignment alignment, FontSize fontSize, Fill fill) {
         this.border = border;
         this.format = format;
         this.alignment = alignment;
         this.fontSize = fontSize;
+        this.fill = fill;
     }
 
     @Override
     public void applyTo(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
         CellStyle style = newStyleBasedOn(cell).create(workbook);
         applyBorderTo(style);
+        applyFillTo(style);
         applyAlignmentTo(style);
         applyDataFormatTo(style, workbook);
         applyFontTo(style, workbook);
@@ -64,6 +68,13 @@ public class ReplaceExistingStyle implements Style {
             style.setBorderTop(border.getTop().value().getPoiStyle());
             style.setBorderRight(border.getRight().value().getPoiStyle());
             style.setBorderLeft(border.getLeft().value().getPoiStyle());
+        }
+    }
+
+    private void applyFillTo(CellStyle style) {
+        if (fill != null) {
+            style.setFillPattern(SOLID_FOREGROUND);
+            style.setFillForegroundColor(fill.getForegroundColour().value().getPoiStyle());
         }
     }
 

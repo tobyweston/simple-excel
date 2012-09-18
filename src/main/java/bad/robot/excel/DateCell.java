@@ -47,13 +47,12 @@ public class DateCell extends Cell {
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
         org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_NUMERIC);
-        this.getStyle().applyTo(cell, workbook);
-        overrideAsDateFormatting(workbook, cell);
-        cell.setCellValue(date);
+        update(cell, workbook);
     }
 
     @Override
     public void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
+        this.getStyle().applyTo(cell, workbook);
         if (!isCellDateFormatted(cell))
             overrideAsDateFormatting(workbook, cell);
         cell.setCellValue(date);
