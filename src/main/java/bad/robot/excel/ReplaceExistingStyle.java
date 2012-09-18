@@ -61,7 +61,7 @@ public class ReplaceExistingStyle implements Style {
     private void applyBorderTo(CellStyle style) {
         if (border != null) {
             style.setBorderBottom(border.getBottom().value().getPoiStyle());
-            style.setBorderLeft(border.getTop().value().getPoiStyle());
+            style.setBorderTop(border.getTop().value().getPoiStyle());
             style.setBorderRight(border.getRight().value().getPoiStyle());
             style.setBorderLeft(border.getLeft().value().getPoiStyle());
         }
