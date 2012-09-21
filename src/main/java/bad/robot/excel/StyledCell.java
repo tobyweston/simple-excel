@@ -21,12 +21,23 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.ColumnIndex;
-import org.apache.poi.ss.usermodel.Workbook;
+import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
 
-public interface Cell {
+public abstract class StyledCell implements Cell {
 
-    void addTo(org.apache.poi.ss.usermodel.Row row, ColumnIndex column, Workbook workbook);
+    private final Style style;
 
-    void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook);
+    protected StyledCell(Style style) {
+        this.style = style;
+    }
+
+    public Style getStyle() {
+        return style;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        return reflectionEquals(this, that, false, this.getClass());
+    }
+
 }

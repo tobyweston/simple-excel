@@ -28,7 +28,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import static java.lang.String.format;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_FORMULA;
 
-public class FormulaCell extends Cell {
+public class FormulaCell extends StyledCell {
 
     private final String formula;
 

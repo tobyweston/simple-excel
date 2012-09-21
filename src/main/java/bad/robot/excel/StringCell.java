@@ -27,7 +27,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING;
 
-public class StringCell extends Cell {
+public class StringCell extends StyledCell {
 
     private final String text;
 

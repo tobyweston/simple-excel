@@ -27,7 +27,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BOOLEAN;
 
-public class BooleanCell extends Cell {
+public class BooleanCell extends StyledCell {
 
     private final Boolean value;
 

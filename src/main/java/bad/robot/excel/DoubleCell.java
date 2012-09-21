@@ -28,7 +28,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import static java.lang.String.format;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC;
 
-public class DoubleCell extends Cell {
+public class DoubleCell extends StyledCell {
 
     private final Double number;
 

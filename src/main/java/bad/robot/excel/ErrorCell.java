@@ -28,7 +28,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import static java.lang.String.format;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR;
 
-public class ErrorCell extends Cell {
+public class ErrorCell extends StyledCell {
 
     private final Byte errorCode;
 

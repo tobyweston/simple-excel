@@ -36,7 +36,7 @@ import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING;
 /**
  * Only supports URL hyperlinks.
  */
-public class HyperlinkCell extends Cell {
+public class HyperlinkCell extends StyledCell {
 
     private final String text;
     private final URL link;

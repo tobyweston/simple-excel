@@ -30,7 +30,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import static bad.robot.excel.valuetypes.ColumnIndex.column;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 
-public class BlankCell extends bad.robot.excel.Cell {
+public class BlankCell extends StyledCell {
 
     public BlankCell() {
         this(new NoStyle());

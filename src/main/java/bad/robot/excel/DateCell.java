@@ -31,7 +31,7 @@ import java.util.Date;
 import static bad.robot.excel.valuetypes.DataFormat.asDayMonthYear;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC;
 
-public class DateCell extends Cell {
+public class DateCell extends StyledCell {
 
     private final Date date;
 
