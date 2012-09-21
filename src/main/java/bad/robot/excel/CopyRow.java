@@ -32,6 +32,11 @@ import static bad.robot.excel.ClonedStyleFactory.newStyleBasedOn;
 
 public class CopyRow {
 
+    /**
+     * Copies a row from a row index on the given workbook and sheet to another row index. If the destination row is
+     * already occupied, shift all rows down to make room.
+     *
+     */
     public static void copyRow(Workbook workbook, Sheet worksheet, RowIndex from, RowIndex to) {
         Row sourceRow = worksheet.getRow(from.value());
         Row newRow = worksheet.getRow(to.value());
