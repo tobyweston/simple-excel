@@ -62,9 +62,13 @@ public enum CellType implements CellAdapter {
     String(CELL_TYPE_STRING) {
         @Override
         public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
-            if (cell.getHyperlink() != null)
+            if (cell.getHyperlink() != null && containsUrl(cell.getHyperlink()))
                 return new HyperlinkCell(hyperlink(cell.getStringCellValue(), cell.getHyperlink().getAddress()));
             return new StringCell(cell.getStringCellValue());
+        }
+
+        private boolean containsUrl(org.apache.poi.ss.usermodel.Hyperlink hyperlink) {
+            return hyperlink.getAddress().startsWith("http://") || hyperlink.getAddress().startsWith("file://");
         }
     },
     Blank(CELL_TYPE_BLANK) {

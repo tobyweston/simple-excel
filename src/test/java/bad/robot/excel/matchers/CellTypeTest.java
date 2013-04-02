@@ -84,6 +84,11 @@ public class CellTypeTest {
     }
 
     @Test
+    public void adaptInternalLinkCell() throws IOException {
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 9), workbook)), is(instanceOf(StringCell.class)));
+    }
+
+    @Test
     public void adaptBlankCell() throws IOException {
         assertThat(adaptPoi(getCellForCoordinate(coordinate(C, 1), workbook)), is(instanceOf(BlankCell.class)));
     }
