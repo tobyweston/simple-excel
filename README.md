@@ -127,4 +127,4 @@ For more tools, see [robotooling.com](http://www.robotooling.com) and visit my [
 
 # Releasing
 
-Take a look at the [release readme](simple-excel/blob/master/RELEASE.md).
+Take a look at the [release readme](RELEASE.md).
