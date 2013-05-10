@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, bad robot (london) ltd.
+ * Copyright (c) 2012-2013, bad robot (london) ltd.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
