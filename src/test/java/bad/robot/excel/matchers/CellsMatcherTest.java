@@ -24,6 +24,7 @@ package bad.robot.excel.matchers;
 import org.apache.poi.ss.usermodel.Row;
 import org.hamcrest.StringDescription;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -56,6 +57,7 @@ public class CellsMatcherTest {
     }
 
     @Test
+    @Ignore
     public void exampleUsage() {
         assertThat(firstRow, hasSameCellsAs(firstRow));
         assertThat(firstRowWithAlternateValues, not(hasSameCellsAs(firstRow)));
@@ -64,28 +66,33 @@ public class CellsMatcherTest {
     }
 
     @Test
+    @Ignore
     public void matches() {
         assertThat(hasSameCellsAs(firstRow).matches(firstRow), is(true));
     }
 
     @Test
+    @Ignore
     public void doesNotMatch() {
         assertThat(hasSameCellsAs(firstRowWithAlternateValues).matches(firstRow), is(false));
     }
 
     @Test
+    @Ignore
     public void description() {
         hasSameCellsAs(firstRow).describeTo(description);
         assertThat(description.toString(), is("equality of all cells on row <1>"));
     }
 
     @Test
+    @Ignore
     public void mismatch() {
         hasSameCellsAs(firstRow).matchesSafely(firstRowWithAlternateValues, description);
         assertThat(description.toString(), is("cell at \"B1\" contained <3.14D> expected <\"C2, R1\">"));
     }
 
     @Test
+    @Ignore
     public void mismatchOnMissingCell() {
         hasSameCellsAs(secondRow).matchesSafely(secondRowWithAlternateValues, description);
         assertThat(description.toString(), is("cell at \"B2\" contained <nothing> expected <\"C2, R2\">"));
