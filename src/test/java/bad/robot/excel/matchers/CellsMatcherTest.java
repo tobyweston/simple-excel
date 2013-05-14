@@ -92,13 +92,13 @@ public class CellsMatcherTest {
     }
 
     @Test
-    @Ignore
     public void mismatchOnMissingCell() {
         hasSameCellsAs(secondRow).matchesSafely(secondRowWithAlternateValues, description);
         assertThat(description.toString(), is("cell at \"B2\" contained <nothing> expected <\"C2, R2\">"));
     }
 
     @Test
+    @Ignore
     public void mismatchMultipleValues() {
         hasSameCellsAs(thirdRow).matchesSafely(thirdRowWithAlternateValues, description);
         assertThat(description.toString(), allOf(
