@@ -1,5 +1,5 @@
 # Simple-Excel
-
+[![](https://travis-ci.org/tobyweston/simple-excel.png?branch=master)](https://travis-ci.org/tobyweston/simple-excel)
 ## Simply modify and diff Excel sheets in Java
 
 Simple-Excel wraps the [Apache POI](https://poi.apache.org/) project with simple Java builders to modify sheets quickly and easily without all the boilerplate.
