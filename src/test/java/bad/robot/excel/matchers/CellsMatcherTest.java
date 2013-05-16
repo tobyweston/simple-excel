@@ -24,12 +24,12 @@ package bad.robot.excel.matchers;
 import org.apache.poi.ss.usermodel.Row;
 import org.hamcrest.StringDescription;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 
 import static bad.robot.excel.WorkbookResource.*;
+import static bad.robot.excel.matchers.Assertions.assertTimezone;
 import static bad.robot.excel.matchers.CellsMatcher.hasSameCellsAs;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -57,7 +57,6 @@ public class CellsMatcherTest {
     }
 
     @Test
-    @Ignore
     public void exampleUsage() {
         assertThat(firstRow, hasSameCellsAs(firstRow));
         assertThat(firstRowWithAlternateValues, not(hasSameCellsAs(firstRow)));
@@ -66,26 +65,22 @@ public class CellsMatcherTest {
     }
 
     @Test
-    @Ignore
     public void matches() {
         assertThat(hasSameCellsAs(firstRow).matches(firstRow), is(true));
     }
 
     @Test
-    @Ignore
     public void doesNotMatch() {
         assertThat(hasSameCellsAs(firstRowWithAlternateValues).matches(firstRow), is(false));
     }
 
     @Test
-    @Ignore
     public void description() {
         hasSameCellsAs(firstRow).describeTo(description);
         assertThat(description.toString(), is("equality of all cells on row <1>"));
     }
 
     @Test
-    @Ignore
     public void mismatch() {
         hasSameCellsAs(firstRow).matchesSafely(firstRowWithAlternateValues, description);
         assertThat(description.toString(), is("cell at \"B1\" contained <3.14D> expected <\"C2, R1\">"));
@@ -98,12 +93,13 @@ public class CellsMatcherTest {
     }
 
     @Test
-    @Ignore
     public void mismatchMultipleValues() {
+        assertTimezone(is("UTC"));
         hasSameCellsAs(thirdRow).matchesSafely(thirdRowWithAlternateValues, description);
         assertThat(description.toString(), allOf(
-            containsString("cell at \"A3\" contained <Wed Feb 01 00:00:00 GMT 2012> expected <\"C1, R3\">,"),
+            containsString("cell at \"A3\" contained <Wed Feb 01 00:00:00 UTC 2012> expected <\"C1, R3\">,"),
             containsString("cell at \"B3\" contained <Formula:2+2> expected <\"C2, R3\">")
         ));
     }
+
 }

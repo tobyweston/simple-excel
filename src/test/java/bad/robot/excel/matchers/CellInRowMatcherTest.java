@@ -30,6 +30,7 @@ import java.io.IOException;
 
 import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.WorkbookResource.firstRowOf;
+import static bad.robot.excel.matchers.Assertions.assertTimezone;
 import static bad.robot.excel.matchers.CellInRowMatcher.hasSameCell;
 import static bad.robot.excel.matchers.StubCell.*;
 import static java.util.Calendar.AUGUST;
@@ -114,8 +115,9 @@ public class CellInRowMatcherTest {
 
     @Test
     public void mismatchDateCell() {
+        assertTimezone(is("UTC"));
         hasSameCell(createCell(0, 5, createDate(21, AUGUST, 2012))).matchesSafely(row, description);
-        assertThat(description.toString(), is("cell at \"F1\" contained <Wed Aug 22 00:00:00 BST 2012> expected <Tue Aug 21 00:00:00 BST 2012>"));
+        assertThat(description.toString(), is("cell at \"F1\" contained <Wed Aug 22 00:00:00 UTC 2012> expected <Tue Aug 21 00:00:00 UTC 2012>"));
     }
 
     @Test
