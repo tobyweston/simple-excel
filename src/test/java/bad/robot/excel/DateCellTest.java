@@ -22,8 +22,11 @@
 package bad.robot.excel;
 
 import bad.robot.excel.valuetypes.Coordinate;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -31,31 +34,36 @@ import java.io.IOException;
 import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.WorkbookResource.*;
 import static bad.robot.excel.matchers.CellMatcher.equalTo;
+import static bad.robot.excel.valuetypes.ColumnIndex.column;
 import static bad.robot.excel.valuetypes.Coordinate.coordinate;
+import static bad.robot.excel.valuetypes.ExcelColumnIndex.A;
 import static bad.robot.excel.valuetypes.ExcelColumnIndex.B;
 import static java.util.Calendar.MARCH;
+import static java.util.Calendar.OCTOBER;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.fail;
 
 public class DateCellTest {
 
+    private final DateCell cell = new DateCell(createDate(12, OCTOBER, 2013));
+
     @Test
-    @Ignore
-    public void shouldSetDataFormatWhenAddingACell() {
-        fail();
+    public void shouldSetDataFormatWhenAddingACell() throws IOException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet();
+        HSSFRow row = sheet.createRow(0);
+        cell.addTo(row, column(A), workbook);
+        assertThat(getCellDataFormatAtCoordinate(coordinate(A, 1), workbook), is("dd-MMM-yyyy"));
     }
 
     @Test
-    @Ignore
-    public void shouldSetDataFormatWhenReplacingAnUnformattedCell() {
-        fail();
-    }
-
-    @Test
-    @Ignore
-    public void shouldNotSetDataFormatWhenReplacingAFormattedCell() {
-        fail();
+    public void shouldSetDataFormatWhenReplacingACell() throws IOException {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet();
+        HSSFRow row = sheet.createRow(0);
+        HSSFCell original = row.createCell(0);
+        cell.update(original, workbook);
+        assertThat(getCellDataFormatAtCoordinate(coordinate(A, 1), workbook), is("dd-MMM-yyyy"));
     }
 
     @Test
