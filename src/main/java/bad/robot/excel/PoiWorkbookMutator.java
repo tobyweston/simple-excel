@@ -25,7 +25,6 @@ import bad.robot.excel.valuetypes.Coordinate;
 import bad.robot.excel.valuetypes.RowIndex;
 import bad.robot.excel.valuetypes.SheetIndex;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -118,7 +117,7 @@ public class PoiWorkbookMutator implements WorkbookMutator {
 
     @Override
     public WorkbookMutator refreshFormulas() {
-        HSSFFormulaEvaluator.evaluateAllFormulaCells((HSSFWorkbook) workbook);
+        HSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
         return this;
     }
 

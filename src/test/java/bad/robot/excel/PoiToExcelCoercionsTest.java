@@ -54,8 +54,8 @@ public class PoiToExcelCoercionsTest {
 
     private void expectingCellAt(final PoiCoordinate coordinate) {
         context.checking(new Expectations() {{
-            one(cell).getColumnIndex(); will(returnValue(coordinate.column));
-            one(cell).getRowIndex(); will(returnValue(coordinate.row));
+            oneOf(cell).getColumnIndex(); will(returnValue(coordinate.column));
+            oneOf(cell).getRowIndex(); will(returnValue(coordinate.row));
         }});
     }
 

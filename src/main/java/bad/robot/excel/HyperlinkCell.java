@@ -22,7 +22,6 @@
 package bad.robot.excel;
 
 import bad.robot.excel.valuetypes.ColumnIndex;
-import org.apache.poi.hssf.usermodel.HSSFHyperlink;
 import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -30,7 +29,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.net.URL;
 
 import static java.lang.String.format;
-import static org.apache.poi.hssf.usermodel.HSSFHyperlink.LINK_URL;
+import static org.apache.poi.common.usermodel.Hyperlink.LINK_URL;
 import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING;
 
 /**
@@ -65,7 +64,7 @@ public class HyperlinkCell extends StyledCell {
     public void update(org.apache.poi.ss.usermodel.Cell cell, Workbook workbook) {
         this.getStyle().applyTo(cell, workbook);
         cell.setCellValue(text);
-        cell.setHyperlink(createHyperlink());
+        cell.setHyperlink(createHyperlink(workbook));
     }
 
     @Override
@@ -73,8 +72,8 @@ public class HyperlinkCell extends StyledCell {
         return format("<a href='%s'>%s</a>", link, text);
     }
 
-    private Hyperlink createHyperlink() {
-        Hyperlink hyperlink = new HSSFHyperlink(LINK_URL);
+    private Hyperlink createHyperlink(Workbook workbook) {
+        Hyperlink hyperlink = workbook.getCreationHelper().createHyperlink(LINK_URL);
         hyperlink.setAddress(link.toExternalForm());
         return hyperlink;
     }

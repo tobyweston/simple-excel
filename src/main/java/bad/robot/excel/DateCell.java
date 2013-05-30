@@ -22,7 +22,7 @@
 package bad.robot.excel;
 
 import bad.robot.excel.valuetypes.ColumnIndex;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -68,6 +68,6 @@ public class DateCell extends StyledCell {
     }
 
     private static boolean isCellDateFormatted(org.apache.poi.ss.usermodel.Cell cell) {
-        return cell.getCellType() == CELL_TYPE_NUMERIC && HSSFDateUtil.isCellDateFormatted(cell);
+        return cell.getCellType() == CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(cell);
     }
 }
