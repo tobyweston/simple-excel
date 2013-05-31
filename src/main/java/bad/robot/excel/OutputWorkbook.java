@@ -21,6 +21,7 @@
 
 package bad.robot.excel;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.File;
@@ -33,8 +34,9 @@ public class OutputWorkbook {
 
     public static void writeWorkbookToTemporaryFile(Workbook workbook, String filename) throws IOException {
         try {
-            File file = createTempFile(filename, ".xls");
-            System.out.println("outputted xls: " + file.getAbsolutePath());
+            String extension = workbook instanceof HSSFWorkbook ? ".xls" : ".xlsx";
+            File file = createTempFile(filename, extension);
+            System.out.printf("outputted %s: %s%n", extension, file.getAbsolutePath());
             FileOutputStream fileOut = new FileOutputStream(file);
             workbook.write(fileOut);
             fileOut.close();

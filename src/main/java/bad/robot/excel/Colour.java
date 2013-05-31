@@ -26,7 +26,8 @@ import org.apache.poi.hssf.util.HSSFColor;
 public enum Colour {
     White(new HSSFColor.WHITE()),
     Black(new HSSFColor.BLACK()),
-    Grey(new HSSFColor.GREY_25_PERCENT());
+    Grey(new HSSFColor.GREY_25_PERCENT()),
+    Blue(new HSSFColor.LIGHT_BLUE());
 
     private final HSSFColor color;
 

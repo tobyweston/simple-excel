@@ -22,9 +22,10 @@
 package bad.robot.excel;
 
 import bad.robot.excel.valuetypes.Coordinate;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,7 +37,11 @@ public class WorkbookResource {
         InputStream stream = PoiWorkbookMutatorTest.class.getResourceAsStream(file);
         if (stream == null)
             throw new FileNotFoundException(file);
-        return new HSSFWorkbook(stream);
+        try {
+            return WorkbookFactory.create(stream);
+        } catch (InvalidFormatException e) {
+            throw new IOException(e);
+        }
     }
 
     public static Sheet firstSheetOf(String file) throws IOException {
