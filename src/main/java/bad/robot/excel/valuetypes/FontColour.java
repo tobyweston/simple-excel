@@ -19,46 +19,18 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.valuetypes;
 
-import org.apache.poi.ss.usermodel.IndexedColors;
+import bad.robot.excel.AbstractValueType;
+import bad.robot.excel.Colour;
 
-import static org.apache.poi.ss.usermodel.IndexedColors.*;
+public class FontColour extends AbstractValueType<Colour> {
 
-public enum Colour {
-
-    Brown(BROWN),
-    Blue(LIGHT_BLUE),
-    DarkRed(DARK_RED),
-    DarkGrey(GREY_25_PERCENT),
-    DarkYellow(YELLOW),
-    Red(RED),
-    Black(BLACK),
-    Grey(GREY_25_PERCENT),
-    White(WHITE),
-    BrightGreen(BRIGHT_GREEN),
-    Yellow(LIGHT_YELLOW),
-    Pink(PINK),
-    Turquoise(LIGHT_TURQUOISE),
-    Green(LIGHT_GREEN),
-    Violet(VIOLET),
-    Teal(TEAL),
-    Maroon(MAROON),
-    Coral(CORAL),
-    Rose(ROSE),
-    Lavender(LAVENDER),
-    Orange(LIGHT_ORANGE),
-    Olive(OLIVE_GREEN),
-    Plum(PLUM);
-
-    private final IndexedColors color;
-
-    Colour(IndexedColors color) {
-        this.color = color;
+    public static FontColour fontColour(Colour value) {
+        return new FontColour(value);
     }
 
-    public short getPoiStyle() {
-        return color.getIndex();
+    private FontColour(Colour value) {
+        super(value);
     }
-
 }

@@ -21,10 +21,7 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.Alignment;
-import bad.robot.excel.valuetypes.Border;
-import bad.robot.excel.valuetypes.DataFormat;
-import bad.robot.excel.valuetypes.FontSize;
+import bad.robot.excel.valuetypes.*;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -37,17 +34,19 @@ public class ReplaceExistingStyle implements Style {
     private final DataFormat format;
     private final Alignment alignment;
     private final FontSize fontSize;
+    private final FontColour fontColour;
     private final Fill fill;
     private final Border border;
 
     /**
      * package protected. use {@link StyleBuilder} instead
      */
-    ReplaceExistingStyle(Border border, DataFormat format, Alignment alignment, FontSize fontSize, Fill fill) {
+    ReplaceExistingStyle(Border border, DataFormat format, Alignment alignment, FontSize fontSize, FontColour fontColour, Fill fill) {
         this.border = border;
         this.format = format;
         this.alignment = alignment;
         this.fontSize = fontSize;
+        this.fontColour = fontColour;
         this.fill = fill;
     }
 
@@ -92,7 +91,13 @@ public class ReplaceExistingStyle implements Style {
         if (fontSize != null) {
             Font font = workbook.createFont();
             font.setFontHeightInPoints(fontSize.value());
+            font.setColor(fontColour.value().getPoiStyle());
             style.setFont(font);
+        } else {
+            // doesn't work
+            Font existing = workbook.getFontAt(style.getFontIndex());
+            existing.setColor(fontColour.value().getPoiStyle());
+            style.setFont(existing);
         }
     }
 }

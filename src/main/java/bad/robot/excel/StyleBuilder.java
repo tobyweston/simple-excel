@@ -21,12 +21,12 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.Alignment;
-import bad.robot.excel.valuetypes.Border;
-import bad.robot.excel.valuetypes.DataFormat;
-import bad.robot.excel.valuetypes.FontSize;
+import bad.robot.excel.valuetypes.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Workbook;
+
+import static bad.robot.excel.Colour.Black;
+import static bad.robot.excel.valuetypes.FontColour.fontColour;
 
 public class StyleBuilder implements Style {
 
@@ -35,6 +35,7 @@ public class StyleBuilder implements Style {
     private FontSize fontSize;
     private Border border;
     private Fill fill;
+    private FontColour fontColour = fontColour(Black);
 
     private StyleBuilder() {
     }
@@ -58,6 +59,11 @@ public class StyleBuilder implements Style {
         return this;
     }
 
+    public StyleBuilder with(FontColour fontColour) {
+        this.fontColour = fontColour;
+        return this;
+    }
+
     public StyleBuilder with(Border border) {
         this.border = border;
         return this;
@@ -69,7 +75,7 @@ public class StyleBuilder implements Style {
     }
 
     private ReplaceExistingStyle build() {
-        return new ReplaceExistingStyle(border, format, alignment, fontSize, fill);
+        return new ReplaceExistingStyle(border, format, alignment, fontSize, fontColour, fill);
     }
 
     @Override
