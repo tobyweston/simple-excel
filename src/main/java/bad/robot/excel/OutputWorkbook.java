@@ -21,29 +21,18 @@
 
 package bad.robot.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import bad.robot.excel.workbook.PoiWorkbookWriter;
+import bad.robot.excel.workbook.Writable;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-
-import static java.io.File.createTempFile;
 
 public class OutputWorkbook {
 
+    @Deprecated
+    /** @deprecated use {@link Writable} instead*/
     public static void writeWorkbookToTemporaryFile(Workbook workbook, String filename) throws IOException {
-        try {
-            String extension = workbook instanceof HSSFWorkbook ? ".xls" : ".xlsx";
-            File file = createTempFile(filename, extension);
-            System.out.printf("outputted %s: %s%n", extension, file.getAbsolutePath());
-            FileOutputStream fileOut = new FileOutputStream(file);
-            workbook.write(fileOut);
-            fileOut.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        new PoiWorkbookWriter(workbook).saveAsTemporaryFile(filename);
     }
 
 }
