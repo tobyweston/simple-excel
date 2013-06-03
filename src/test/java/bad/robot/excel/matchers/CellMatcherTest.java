@@ -21,9 +21,9 @@
 
 package bad.robot.excel.matchers;
 
-import bad.robot.excel.BooleanCell;
-import bad.robot.excel.DoubleCell;
-import bad.robot.excel.StringCell;
+import bad.robot.excel.cell.BooleanCell;
+import bad.robot.excel.cell.DoubleCell;
+import bad.robot.excel.cell.StringCell;
 import org.hamcrest.StringDescription;
 import org.junit.Test;
 

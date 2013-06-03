@@ -21,7 +21,7 @@
 
 package bad.robot.excel.matchers;
 
-import bad.robot.excel.*;
+import bad.robot.excel.cell.*;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,10 +30,10 @@ import java.io.IOException;
 
 import static bad.robot.excel.WorkbookResource.getCellForCoordinate;
 import static bad.robot.excel.WorkbookResource.getWorkbook;
+import static bad.robot.excel.column.ExcelColumnIndex.B;
+import static bad.robot.excel.column.ExcelColumnIndex.C;
 import static bad.robot.excel.matchers.CellType.adaptPoi;
-import static bad.robot.excel.valuetypes.Coordinate.coordinate;
-import static bad.robot.excel.valuetypes.ExcelColumnIndex.B;
-import static bad.robot.excel.valuetypes.ExcelColumnIndex.C;
+import static bad.robot.excel.sheet.Coordinate.coordinate;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;

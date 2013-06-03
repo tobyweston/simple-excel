@@ -19,28 +19,17 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.style;
 
-import bad.robot.excel.column.ExcelColumnIndex;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import bad.robot.excel.AbstractValueType;
 
-public class PoiToExcelCoercions {
+public class BottomBorder extends AbstractValueType<BorderStyle> {
 
-    public static String asExcelCoordinate(Cell cell) {
-        return asExcelColumn(cell) + asExcelRow(cell);
+    private BottomBorder(BorderStyle value) {
+        super(value);
     }
 
-    public static String asExcelColumn(Cell cell) {
-        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
+    public static BottomBorder bottom(BorderStyle value) {
+        return new BottomBorder(value);
     }
-
-    public static int asExcelRow(Cell cell) {
-        return cell.getRowIndex() + 1;
-    }
-
-    public static int asExcelRow(Row row) {
-        return row.getRowNum() + 1;
-    }
-
 }

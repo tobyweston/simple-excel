@@ -19,28 +19,19 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.row;
 
-import bad.robot.excel.column.ExcelColumnIndex;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import bad.robot.excel.AbstractValueType;
 
-public class PoiToExcelCoercions {
+public class RowIndex extends AbstractValueType<Integer> {
 
-    public static String asExcelCoordinate(Cell cell) {
-        return asExcelColumn(cell) + asExcelRow(cell);
+    public static RowIndex row(Integer value) {
+        if (value <= 0)
+            throw new IllegalArgumentException("row indices start at 1");
+        return new RowIndex(value - 1);
     }
 
-    public static String asExcelColumn(Cell cell) {
-        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
+    private RowIndex(Integer value) {
+        super(value);
     }
-
-    public static int asExcelRow(Cell cell) {
-        return cell.getRowIndex() + 1;
-    }
-
-    public static int asExcelRow(Row row) {
-        return row.getRowNum() + 1;
-    }
-
 }

@@ -19,28 +19,32 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.sheet;
 
-import bad.robot.excel.column.ExcelColumnIndex;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 
-public class PoiToExcelCoercions {
+import java.util.Iterator;
 
-    public static String asExcelCoordinate(Cell cell) {
-        return asExcelColumn(cell) + asExcelRow(cell);
+class SheetNameIterator implements Iterator<String> {
+
+    private final SheetIterator delegate;
+
+    public SheetNameIterator(Workbook workbook) {
+        delegate = new SheetIterator(workbook);
     }
 
-    public static String asExcelColumn(Cell cell) {
-        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
+    @Override
+    public boolean hasNext() {
+        return delegate.hasNext();
     }
 
-    public static int asExcelRow(Cell cell) {
-        return cell.getRowIndex() + 1;
+    @Override
+    public String next() {
+        return delegate.next().getSheetName();
     }
 
-    public static int asExcelRow(Row row) {
-        return row.getRowNum() + 1;
+    @Override
+    public void remove() {
+        delegate.remove();
     }
-
 }

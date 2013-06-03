@@ -19,28 +19,39 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.style;
 
-import bad.robot.excel.column.ExcelColumnIndex;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+public class Border {
 
-public class PoiToExcelCoercions {
+    private final TopBorder top;
+    private final BottomBorder bottom;
+    private final LeftBorder left;
+    private final RightBorder right;
 
-    public static String asExcelCoordinate(Cell cell) {
-        return asExcelColumn(cell) + asExcelRow(cell);
+    private Border(TopBorder top, RightBorder right, BottomBorder bottom, LeftBorder left) {
+        this.top = top;
+        this.bottom = bottom;
+        this.left = left;
+        this.right = right;
     }
 
-    public static String asExcelColumn(Cell cell) {
-        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
+    public static Border border(TopBorder top, RightBorder right, BottomBorder bottom, LeftBorder left) {
+        return new Border(top, right, bottom, left);
     }
 
-    public static int asExcelRow(Cell cell) {
-        return cell.getRowIndex() + 1;
+    public BottomBorder getBottom() {
+        return bottom;
     }
 
-    public static int asExcelRow(Row row) {
-        return row.getRowNum() + 1;
+    public TopBorder getTop() {
+        return top;
     }
 
+    public LeftBorder getLeft() {
+        return left;
+    }
+
+    public RightBorder getRight() {
+        return right;
+    }
 }

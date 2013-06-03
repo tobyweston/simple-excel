@@ -21,7 +21,7 @@
 
 package bad.robot.excel.matchers;
 
-import bad.robot.excel.Cell;
+import bad.robot.excel.cell.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;

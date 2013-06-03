@@ -22,10 +22,10 @@
 package bad.robot.excel.matchers;
 
 
-import bad.robot.excel.*;
+import bad.robot.excel.cell.*;
 
-import static bad.robot.excel.Hyperlink.hyperlink;
 import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
+import static bad.robot.excel.cell.Hyperlink.hyperlink;
 import static org.apache.poi.ss.usermodel.Cell.*;
 import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
 

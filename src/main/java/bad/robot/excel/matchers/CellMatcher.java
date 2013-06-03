@@ -31,13 +31,13 @@ import static bad.robot.excel.matchers.CellType.adaptPoi;
 
 public class CellMatcher extends TypeSafeDiagnosingMatcher<Cell> {
 
-    private final bad.robot.excel.Cell expected;
+    private final bad.robot.excel.cell.Cell expected;
 
-    private CellMatcher(bad.robot.excel.Cell expected) {
+    private CellMatcher(bad.robot.excel.cell.Cell expected) {
         this.expected = expected;
     }
 
-    public static Matcher<Cell> equalTo(bad.robot.excel.Cell expected) {
+    public static Matcher<Cell> equalTo(bad.robot.excel.cell.Cell expected) {
         return new CellMatcher(expected);
     }
 

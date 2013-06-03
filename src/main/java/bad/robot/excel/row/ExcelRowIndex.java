@@ -19,28 +19,17 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.row;
 
-import bad.robot.excel.column.ExcelColumnIndex;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import bad.robot.excel.AbstractValueType;
 
-public class PoiToExcelCoercions {
+public class ExcelRowIndex extends AbstractValueType<Integer> {
 
-    public static String asExcelCoordinate(Cell cell) {
-        return asExcelColumn(cell) + asExcelRow(cell);
+    public static ExcelRowIndex row(Integer value) {
+        return new ExcelRowIndex(value);
     }
 
-    public static String asExcelColumn(Cell cell) {
-        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
+    private ExcelRowIndex(Integer value) {
+        super(value);
     }
-
-    public static int asExcelRow(Cell cell) {
-        return cell.getRowIndex() + 1;
-    }
-
-    public static int asExcelRow(Row row) {
-        return row.getRowNum() + 1;
-    }
-
 }

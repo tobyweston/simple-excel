@@ -19,28 +19,37 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.cell;
 
-import bad.robot.excel.column.ExcelColumnIndex;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import bad.robot.excel.AbstractValueType;
 
-public class PoiToExcelCoercions {
+import java.net.MalformedURLException;
+import java.net.URL;
 
-    public static String asExcelCoordinate(Cell cell) {
-        return asExcelColumn(cell) + asExcelRow(cell);
+import static java.lang.String.format;
+
+public class Hyperlink extends AbstractValueType<URL> {
+
+    private final String text;
+
+    public static Hyperlink hyperlink(String text, URL link) {
+        return new Hyperlink(text, link);
     }
 
-    public static String asExcelColumn(Cell cell) {
-        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
+    public static Hyperlink hyperlink(String text, String url) {
+        try {
+            return new Hyperlink(text, new URL(url));
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(format("%s is not a valid URL", url), e);
+        }
     }
 
-    public static int asExcelRow(Cell cell) {
-        return cell.getRowIndex() + 1;
+    private Hyperlink(String text, URL url) {
+        super(url);
+        this.text = text;
     }
 
-    public static int asExcelRow(Row row) {
-        return row.getRowNum() + 1;
+    public String text() {
+        return text;
     }
-
 }

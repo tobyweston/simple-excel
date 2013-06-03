@@ -19,28 +19,13 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.workbook;
 
-import bad.robot.excel.column.ExcelColumnIndex;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import java.io.IOException;
+import java.io.InputStream;
 
-public class PoiToExcelCoercions {
+public interface ExcelWorkbook {
 
-    public static String asExcelCoordinate(Cell cell) {
-        return asExcelColumn(cell) + asExcelRow(cell);
-    }
-
-    public static String asExcelColumn(Cell cell) {
-        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
-    }
-
-    public static int asExcelRow(Cell cell) {
-        return cell.getRowIndex() + 1;
-    }
-
-    public static int asExcelRow(Row row) {
-        return row.getRowNum() + 1;
-    }
+    InputStream getInputStream() throws IOException;
 
 }

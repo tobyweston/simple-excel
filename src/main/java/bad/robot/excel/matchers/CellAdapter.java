@@ -21,7 +21,7 @@
 
 package bad.robot.excel.matchers;
 
-import bad.robot.excel.Cell;
+import bad.robot.excel.cell.Cell;
 
 public interface CellAdapter {
     Cell adapt(org.apache.poi.ss.usermodel.Cell cell);

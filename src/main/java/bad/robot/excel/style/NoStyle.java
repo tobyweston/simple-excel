@@ -19,28 +19,14 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.style;
 
-import bad.robot.excel.column.ExcelColumnIndex;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 
-public class PoiToExcelCoercions {
+public class NoStyle implements Style {
 
-    public static String asExcelCoordinate(Cell cell) {
-        return asExcelColumn(cell) + asExcelRow(cell);
+    @Override
+    public void applyTo(org.apache.poi.ss.usermodel.Cell cell, Workbook template) {
+        // Do nothing
     }
-
-    public static String asExcelColumn(Cell cell) {
-        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
-    }
-
-    public static int asExcelRow(Cell cell) {
-        return cell.getRowIndex() + 1;
-    }
-
-    public static int asExcelRow(Row row) {
-        return row.getRowNum() + 1;
-    }
-
 }

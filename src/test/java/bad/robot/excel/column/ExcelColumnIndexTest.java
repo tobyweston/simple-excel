@@ -19,28 +19,29 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.column;
 
-import bad.robot.excel.column.ExcelColumnIndex;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import org.junit.Test;
 
-public class PoiToExcelCoercions {
+import static bad.robot.excel.column.ExcelColumnIndex.*;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
-    public static String asExcelCoordinate(Cell cell) {
-        return asExcelColumn(cell) + asExcelRow(cell);
+public class ExcelColumnIndexTest {
+
+    @Test
+    public void convertToIndex() {
+        assertThat(A.ordinal(), is(0));
+        assertThat(B.ordinal(), is(1));
+        assertThat(C.ordinal(), is(2));
+        assertThat(X.ordinal(), is(23));
+        assertThat(Y.ordinal(), is(24));
+        assertThat(Z.ordinal(), is(25));
     }
 
-    public static String asExcelColumn(Cell cell) {
-        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
+    @Test
+    public void convertRowCoordinateToExcelRowForExtendedAlphabet() {
+        assertThat(AA.ordinal(),is(26));
+        assertThat(ZZ.ordinal(), is(701));
     }
-
-    public static int asExcelRow(Cell cell) {
-        return cell.getRowIndex() + 1;
-    }
-
-    public static int asExcelRow(Row row) {
-        return row.getRowNum() + 1;
-    }
-
 }

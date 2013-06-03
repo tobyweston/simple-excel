@@ -29,8 +29,8 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 import java.util.ArrayList;
 import java.util.List;
 
-import static bad.robot.excel.WorkbookSheetIterable.sheetsOf;
-import static bad.robot.excel.WorkbookSheetNameIterable.sheetNamesOf;
+import static bad.robot.excel.sheet.SheetIterable.sheetsOf;
+import static bad.robot.excel.sheet.SheetNameIterable.sheetNamesOf;
 import static java.lang.String.format;
 
 /**

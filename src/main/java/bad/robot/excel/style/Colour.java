@@ -19,28 +19,46 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.style;
 
-import bad.robot.excel.column.ExcelColumnIndex;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.IndexedColors;
 
-public class PoiToExcelCoercions {
+import static org.apache.poi.ss.usermodel.IndexedColors.*;
 
-    public static String asExcelCoordinate(Cell cell) {
-        return asExcelColumn(cell) + asExcelRow(cell);
+public enum Colour {
+
+    Brown(BROWN),
+    Blue(LIGHT_BLUE),
+    DarkRed(DARK_RED),
+    DarkGrey(GREY_25_PERCENT),
+    DarkYellow(YELLOW),
+    Red(RED),
+    Black(BLACK),
+    Grey(GREY_25_PERCENT),
+    White(WHITE),
+    BrightGreen(BRIGHT_GREEN),
+    Yellow(LIGHT_YELLOW),
+    Pink(PINK),
+    Turquoise(LIGHT_TURQUOISE),
+    Green(LIGHT_GREEN),
+    Violet(VIOLET),
+    Teal(TEAL),
+    Maroon(MAROON),
+    Coral(CORAL),
+    Rose(ROSE),
+    Lavender(LAVENDER),
+    Orange(LIGHT_ORANGE),
+    Olive(OLIVE_GREEN),
+    Plum(PLUM);
+
+    private final IndexedColors color;
+
+    Colour(IndexedColors color) {
+        this.color = color;
     }
 
-    public static String asExcelColumn(Cell cell) {
-        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
-    }
-
-    public static int asExcelRow(Cell cell) {
-        return cell.getRowIndex() + 1;
-    }
-
-    public static int asExcelRow(Row row) {
-        return row.getRowNum() + 1;
+    public short getPoiStyle() {
+        return color.getIndex();
     }
 
 }

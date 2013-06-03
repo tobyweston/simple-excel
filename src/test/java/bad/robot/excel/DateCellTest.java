@@ -21,7 +21,10 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.Coordinate;
+import bad.robot.excel.cell.DateCell;
+import bad.robot.excel.cell.DoubleCell;
+import bad.robot.excel.sheet.Coordinate;
+import bad.robot.excel.workbook.PoiWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -33,11 +36,11 @@ import java.io.IOException;
 
 import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.WorkbookResource.*;
+import static bad.robot.excel.column.ColumnIndex.column;
+import static bad.robot.excel.column.ExcelColumnIndex.A;
+import static bad.robot.excel.column.ExcelColumnIndex.B;
 import static bad.robot.excel.matchers.CellMatcher.equalTo;
-import static bad.robot.excel.valuetypes.ColumnIndex.column;
-import static bad.robot.excel.valuetypes.Coordinate.coordinate;
-import static bad.robot.excel.valuetypes.ExcelColumnIndex.A;
-import static bad.robot.excel.valuetypes.ExcelColumnIndex.B;
+import static bad.robot.excel.sheet.Coordinate.coordinate;
 import static java.util.Calendar.MARCH;
 import static java.util.Calendar.OCTOBER;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -69,7 +72,7 @@ public class DateCellTest {
     @Test
     public void replaceNonDateCellWithACell() throws IOException {
         Workbook workbook = getWorkbook("cellTypes.xls");
-        PoiWorkbookMutator sheet = new PoiWorkbookMutator(workbook);
+        PoiWorkbook sheet = new PoiWorkbook(workbook);
         Coordinate coordinate = coordinate(B, 2);
 
         assertThat(getCellForCoordinate(coordinate, workbook), equalTo(new DoubleCell(1001d)));

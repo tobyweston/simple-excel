@@ -21,7 +21,7 @@
 
 package bad.robot.excel;
 
-import bad.robot.excel.valuetypes.Coordinate;
+import bad.robot.excel.sheet.Coordinate;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -34,7 +34,7 @@ import java.io.InputStream;
 public class WorkbookResource {
 
     public static Workbook getWorkbook(String file) throws IOException {
-        InputStream stream = PoiWorkbookMutatorTest.class.getResourceAsStream(file);
+        InputStream stream = WorkbookResource.class.getResourceAsStream(file);
         if (stream == null)
             throw new FileNotFoundException(file);
         try {

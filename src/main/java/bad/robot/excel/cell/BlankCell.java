@@ -19,28 +19,44 @@
  * under the License.
  */
 
-package bad.robot.excel;
+package bad.robot.excel.cell;
 
+import bad.robot.excel.column.ColumnIndex;
 import bad.robot.excel.column.ExcelColumnIndex;
+import bad.robot.excel.style.NoStyle;
+import bad.robot.excel.style.Style;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
 
-public class PoiToExcelCoercions {
+import static bad.robot.excel.column.ColumnIndex.column;
+import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BLANK;
 
-    public static String asExcelCoordinate(Cell cell) {
-        return asExcelColumn(cell) + asExcelRow(cell);
+public class BlankCell extends StyledCell {
+
+    public BlankCell() {
+        this(new NoStyle());
     }
 
-    public static String asExcelColumn(Cell cell) {
-        return ExcelColumnIndex.from(cell.getColumnIndex()).name();
+    public BlankCell(Style style) {
+        super(style);
     }
 
-    public static int asExcelRow(Cell cell) {
-        return cell.getRowIndex() + 1;
+    @Override
+    public void addTo(Row row, ColumnIndex column, Workbook workbook) {
+        Cell cell = row.createCell(column.value(), CELL_TYPE_BLANK);
+        this.getStyle().applyTo(cell, workbook);
     }
 
-    public static int asExcelRow(Row row) {
-        return row.getRowNum() + 1;
+    @Override
+    public void update(Cell cell, Workbook workbook) {
+        ColumnIndex column = column(ExcelColumnIndex.from(cell.getColumnIndex()));
+        this.getStyle().applyTo(cell, workbook);
+        addTo(cell.getRow(), column, workbook);
     }
 
+    @Override
+    public String toString() {
+        return "nothing";
+    }
 }
