@@ -37,7 +37,7 @@ import static bad.robot.excel.column.ColumnIndex.column;
 import static bad.robot.excel.column.ExcelColumnIndex.*;
 import static bad.robot.excel.matchers.CellType.adaptPoi;
 import static bad.robot.excel.matchers.WorkbookMatcher.sameWorkbook;
-import static bad.robot.excel.row.RowBuilder.aRow;
+import static bad.robot.excel.row.DefaultRowBuilder.aRow;
 import static bad.robot.excel.row.RowIndex.row;
 import static bad.robot.excel.sheet.Coordinate.coordinate;
 import static java.util.Calendar.FEBRUARY;

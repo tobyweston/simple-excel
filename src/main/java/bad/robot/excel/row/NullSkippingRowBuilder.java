@@ -33,7 +33,7 @@ import java.util.Map;
 import static bad.robot.excel.column.ColumnIndex.column;
 
 
-public class NullSkippingRowBuilder {
+public class NullSkippingRowBuilder implements RowBuilder {
 
     private final Map<ColumnIndex, Cell> cells;
     private final Style defaultStyle;
@@ -45,42 +45,48 @@ public class NullSkippingRowBuilder {
             cells.put(column(ExcelColumnIndex.from(i)), new BlankCell(defaultStyle));
     }
 
+    @Override
+    public RowBuilder withBlank(ColumnIndex index) {
+        this.cells.put(index, new BlankCell(defaultStyle));
+        return this;
+    }
+
+    @Override
     public NullSkippingRowBuilder withString(ColumnIndex index, String text) {
         if (text != null)
             this.cells.put(index, new StringCell(text, defaultStyle));
         return this;
     }
 
+    @Override
     public NullSkippingRowBuilder withDouble(ColumnIndex index, Double value) {
         if (value != null)
             this.cells.put(index, new DoubleCell(value, defaultStyle));
         return this;
     }
 
-    public NullSkippingRowBuilder withDouble(ColumnIndex index, Double value, Style style) {
-        if (value != null)
-            this.cells.put(index, new DoubleCell(value, style));
-        return this;
-    }
-
+    @Override
     public NullSkippingRowBuilder withInteger(ColumnIndex index, Integer value) {
         if (value != null)
             this.cells.put(index, new DoubleCell(new Double(Integer.toString(value)), defaultStyle));
         return this;
     }
 
+    @Override
     public NullSkippingRowBuilder withDate(ColumnIndex index, Date date) {
         if (date != null)
             this.cells.put(index, new DateCell(date, defaultStyle));
         return this;
     }
 
-    public NullSkippingRowBuilder withDate(ColumnIndex index, Date date, Style style) {
-        if (date != null)
-            this.cells.put(index, new DateCell(date, style));
+    @Override
+    public RowBuilder withFormula(ColumnIndex index, String formula) {
+        if (formula != null)
+            this.cells.put(index, new StringCell(formula, defaultStyle));
         return this;
     }
 
+    @Override
     public Row build() {
         return new Row(cells);
     }
