@@ -66,35 +66,30 @@ public class PoiWorkbookTest {
     @Test
     public void createXlsSheet() throws IOException {
         PoiWorkbook workbook = new PoiWorkbook(XLS);
-        assertThat(workbook.getWorkbook(), sameWorkbook(getWorkbook("emptySheet.xls")));
+        assertThat(workbook.workbook(), sameWorkbook(getWorkbook("emptySheet.xls")));
     }
 
     @Test
     public void createXmlSheet() throws IOException {
         PoiWorkbook workbook = new PoiWorkbook(XML);
-        assertThat(workbook.getWorkbook(), sameWorkbook(getWorkbook("emptySheet.xlsx")));
+        assertThat(workbook.workbook(), sameWorkbook(getWorkbook("emptySheet.xlsx")));
     }
 
     @Test
     public void shouldReplaceCell() throws IOException {
-        Workbook workbook = getWorkbook("shouldReplaceCellTemplate.xls");
-        new PoiWorkbook(workbook).replaceCell(coordinate(column(A), row(1)), "Hello World");
-
-        assertThat(workbook, sameWorkbook(getWorkbook("shouldReplaceCellTemplateExpected.xls")));
+        PoiWorkbook modified = new PoiWorkbook(getWorkbook("shouldReplaceCellTemplate.xls")).replaceCell(coordinate(column(A), row(1)), "Hello World");
+        assertThat(modified.workbook(), sameWorkbook(getWorkbook("shouldReplaceCellTemplateExpected.xls")));
     }
 
     @Test
     public void shouldReplaceDateCell() throws IOException {
-        Workbook workbook = getWorkbook("shouldReplaceDateCellTemplate.xls");
-        new PoiWorkbook(workbook).replaceCell(coordinate(column(A), row(1)), createDate(22, MAY, 1997));
-
-        assertThat(workbook, sameWorkbook(getWorkbook("shouldReplaceDateCellTemplateExpected.xls")));
+        PoiWorkbook modified = new PoiWorkbook(getWorkbook("shouldReplaceDateCellTemplate.xls")).replaceCell(coordinate(column(A), row(1)), createDate(22, MAY, 1997));
+        assertThat(modified.workbook(), sameWorkbook(getWorkbook("shouldReplaceDateCellTemplateExpected.xls")));
     }
 
     @Test
     public void shouldReplaceCellsInComplicatedExample() throws IOException {
-        Workbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
-        new PoiWorkbook(workbook)
+        PoiWorkbook modified = new PoiWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls"))
                 .replaceCell(coordinate(column(C), row(5)), "Very")
                 .replaceCell(coordinate(column(D), row(11)), "Complicated")
                 .replaceCell(coordinate(column(G), row(3)), "Example")
@@ -102,13 +97,12 @@ public class PoiWorkbookTest {
                 .replaceCell(coordinate(column(J), row(10)), "Templated")
                 .replaceCell(coordinate(column(M), row(15)), "Spreadsheet");
 
-        assertThat(workbook, sameWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls")));
+        assertThat(modified.workbook(), sameWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls")));
     }
 
     @Test
     public void shouldReplaceCellsInComplicatedAlternateSyntaxExample() throws IOException {
-        Workbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
-        new PoiWorkbook(workbook)
+        PoiWorkbook modified = new PoiWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls"))
                 .replaceCell(coordinate(C, 5), "Very")
                 .replaceCell(coordinate(D, 11), "Complicated")
                 .replaceCell(coordinate(G, 3), "Example")
@@ -116,12 +110,11 @@ public class PoiWorkbookTest {
                 .replaceCell(coordinate(J, 10), "Templated")
                 .replaceCell(coordinate(M, 15), "Spreadsheet");
 
-        assertThat(workbook, sameWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls")));
+        assertThat(modified.workbook(), sameWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls")));
     }
 
     @Test
     public void shouldAppendRow() throws IOException, ParseException {
-        Workbook workbook = getWorkbook("shouldAppendRowTemplate.xls");
         RowBuilder row = aRow()
                 .withString(column(A), "This")
                 .withString(column(C), "Row")
@@ -135,34 +128,31 @@ public class PoiWorkbookTest {
                 .withInteger(column(L), 1)
                 .withDate(column(P), createDate(11, FEBRUARY, 1979))
                 .withDouble(column(O), new Double("0.123456789"));
-        new PoiWorkbook(workbook).appendRowToFirstSheet(row.build());
+        PoiWorkbook modified = new PoiWorkbook(getWorkbook("shouldAppendRowTemplate.xls")).appendRowToFirstSheet(row.build());
 
-        assertThat(workbook, sameWorkbook(getWorkbook("shouldAppendRowTemplateExpected.xls")));
+        assertThat(modified.workbook(), sameWorkbook(getWorkbook("shouldAppendRowTemplateExpected.xls")));
     }
 
     @Test
     public void replaceCellWithSameCell() throws IOException {
-        Workbook workbook = getWorkbook("cellTypes.xls");
-        new PoiWorkbook(workbook).replaceCell(coordinate(B, 4), "value");
-        assertThat(workbook, Matchers.sameWorkbook(getWorkbook("cellTypes.xls")));
+        PoiWorkbook modified = new PoiWorkbook(getWorkbook("cellTypes.xls")).replaceCell(coordinate(B, 4), "value");
+        assertThat(modified.workbook(), sameWorkbook(getWorkbook("cellTypes.xls")));
     }
 
     @Test
     public void replaceCellWithSameRow() throws IOException {
-        Workbook workbook = getWorkbook("cellTypes.xls");
         RowBuilder row = aRow()
                 .withString(column(A), "String")
                 .withString(column(B), "value");
 
-        new PoiWorkbook(workbook).appendRowToFirstSheet(row.build());
-        assertThat(workbook, Matchers.sameWorkbook(getWorkbook("replaceCellWithSameRowExpected.xls")));
+        PoiWorkbook modified = new PoiWorkbook(getWorkbook("cellTypes.xls")).appendRowToFirstSheet(row.build());
+        assertThat(modified.workbook(), Matchers.sameWorkbook(getWorkbook("replaceCellWithSameRowExpected.xls")));
     }
 
     @Test
     public void replaceThenLoadBlankCell() throws IOException {
-        Workbook workbook = getWorkbook("cellTypes.xls");
-        new PoiWorkbook(workbook).blankCell(coordinate(A, 1));
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(A, 1), workbook)), is(instanceOf(BlankCell.class)));
+        PoiWorkbook modified = new PoiWorkbook(getWorkbook("cellTypes.xls")).blankCell(coordinate(A, 1));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(A, 1), modified.workbook())), is(instanceOf(BlankCell.class)));
     }
 
 }

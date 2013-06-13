@@ -158,7 +158,7 @@ public class PoiWorkbook implements Editable {
      *
      * <b>Try not to use this</b>
      */
-    public Workbook getWorkbook() {
+    public Workbook workbook() {
         return workbook;
     }
 }

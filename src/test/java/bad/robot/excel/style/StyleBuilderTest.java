@@ -62,7 +62,7 @@ public class StyleBuilderTest {
 
         PoiWorkbook editable = new PoiWorkbook(getWorkbook("emptySheet.xls")).appendRowToFirstSheet(row);
 
-        assertThat(editable.getWorkbook(), sameWorkbook(getWorkbook("sheetWithSingleCell.xls")));
+        assertThat(editable.workbook(), sameWorkbook(getWorkbook("sheetWithSingleCell.xls")));
     }
 
 }
