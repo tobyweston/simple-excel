@@ -27,7 +27,6 @@ import bad.robot.excel.cell.DoubleCell;
 import bad.robot.excel.column.ColumnIndex;
 import bad.robot.excel.row.Row;
 import bad.robot.excel.workbook.PoiWorkbook;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -61,10 +60,9 @@ public class StyleBuilderTest {
 
         Row row = new Row(columns);
 
-        Workbook workbook = getWorkbook("emptySheet.xls");
-        new PoiWorkbook(workbook).appendRowToFirstSheet(row);
+        PoiWorkbook editable = new PoiWorkbook(getWorkbook("emptySheet.xls")).appendRowToFirstSheet(row);
 
-        assertThat(workbook, sameWorkbook(getWorkbook("sheetWithSingleCell.xls")));
+        assertThat(editable.getWorkbook(), sameWorkbook(getWorkbook("sheetWithSingleCell.xls")));
     }
 
 }

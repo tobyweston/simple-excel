@@ -29,7 +29,11 @@ import bad.robot.excel.sheet.Coordinate;
 import bad.robot.excel.sheet.SheetIndex;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 
 import static org.apache.poi.ss.usermodel.Row.CREATE_NULL_AS_BLANK;
@@ -39,6 +43,18 @@ public class PoiWorkbook implements Editable {
 
     private final org.apache.poi.ss.usermodel.Workbook workbook;
 
+    public PoiWorkbook(WorkbookType type) {
+        workbook = type.create();
+    }
+
+    public PoiWorkbook(InputStream stream) throws IOException {
+        workbook = new PoiWorkbookReader().read(stream);
+    }
+
+    public PoiWorkbook(File file) throws IOException {
+        workbook = new PoiWorkbookReader().read(file);
+    }
+
     public PoiWorkbook(org.apache.poi.ss.usermodel.Workbook workbook) {
         if (workbook == null)
             throw new IllegalArgumentException();
@@ -46,79 +62,79 @@ public class PoiWorkbook implements Editable {
     }
 
     @Override
-    public Editable blankCell(Coordinate coordinate) {
+    public PoiWorkbook blankCell(Coordinate coordinate) {
         new BlankCell().update(getCellForCoordinate(coordinate), workbook);
         return this;
     }
 
     @Override
-    public Editable replaceCell(Coordinate coordinate, Cell cell) {
+    public PoiWorkbook replaceCell(Coordinate coordinate, Cell cell) {
         cell.update(getCellForCoordinate(coordinate), workbook);
         return this;
     }
 
     @Override
-    public Editable replaceCell(Coordinate coordinate, String text) {
+    public PoiWorkbook replaceCell(Coordinate coordinate, String text) {
         return replaceCell(coordinate, new StringCell(text));
     }
 
     @Override
-    public Editable replaceCell(Coordinate coordinate, Formula formula) {
+    public PoiWorkbook replaceCell(Coordinate coordinate, Formula formula) {
         return replaceCell(coordinate, new FormulaCell(formula));
     }
 
     @Override
-    public Editable replaceCell(Coordinate coordinate, Date date) {
+    public PoiWorkbook replaceCell(Coordinate coordinate, Date date) {
         return replaceCell(coordinate, new DateCell(date));
     }
 
     @Override
-    public Editable replaceCell(Coordinate coordinate, Double number) {
+    public PoiWorkbook replaceCell(Coordinate coordinate, Double number) {
         return replaceCell(coordinate, new DoubleCell(number));
     }
 
     @Override
-    public Editable replaceCell(Coordinate coordinate, Hyperlink hyperlink) {
+    public PoiWorkbook replaceCell(Coordinate coordinate, Hyperlink hyperlink) {
         return replaceCell(coordinate, new HyperlinkCell(hyperlink));
     }
 
     @Override
-    public Editable replaceCell(Coordinate coordinate, Boolean value) {
+    public PoiWorkbook replaceCell(Coordinate coordinate, Boolean value) {
         return replaceCell(coordinate, new BooleanCell(value));
     }
 
     @Override
-    public Editable copyRow(org.apache.poi.ss.usermodel.Workbook workbook, Sheet worksheet, RowIndex from, RowIndex to) {
+    public PoiWorkbook copyRow(org.apache.poi.ss.usermodel.Workbook workbook, Sheet worksheet, RowIndex from, RowIndex to) {
         CopyRow.copyRow(workbook, worksheet, from, to);
         return this;
     }
 
     @Override
-    public Editable insertRowToFirstSheet(Row row, RowIndex index) {
+    public PoiWorkbook insertRowToFirstSheet(Row row, RowIndex index) {
         row.insertAt(workbook, SheetIndex.sheet(1), index);
         return this;
     }
 
     @Override
-    public Editable insertRowToSheet(Row row, RowIndex index, SheetIndex sheet) {
+    public PoiWorkbook insertRowToSheet(Row row, RowIndex index, SheetIndex sheet) {
         row.insertAt(workbook, sheet, index);
         return this;
     }
 
     @Override
-    public Editable appendRowToFirstSheet(Row row) {
+    public PoiWorkbook appendRowToFirstSheet(Row row) {
         row.appendTo(workbook, SheetIndex.sheet(1));
         return this;
     }
 
     @Override
-    public Editable appendRowToSheet(Row row, SheetIndex index) {
+    public PoiWorkbook appendRowToSheet(Row row, SheetIndex index) {
         row.appendTo(workbook, index);
         return this;
     }
 
     @Override
-    public Editable refreshFormulas() {
+    public PoiWorkbook refreshFormulas() {
         HSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
         return this;
     }
@@ -134,5 +150,15 @@ public class PoiWorkbook implements Editable {
         if (row == null)
             row = sheet.createRow(coordinate.getRow().value());
         return row;
+    }
+
+    /**
+     * Accessor to expose the underlying Poi workbook in case I've missed something and clients need to work
+     * with the raw workbook directly.
+     *
+     * <b>Try not to use this</b>
+     */
+    public Workbook getWorkbook() {
+        return workbook;
     }
 }

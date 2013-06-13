@@ -21,6 +21,7 @@
 
 package bad.robot.excel.workbook;
 
+import bad.robot.excel.WorkbookResource;
 import bad.robot.excel.cell.BlankCell;
 import bad.robot.excel.matchers.Matchers;
 import bad.robot.excel.row.RowBuilder;
@@ -28,6 +29,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 
 import static bad.robot.excel.DateUtil.createDate;
@@ -40,6 +42,8 @@ import static bad.robot.excel.matchers.WorkbookMatcher.sameWorkbook;
 import static bad.robot.excel.row.DefaultRowBuilder.aRow;
 import static bad.robot.excel.row.RowIndex.row;
 import static bad.robot.excel.sheet.Coordinate.coordinate;
+import static bad.robot.excel.workbook.WorkbookType.XLS;
+import static bad.robot.excel.workbook.WorkbookType.XML;
 import static java.util.Calendar.FEBRUARY;
 import static java.util.Calendar.MAY;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -50,7 +54,25 @@ public class PoiWorkbookTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldNotAllowNullWorkbook() {
-        new PoiWorkbook(null);
+        new PoiWorkbook((Workbook) null);
+    }
+
+    @Test
+    public void loadWorkbookFromStream() throws IOException {
+        InputStream stream = WorkbookResource.class.getResourceAsStream("emptySheet.xls");
+        new PoiWorkbook(stream);
+    }
+
+    @Test
+    public void createXlsSheet() throws IOException {
+        PoiWorkbook workbook = new PoiWorkbook(XLS);
+        assertThat(workbook.getWorkbook(), sameWorkbook(getWorkbook("emptySheet.xls")));
+    }
+
+    @Test
+    public void createXmlSheet() throws IOException {
+        PoiWorkbook workbook = new PoiWorkbook(XML);
+        assertThat(workbook.getWorkbook(), sameWorkbook(getWorkbook("emptySheet.xlsx")));
     }
 
     @Test

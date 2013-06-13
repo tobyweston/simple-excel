@@ -40,10 +40,13 @@ import static bad.robot.excel.matchers.CellType.adaptPoi;
 import static org.apache.poi.ss.usermodel.Row.CREATE_NULL_AS_BLANK;
 
 /** @since 1.1 */
+@Deprecated /** can't remember why this is here, seems to be more or less the same as {@link PoiWorkbook} **/
 public class NavigablePoiWorkbook implements Navigable, Editable {
 
     private final Workbook workbook;
     private final PoiWorkbook mutator;
+
+    // TODO more constructors
 
     public NavigablePoiWorkbook(Workbook workbook) {
         this.workbook = workbook;
