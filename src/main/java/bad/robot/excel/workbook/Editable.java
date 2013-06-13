@@ -53,6 +53,10 @@ public interface Editable {
 
     Editable copyRow(Workbook workbook, Sheet worksheet, RowIndex from, RowIndex to);
 
+    Editable insertSheet();
+
+    Editable insertSheet(String name);
+
     Editable insertRowToFirstSheet(Row row, RowIndex index);
 
     Editable insertRowToSheet(Row row, RowIndex index, SheetIndex sheet);

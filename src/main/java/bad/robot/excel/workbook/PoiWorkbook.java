@@ -30,6 +30,7 @@ import bad.robot.excel.sheet.SheetIndex;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.WorkbookUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,6 +46,7 @@ public class PoiWorkbook implements Editable {
 
     public PoiWorkbook(WorkbookType type) {
         workbook = type.create();
+        insertSheet("Sheet1");
     }
 
     public PoiWorkbook(InputStream stream) throws IOException {
@@ -106,6 +108,18 @@ public class PoiWorkbook implements Editable {
     @Override
     public PoiWorkbook copyRow(org.apache.poi.ss.usermodel.Workbook workbook, Sheet worksheet, RowIndex from, RowIndex to) {
         CopyRow.copyRow(workbook, worksheet, from, to);
+        return this;
+    }
+
+    @Override
+    public Editable insertSheet(String name) {
+        workbook.createSheet(WorkbookUtil.createSafeSheetName(name));
+        return this;
+    }
+
+    @Override
+    public Editable insertSheet() {
+        workbook.createSheet();
         return this;
     }
 

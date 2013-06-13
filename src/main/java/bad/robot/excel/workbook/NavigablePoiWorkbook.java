@@ -43,14 +43,14 @@ import static org.apache.poi.ss.usermodel.Row.CREATE_NULL_AS_BLANK;
 @Deprecated /** can't remember why this is here, seems to be more or less the same as {@link PoiWorkbook} **/
 public class NavigablePoiWorkbook implements Navigable, Editable {
 
-    private final Workbook workbook;
-    private final PoiWorkbook mutator;
+    private final Workbook poi;
+    private final PoiWorkbook workbook;
 
     // TODO more constructors
 
     public NavigablePoiWorkbook(Workbook workbook) {
-        this.workbook = workbook;
-        this.mutator = new PoiWorkbook(workbook);
+        this.poi = workbook;
+        this.workbook = new PoiWorkbook(workbook);
     }
 
     @Override
@@ -70,85 +70,97 @@ public class NavigablePoiWorkbook implements Navigable, Editable {
 
     @Override
     public Editable blankCell(Coordinate coordinate) {
-        mutator.blankCell(coordinate);
+        workbook.blankCell(coordinate);
         return this;
     }
 
     @Override
     public Editable replaceCell(Coordinate coordinate, Cell cell) {
-        mutator.replaceCell(coordinate, cell);
+        workbook.replaceCell(coordinate, cell);
         return this;
     }
 
     @Override
     public Editable replaceCell(Coordinate coordinate, String value) {
-        mutator.replaceCell(coordinate, value);
+        workbook.replaceCell(coordinate, value);
         return this;
     }
 
     @Override
     public Editable replaceCell(Coordinate coordinate, Formula formula) {
-        mutator.replaceCell(coordinate, formula);
+        workbook.replaceCell(coordinate, formula);
         return this;
     }
 
     @Override
     public Editable replaceCell(Coordinate coordinate, Date date) {
-        mutator.replaceCell(coordinate, date);
+        workbook.replaceCell(coordinate, date);
         return this;
     }
 
     @Override
     public Editable replaceCell(Coordinate coordinate, Double number) {
-        mutator.replaceCell(coordinate, number);
+        workbook.replaceCell(coordinate, number);
         return this;
     }
 
     @Override
     public Editable replaceCell(Coordinate coordinate, Hyperlink hyperlink) {
-        mutator.replaceCell(coordinate, hyperlink);
+        workbook.replaceCell(coordinate, hyperlink);
         return this;
     }
 
     @Override
     public Editable replaceCell(Coordinate coordinate, Boolean value) {
-        mutator.replaceCell(coordinate, value);
+        workbook.replaceCell(coordinate, value);
         return this;
     }
 
     @Override
     public Editable copyRow(Workbook workbook, Sheet worksheet, RowIndex from, RowIndex to) {
-        mutator.copyRow(workbook, worksheet, from, to);
+        this.workbook.copyRow(workbook, worksheet, from, to);
+        return this;
+    }
+
+    @Override
+    public Editable insertSheet(String name) {
+        workbook.insertSheet(name);
+        return this;
+    }
+
+    @Override
+    public Editable insertSheet() {
+        workbook.insertSheet();
         return this;
     }
 
     @Override
     public Editable insertRowToFirstSheet(Row row, RowIndex index) {
-        mutator.insertRowToFirstSheet(row, index);
+        workbook.insertRowToFirstSheet(row, index);
         return this;
     }
 
     @Override
     public Editable insertRowToSheet(Row row, RowIndex index, SheetIndex sheet) {
-        mutator.insertRowToSheet(row, index, sheet);
+        workbook.insertRowToSheet(row, index, sheet);
         return this;
     }
 
     @Override
     public Editable appendRowToFirstSheet(Row row) {
-        mutator.appendRowToFirstSheet(row);
+        workbook.appendRowToFirstSheet(row);
         return this;
     }
 
     @Override
     public Editable appendRowToSheet(Row row, SheetIndex index) {
-        mutator.appendRowToSheet(row, index);
+        workbook.appendRowToSheet(row, index);
         return this;
     }
 
     @Override
     public Editable refreshFormulas() {
-        mutator.refreshFormulas();
+        workbook.refreshFormulas();
         return this;
     }
 
@@ -158,7 +170,7 @@ public class NavigablePoiWorkbook implements Navigable, Editable {
     }
 
     private org.apache.poi.ss.usermodel.Row getRowForCoordinate(RowIndex rowIndex, SheetIndex sheetIndex) {
-        Sheet sheet = workbook.getSheetAt(sheetIndex.value());
+        Sheet sheet = poi.getSheetAt(sheetIndex.value());
         org.apache.poi.ss.usermodel.Row row = sheet.getRow(rowIndex.value());
         if (row == null)
             row = sheet.createRow(rowIndex.value());

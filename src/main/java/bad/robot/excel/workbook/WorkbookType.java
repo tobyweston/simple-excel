@@ -8,17 +8,13 @@ public enum WorkbookType {
     XLS("Excel Binary File Format (pre 2007)") {
         @Override
         public Workbook create() {
-            HSSFWorkbook workbook = new HSSFWorkbook();
-            workbook.createSheet("Sheet1");
-            return workbook;
+            return new HSSFWorkbook();
         }
     },
     XML("Office Open XML") {
         @Override
         public Workbook create() {
-            XSSFWorkbook workbook = new XSSFWorkbook();
-            workbook.createSheet("Sheet1");
-            return workbook;
+            return new XSSFWorkbook();
         }
     };
 
