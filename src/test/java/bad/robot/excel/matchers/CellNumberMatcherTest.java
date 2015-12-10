@@ -61,14 +61,14 @@ public class CellNumberMatcherTest {
     public void description() {
         Description description = new StringDescription();
         hasSameNumberOfCellsAs(rowWithThreeCells).describeTo(description);
-        assertThat(description.toString(), is("<3> cell(s) on row <1>"));
+        assertThat(description.toString(), is("<3> cell(s) on row <1> sheet \"Sheet1\""));
     }
 
     @Test
     public void mismatch() {
         Description description = new StringDescription();
         hasSameNumberOfCellsAs(rowWithThreeCells).matchesSafely(rowWithTwoCells, description);
-        assertThat(description.toString(), is("got <2> cell(s) on row <1> expected <3>"));
+        assertThat(description.toString(), is("got <2> cell(s) on row <1> expected <3> sheet \"Sheet1\""));
     }
 
 }

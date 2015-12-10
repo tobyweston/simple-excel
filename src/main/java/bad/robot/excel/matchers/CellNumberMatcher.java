@@ -45,7 +45,9 @@ public class CellNumberMatcher extends TypeSafeDiagnosingMatcher<Row> {
                 .appendText(" cell(s) on row ")
                 .appendValue(asExcelRow(expected))
                 .appendText(" expected ")
-                .appendValue(numberOfCellsIn(expected));
+                .appendValue(numberOfCellsIn(expected))
+                .appendText(" sheet ")
+                .appendValue(expected.getSheet().getSheetName());
             return false;
         }
         return true;
@@ -53,7 +55,8 @@ public class CellNumberMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendValue(numberOfCellsIn(expected)).appendText(" cell(s) on row ").appendValue(asExcelRow(expected));
+        description.appendValue(numberOfCellsIn(expected)).appendText(" cell(s) on row ").appendValue(asExcelRow(expected))
+        	.appendText(" sheet ").appendValue(expected.getSheet().getSheetName());
     }
 
     /** POI is zero-based */

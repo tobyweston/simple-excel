@@ -70,6 +70,6 @@ public class RowInSheetMatcherTest {
     @Test
     public void mismatch() {
         hasSameRow(firstRowOf(sheetWithThreeCells)).matchesSafely(sheetWithThreeCellsAlternativeValues, description);
-        assertThat(description.toString(), is("cell at \"B1\" contained <3.14D> expected <\"C2, R1\">"));
+        assertThat(description.toString(), is("cell at \"B1\" contained <3.14D> expected <\"C2, R1\"> sheet \"Sheet1\""));
     }
 }

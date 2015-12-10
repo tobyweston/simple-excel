@@ -75,6 +75,6 @@ public class RowsMatcherTest {
     @Test
     public void mismatchOnMissingRow() {
         hasSameRowsAs(sheetWithThreeRows).matchesSafely(sheetWithTwoRows, description);
-        assertThat(description.toString(), is("row <3> is missing"));
+        assertThat(description.toString(), is("row <3> is missing in sheet \"Sheet1\""));
     }
 }

@@ -60,13 +60,13 @@ public class RowMissingMatcherTest {
     @Test
     public void describe() {
         rowIsPresent(sheetWithThreeRows).describeTo(description);
-        assertThat(description.toString(), is("row <3> to be present"));
+        assertThat(description.toString(), is("row <3> to be present in sheet \"Sheet1\""));
     }
 
     @Test
     public void mismatch() {
         rowIsPresent(sheetWithThreeRows).matchesSafely(thirdRow, description);
-        assertThat(description.toString(), is("row <3> is missing"));
+        assertThat(description.toString(), is("row <3> is missing in sheet \"Sheet1\""));
     }
 
 }

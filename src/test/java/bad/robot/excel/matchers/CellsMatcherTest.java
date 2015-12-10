@@ -78,13 +78,13 @@ public class CellsMatcherTest {
     @Test
     public void mismatch() {
         hasSameCellsAs(firstRow).matchesSafely(firstRowWithAlternateValues, description);
-        assertThat(description.toString(), is("cell at \"B1\" contained <3.14D> expected <\"C2, R1\">"));
+        assertThat(description.toString(), is("cell at \"B1\" contained <3.14D> expected <\"C2, R1\"> sheet \"Sheet1\""));
     }
 
     @Test
     public void mismatchOnMissingCell() {
         hasSameCellsAs(secondRow).matchesSafely(secondRowWithAlternateValues, description);
-        assertThat(description.toString(), is("cell at \"B2\" contained <nothing> expected <\"C2, R2\">"));
+        assertThat(description.toString(), is("cell at \"B2\" contained <nothing> expected <\"C2, R2\"> sheet \"Sheet1\""));
     }
 
     @Test
@@ -92,8 +92,8 @@ public class CellsMatcherTest {
         assertTimezone(is("UTC"));
         hasSameCellsAs(thirdRow).matchesSafely(thirdRowWithAlternateValues, description);
         assertThat(description.toString(), allOf(
-            containsString("cell at \"A3\" contained <Wed Feb 01 00:00:00 UTC 2012> expected <\"C1, R3\">,"),
-            containsString("cell at \"B3\" contained <Formula:2+2> expected <\"C2, R3\">")
+            containsString("cell at \"A3\" contained <Wed Feb 01 00:00:00 UTC 2012> expected <\"C1, R3\"> sheet \"Sheet1\","),
+            containsString("cell at \"B3\" contained <Formula:2+2> expected <\"C2, R3\"> sheet \"Sheet1\"")
         ));
     }
 
