@@ -56,7 +56,7 @@ public class CellsMatcher extends TypeSafeDiagnosingMatcher<Row> {
     private static List<Matcher<Row>> createCellMatchers(Row row) {
         List<Matcher<Row>> matchers = new ArrayList<Matcher<Row>>();
         for (Cell expected : row)
-            matchers.add(hasSameCell(expected));
+            matchers.add(hasSameCell(row.getSheet(), expected));
         return matchers;
     }
 

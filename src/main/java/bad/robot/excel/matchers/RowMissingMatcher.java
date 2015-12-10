@@ -37,7 +37,8 @@ public class RowMissingMatcher extends TypeSafeDiagnosingMatcher<Row> {
     @Override
     protected boolean matchesSafely(Row actual, Description mismatch) {
         if (actual == null) {
-            mismatch.appendText("row ").appendValue(asExcelRow(expected)).appendText(" is missing");
+            mismatch.appendText("row ").appendValue(asExcelRow(expected)).appendText(" is missing")
+            	.appendText(" in sheet ").appendValue(expected.getSheet().getSheetName());
             return false;
         }
         return true;
@@ -45,6 +46,7 @@ public class RowMissingMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("row ").appendValue(asExcelRow(expected)).appendText(" to be present");
+        description.appendText("row ").appendValue(asExcelRow(expected)).appendText(" to be present")
+        	.appendText(" in sheet ").appendValue(expected.getSheet().getSheetName());
     }
 }

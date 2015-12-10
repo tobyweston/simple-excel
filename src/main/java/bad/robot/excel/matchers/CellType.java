@@ -59,6 +59,10 @@ public enum CellType implements CellAdapter {
         public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
             if (cell.getHyperlink() != null && containsUrl(cell.getHyperlink()))
                 return new HyperlinkCell(hyperlink(cell.getStringCellValue(), cell.getHyperlink().getAddress()));
+            
+            if (cell.getStringCellValue() == null || "".equals(cell.getStringCellValue()))
+                return new BlankCell();
+            
             return new StringCell(cell.getStringCellValue());
         }
 

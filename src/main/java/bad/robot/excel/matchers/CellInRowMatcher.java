@@ -18,6 +18,7 @@ package bad.robot.excel.matchers;
 
 import bad.robot.excel.cell.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
@@ -26,18 +27,20 @@ import static bad.robot.excel.matchers.CellType.adaptPoi;
 
 public class CellInRowMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
+	private final Sheet sheet;
     private final Cell expected;
     private final int columnIndex;
     private final String coordinate;
 
-    private CellInRowMatcher(org.apache.poi.ss.usermodel.Cell expectedPoi) {
-        this.expected = adaptPoi(expectedPoi);
+    private CellInRowMatcher(Sheet sheet, org.apache.poi.ss.usermodel.Cell expectedPoi) {
+        this.sheet = sheet;
+		this.expected = adaptPoi(expectedPoi);
         this.coordinate = asExcelCoordinate(expectedPoi);
         this.columnIndex = expectedPoi.getColumnIndex();
     }
 
-    public static CellInRowMatcher hasSameCell(org.apache.poi.ss.usermodel.Cell expected) {
-        return new CellInRowMatcher(expected);
+    public static CellInRowMatcher hasSameCell(Sheet sheet, org.apache.poi.ss.usermodel.Cell expected) {
+        return new CellInRowMatcher(sheet, expected);
     }
 
     @Override
@@ -45,7 +48,8 @@ public class CellInRowMatcher extends TypeSafeDiagnosingMatcher<Row> {
         Cell actual = adaptPoi(row.getCell(columnIndex));
 
         if (!expected.equals(actual)) {
-            mismatch.appendText("cell at ").appendValue(coordinate).appendText(" contained ").appendValue(actual).appendText(" expected ").appendValue(expected);
+            mismatch.appendText("cell at ").appendValue(coordinate).appendText(" contained ").appendValue(actual).appendText(" expected ").appendValue(expected)
+            	.appendText(" sheet ").appendValue(sheet.getSheetName());
             return false;
         }
         return true;
