@@ -32,6 +32,14 @@ public class ExcelCoordinate {
         return new ExcelCoordinate(column, row);
     }
 
+    public static ExcelCoordinate coordinate(String column, int row) {
+        return coordinate(ExcelColumnIndex.getColumn(column), row);
+    }
+
+    public static ExcelCoordinate coordinate(String column, ExcelRowIndex row) {
+    	return coordinate(ExcelColumnIndex.getColumn(column), row);
+    }
+
     public ExcelCoordinate(ExcelColumnIndex column, ExcelRowIndex row) {
         this.column = column;
         this.row = row;

@@ -45,9 +45,9 @@ public class ColourTest {
         Cell a2 = new StringCell("Yellow", yellow);
         Workbook workbook = getWorkbook("emptySheet.xlsx");
         PoiWorkbook sheet = new PoiWorkbook(workbook);
-        sheet.replaceCell(coordinate(getColumn("A"), 1), a1);
-        sheet.replaceCell(coordinate(getColumn("A"), 2), a2);
-        sheet.replaceCell(coordinate(getColumn("XFD"), 2), a2); //save on last column
+        sheet.replaceCell(coordinate("A", 1), a1);
+        sheet.replaceCell(coordinate("A", 2), a2);
+        sheet.replaceCell(coordinate("XFD", 2), a2); //save on last column
         OutputWorkbook.writeWorkbookToTemporaryFile(workbook, "exampleOfApplyColours");
     }
 }

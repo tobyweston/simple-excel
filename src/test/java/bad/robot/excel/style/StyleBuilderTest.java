@@ -51,7 +51,7 @@ public class StyleBuilderTest {
         Cell cell = new DoubleCell(9999.99d, aStyle().with(border).with(numberFormat));
 
         HashMap<ColumnIndex, Cell> columns = new HashMap<ColumnIndex, Cell>();
-        columns.put(column(getColumn("A")), cell);
+        columns.put(column("A"), cell);
 
         Row row = new Row(columns);
 

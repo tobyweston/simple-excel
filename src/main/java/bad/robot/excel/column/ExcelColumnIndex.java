@@ -18,9 +18,6 @@ package bad.robot.excel.column;
 
 import org.junit.experimental.categories.Categories.ExcludeCategory;
 
-/**
- * Currently supporting only 702 columns. sorry.
- */
 public class ExcelColumnIndex {
 
 	private int ordinal;
@@ -71,6 +68,7 @@ public class ExcelColumnIndex {
     }
 
     public static int valueOf(String key) {
+    	key = key.toUpperCase();
     	for (ExcelColumnIndex s: getValues()) {
     		if (s.name().equals(key)) {
     			return s.ordinal();
@@ -81,8 +79,9 @@ public class ExcelColumnIndex {
     }
 
     public static ExcelColumnIndex getColumn(String key) {
+    	key = key.toUpperCase();
     	for (ExcelColumnIndex s: getValues()) {
-    		if (s.name().equals(key.toUpperCase())) {
+    		if (s.name().equals(key)) {
     			return s;
     		}
     	}
