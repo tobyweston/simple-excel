@@ -32,8 +32,7 @@ import java.io.IOException;
 import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.WorkbookResource.*;
 import static bad.robot.excel.column.ColumnIndex.column;
-import static bad.robot.excel.column.ExcelColumnIndex.A;
-import static bad.robot.excel.column.ExcelColumnIndex.B;
+import static bad.robot.excel.column.ExcelColumnIndex.*;
 import static bad.robot.excel.matchers.CellMatcher.equalTo;
 import static bad.robot.excel.sheet.Coordinate.coordinate;
 import static java.util.Calendar.MARCH;
@@ -50,8 +49,8 @@ public class DateCellTest {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet();
         HSSFRow row = sheet.createRow(0);
-        cell.addTo(row, column(A), workbook);
-        assertThat(getCellDataFormatAtCoordinate(coordinate(A, 1), workbook), is("dd-MMM-yyyy"));
+        cell.addTo(row, column(getColumn("A")), workbook);
+        assertThat(getCellDataFormatAtCoordinate(coordinate(getColumn("A"), 1), workbook), is("dd-MMM-yyyy"));
     }
 
     @Test
@@ -61,20 +60,20 @@ public class DateCellTest {
         HSSFRow row = sheet.createRow(0);
         HSSFCell original = row.createCell(0);
         cell.update(original, workbook);
-        assertThat(getCellDataFormatAtCoordinate(coordinate(A, 1), workbook), is("dd-MMM-yyyy"));
+        assertThat(getCellDataFormatAtCoordinate(coordinate(getColumn("B"), 1), workbook), is("dd-MMM-yyyy"));
     }
 
     @Test
     public void replaceNonDateCellWithACell() throws IOException {
         Workbook workbook = getWorkbook("cellTypes.xls");
         PoiWorkbook sheet = new PoiWorkbook(workbook);
-        Coordinate coordinate = coordinate(B, 2);
+        Coordinate coordinate = coordinate(getColumn("B"), 2);
 
         assertThat(getCellForCoordinate(coordinate, workbook), equalTo(new DoubleCell(1001d)));
         sheet.replaceCell(coordinate, createDate(15, MARCH, 2012));
 
         assertThat(getCellForCoordinate(coordinate, workbook), equalTo(new DateCell(createDate(15, MARCH, 2012))));
         assertThat(getCellDataFormatAtCoordinate(coordinate, workbook), is("dd-MMM-yyyy"));
-        assertThat("should not have affected a shared data format", getCellDataFormatAtCoordinate(coordinate(B, 7), workbook), is("General"));
+        assertThat("should not have affected a shared data format", getCellDataFormatAtCoordinate(coordinate(getColumn("B"), 7), workbook), is("General"));
     }
 }
