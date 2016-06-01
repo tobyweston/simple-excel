@@ -22,6 +22,7 @@ import bad.robot.excel.style.Style;
 import java.util.Date;
 
 public interface StyledRowBuilder {
+
     StyledRowBuilder withBlank(ColumnIndex index, Style style);
 
     StyledRowBuilder withString(ColumnIndex index, String text, Style style);
@@ -33,4 +34,7 @@ public interface StyledRowBuilder {
     StyledRowBuilder withDate(ColumnIndex index, Date date, Style style);
 
     StyledRowBuilder withFormula(ColumnIndex index, String formula, Style style);
+
+    Row build();
+
 }
