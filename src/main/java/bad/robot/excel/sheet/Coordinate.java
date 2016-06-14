@@ -44,6 +44,14 @@ public class Coordinate {
         return new Coordinate(column, row, sheet);
     }
 
+    public static Coordinate coordinate(String column, Integer row, SheetIndex sheet) {
+    	return coordinate(ExcelColumnIndex.getColumn(column), row, sheet);
+    }
+
+    public static Coordinate coordinate(String column, Integer row) {
+    	return coordinate(ExcelColumnIndex.getColumn(column), row, sheet(1));
+    }
+
     private Coordinate(ColumnIndex column, RowIndex row, SheetIndex sheet) {
         this.column = column;
         this.row = row;

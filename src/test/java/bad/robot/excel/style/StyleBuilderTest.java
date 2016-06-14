@@ -29,7 +29,7 @@ import java.util.HashMap;
 import static bad.robot.excel.WorkbookResource.getWorkbook;
 import static bad.robot.excel.cell.DataFormat.asTwoDecimalPlacesNumber;
 import static bad.robot.excel.column.ColumnIndex.column;
-import static bad.robot.excel.column.ExcelColumnIndex.A;
+import static bad.robot.excel.column.ExcelColumnIndex.getColumn;
 import static bad.robot.excel.matchers.WorkbookMatcher.sameWorkbook;
 import static bad.robot.excel.style.Border.border;
 import static bad.robot.excel.style.BorderStyle.None;
@@ -51,7 +51,7 @@ public class StyleBuilderTest {
         Cell cell = new DoubleCell(9999.99d, aStyle().with(border).with(numberFormat));
 
         HashMap<ColumnIndex, Cell> columns = new HashMap<ColumnIndex, Cell>();
-        columns.put(column(A), cell);
+        columns.put(column("A"), cell);
 
         Row row = new Row(columns);
 

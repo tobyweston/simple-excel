@@ -25,8 +25,7 @@ import java.io.IOException;
 
 import static bad.robot.excel.WorkbookResource.getCellForCoordinate;
 import static bad.robot.excel.WorkbookResource.getWorkbook;
-import static bad.robot.excel.column.ExcelColumnIndex.B;
-import static bad.robot.excel.column.ExcelColumnIndex.C;
+import static bad.robot.excel.column.ExcelColumnIndex.*;
 import static bad.robot.excel.matchers.CellType.adaptPoi;
 import static bad.robot.excel.sheet.Coordinate.coordinate;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -44,47 +43,47 @@ public class CellTypeTest {
 
     @Test
     public void adaptBooleanCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 6), workbook)), is(instanceOf(BooleanCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(getColumn("B"), 6), workbook)), is(instanceOf(BooleanCell.class)));
     }
 
     @Test
     public void adaptFormulaCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 7), workbook)), is(instanceOf(FormulaCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(getColumn("B"), 7), workbook)), is(instanceOf(FormulaCell.class)));
     }
 
     @Test
     public void adaptFormulaTypeToError() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 8), workbook)), is(instanceOf(ErrorCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(getColumn("B"), 8), workbook)), is(instanceOf(ErrorCell.class)));
     }
 
     @Test
     public void adaptNumericTypeToDoubleCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 2), workbook)), is(instanceOf(DoubleCell.class)));
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 3), workbook)), is(instanceOf(DoubleCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(getColumn("B"), 2), workbook)), is(instanceOf(DoubleCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(getColumn("B"), 3), workbook)), is(instanceOf(DoubleCell.class)));
     }
 
     @Test
     public void adaptNumericTypeToDateCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 1), workbook)), is(instanceOf(DateCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(getColumn("B"), 1), workbook)), is(instanceOf(DateCell.class)));
     }
 
     @Test
     public void adaptStringCell() throws Exception {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 4), workbook)), is(instanceOf(StringCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(getColumn("B"), 4), workbook)), is(instanceOf(StringCell.class)));
     }
 
     @Test
     public void adaptHyperlinkCell() throws Exception {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 5), workbook)), is(instanceOf(HyperlinkCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(getColumn("B"), 5), workbook)), is(instanceOf(HyperlinkCell.class)));
     }
 
     @Test
     public void adaptInternalLinkCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(B, 9), workbook)), is(instanceOf(StringCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(getColumn("B"), 9), workbook)), is(instanceOf(StringCell.class)));
     }
 
     @Test
     public void adaptBlankCell() throws IOException {
-        assertThat(adaptPoi(getCellForCoordinate(coordinate(C, 1), workbook)), is(instanceOf(BlankCell.class)));
+        assertThat(adaptPoi(getCellForCoordinate(coordinate(getColumn("C"), 1), workbook)), is(instanceOf(BlankCell.class)));
     }
 }

@@ -26,17 +26,17 @@ public class ExcelColumnIndexTest {
 
     @Test
     public void convertToIndex() {
-        assertThat(A.ordinal(), is(0));
-        assertThat(B.ordinal(), is(1));
-        assertThat(C.ordinal(), is(2));
-        assertThat(X.ordinal(), is(23));
-        assertThat(Y.ordinal(), is(24));
-        assertThat(Z.ordinal(), is(25));
+        assertThat(getColumn("A").ordinal(), is(0));
+        assertThat(getColumn("B").ordinal(), is(1));
+        assertThat(getColumn("C").ordinal(), is(2));
+        assertThat(getColumn("X").ordinal(), is(23));
+        assertThat(getColumn("Y").ordinal(), is(24));
+        assertThat(getColumn("Z").ordinal(), is(25));
     }
 
     @Test
     public void convertRowCoordinateToExcelRowForExtendedAlphabet() {
-        assertThat(AA.ordinal(),is(26));
-        assertThat(ZZ.ordinal(), is(701));
+        assertThat(getColumn("AA").ordinal(),is(26));
+        assertThat(getColumn("ZZ").ordinal(), is(701));
     }
 }

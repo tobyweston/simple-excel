@@ -24,6 +24,10 @@ public class ColumnIndex extends AbstractValueType<Integer> {
         return new ColumnIndex(index.ordinal());
     }
 
+    public static ColumnIndex column(String index) {
+        return column(ExcelColumnIndex.getColumn(index));
+    }
+
     private ColumnIndex(Integer value) {
         super(value);
     }
