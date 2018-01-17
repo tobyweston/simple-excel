@@ -4,7 +4,7 @@
 
 Simple-Excel wraps the [Apache POI](https://poi.apache.org/) project with simple Java builders to modify sheets quickly and easily without all the boilerplate.
 
-Use [Hamcrest](http://hamcrest.org/) `Mmatcher`s to compare workbooks and get fast feedback in tests. Comparing two sheets will compare the entire contents. You get a full report of the diff rather than just the first encountered difference.
+Use [Hamcrest](http://hamcrest.org/) `Matcher`s to compare workbooks and get fast feedback in tests. Comparing two sheets will compare the entire contents. You get a full report of the diff rather than just the first encountered difference.
 
 ## Modifying an Excel sheet
 
@@ -21,7 +21,7 @@ public void shouldReplaceCellsInComplicatedAlternateSyntaxExample() throws IOExc
             .replaceCell(coordinate(J, 10), "total")
             .replaceCell(coordinate(M, 15), 99.99d);
 
-    assertThat(workbook, sameWorkBook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls")));
+    assertThat(workbook, sameWorkbook(getWorkbook("shouldReplaceCellsInComplicatedExampleTemplateExpected.xls")));
 }
 ```
 
