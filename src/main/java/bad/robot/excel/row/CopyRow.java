@@ -112,7 +112,7 @@ public class CopyRow {
     private static void copyMergeRegion(Sheet worksheet, Row sourceRow, Row newRow, CellRangeAddress mergedRegion) {
         CellRangeAddress range = mergedRegion;
         if (range.getFirstRow() == sourceRow.getRowNum()) {
-            int lastRow = newRow.getRowNum() + (range.getFirstRow() - range.getLastRow());
+            int lastRow = newRow.getRowNum() + (range.getLastRow() - range.getFirstRow());
             CellRangeAddress newCellRangeAddress = new CellRangeAddress(newRow.getRowNum(), lastRow, range.getFirstColumn(), range.getLastColumn());
             worksheet.addMergedRegion(newCellRangeAddress);
         }
