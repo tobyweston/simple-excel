@@ -112,13 +112,13 @@ Available for manual download via my [Maven repository](http://robotooling.com/m
 ```
 
 
-Then add a dependency (use `1.1-SNAPSHOT` for the `version` if you're feeling daring).
+Then add a dependency.
 
 ``` xml
 <dependency>
     <groupId>bad.robot</groupId>
     <artifactId>simple-excel</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <scope>compile</scope>
 </dependency>
 ```
