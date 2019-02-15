@@ -18,6 +18,7 @@ mvn release:prepare -Dusername=bub -Dpassword=secret
 
 will update the `pom` and create a tag in SCM.
 
+Where `password` is the personal access token generated from [GitHub](https://github.com/settings/tokens) as opposed to your regular password used in the web UI.
 
 ## Deploy
 
