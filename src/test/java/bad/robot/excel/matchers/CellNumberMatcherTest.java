@@ -71,4 +71,13 @@ public class CellNumberMatcherTest {
         assertThat(description.toString(), is("got <2> cell(s) on row <1> expected <3> sheet \"Sheet1\""));
     }
 
+    @Test
+    public void differentNumberOfPhysicalCells() throws IOException {
+        Row rowWithThreePhysicalCells = firstRowOf("rowWithThreePhysicalCells.xls");
+        Row rowWithThreeCellsButOnlyTwoPhysicalCells = firstRowOf("rowWithThreeCellsButOnlyTwoPhysicalCells.xls");
+        Description description = new StringDescription();
+        hasSameNumberOfCellsAs(rowWithThreeCellsButOnlyTwoPhysicalCells).matchesSafely(rowWithThreePhysicalCells, description);
+        assertThat(description.toString(), is("got <3> cell(s) containing value on row <1> expected <2> sheet \"Sheet1\""));
+    }
+
 }

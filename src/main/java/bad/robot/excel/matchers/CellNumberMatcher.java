@@ -39,17 +39,29 @@ public class CellNumberMatcher extends TypeSafeDiagnosingMatcher<Row> {
 
     @Override
     protected boolean matchesSafely(Row actual, Description mismatch) {
-        if (expected.getLastCellNum() != actual.getLastCellNum()) {
+        if (numberOfCellsIn(expected) != numberOfCellsIn(actual)) {
             mismatch.appendText("got ")
-                .appendValue(numberOfCellsIn(actual))
-                .appendText(" cell(s) on row ")
-                .appendValue(asExcelRow(expected))
-                .appendText(" expected ")
-                .appendValue(numberOfCellsIn(expected))
-                .appendText(" sheet ")
-                .appendValue(expected.getSheet().getSheetName());
+                    .appendValue(numberOfCellsIn(actual))
+                    .appendText(" cell(s) on row ")
+                    .appendValue(asExcelRow(expected))
+                    .appendText(" expected ")
+                    .appendValue(numberOfCellsIn(expected))
+                    .appendText(" sheet ")
+                    .appendValue(expected.getSheet().getSheetName());
             return false;
         }
+        if (numberOfPhysicalCellsIn(expected) != numberOfPhysicalCellsIn(actual)) {
+            mismatch.appendText("got ")
+                    .appendValue(numberOfPhysicalCellsIn(actual))
+                    .appendText(" cell(s) containing value on row ")
+                    .appendValue(asExcelRow(expected))
+                    .appendText(" expected ")
+                    .appendValue(numberOfPhysicalCellsIn(expected))
+                    .appendText(" sheet ")
+                    .appendValue(expected.getSheet().getSheetName());
+            return false;
+        }
+
         return true;
     }
 
@@ -62,5 +74,9 @@ public class CellNumberMatcher extends TypeSafeDiagnosingMatcher<Row> {
     /** POI is zero-based */
     private static int numberOfCellsIn(Row row) {
         return row.getLastCellNum();
+    }
+
+    private static int numberOfPhysicalCellsIn(Row row) {
+        return row.getPhysicalNumberOfCells();
     }
 }
