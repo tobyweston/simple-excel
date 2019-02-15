@@ -16,22 +16,22 @@
 
 package bad.robot.excel.style;
 
-import static org.apache.poi.ss.usermodel.CellStyle.*;
+import static org.apache.poi.ss.usermodel.BorderStyle.*;
 
 public enum BorderStyle {
 
-    None(BORDER_NONE),
-    ThinSolid(BORDER_THIN),
-    MediumSolid(BORDER_MEDIUM),
-    ThickSolid(BORDER_THICK);
+    None(NONE),
+    ThinSolid(THIN),
+    MediumSolid(MEDIUM),
+    ThickSolid(THICK);
 
-    private short poiStyle;
+    private org.apache.poi.ss.usermodel.BorderStyle poiStyle;
 
-    BorderStyle(short poiStyle) {
+    BorderStyle(org.apache.poi.ss.usermodel.BorderStyle poiStyle) {
         this.poiStyle = poiStyle;
     }
 
-    public Short getPoiStyle() {
+    public org.apache.poi.ss.usermodel.BorderStyle getPoiStyle() {
         return poiStyle;
     }
 }

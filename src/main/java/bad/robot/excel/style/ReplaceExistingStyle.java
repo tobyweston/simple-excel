@@ -22,7 +22,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import static bad.robot.excel.style.ClonedStyleFactory.newStyleBasedOn;
-import static org.apache.poi.ss.usermodel.CellStyle.SOLID_FOREGROUND;
+import static org.apache.poi.ss.usermodel.FillPatternType.SOLID_FOREGROUND;
 
 public class ReplaceExistingStyle implements Style {
 

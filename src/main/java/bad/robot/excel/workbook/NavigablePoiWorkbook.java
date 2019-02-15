@@ -24,6 +24,7 @@ import bad.robot.excel.row.Row;
 import bad.robot.excel.row.RowIndex;
 import bad.robot.excel.sheet.Coordinate;
 import bad.robot.excel.sheet.SheetIndex;
+import org.apache.poi.ss.usermodel.Row.MissingCellPolicy;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -32,10 +33,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static bad.robot.excel.matchers.CellType.adaptPoi;
-import static org.apache.poi.ss.usermodel.Row.CREATE_NULL_AS_BLANK;
 
 /** @since 1.1 */
-@Deprecated /** can't remember why this is here, seems to be more or less the same as {@link PoiWorkbook} **/
+@Deprecated /* can't remember why this is here, seems to be more or less the same as {@link PoiWorkbook} */
 public class NavigablePoiWorkbook implements Navigable, Editable {
 
     private final Workbook poi;
@@ -56,7 +56,7 @@ public class NavigablePoiWorkbook implements Navigable, Editable {
     @Override
     public Row getRowAt(RowIndex rowIndex, SheetIndex sheetIndex) {
         org.apache.poi.ss.usermodel.Row row = getRowForCoordinate(rowIndex, sheetIndex);
-        Map<ColumnIndex, Cell> cells = new HashMap<ColumnIndex, Cell>();
+        Map<ColumnIndex, Cell> cells = new HashMap<>();
         for (org.apache.poi.ss.usermodel.Cell cell : row) {
             cells.put(null, adaptPoi(cell));
         }
@@ -161,7 +161,7 @@ public class NavigablePoiWorkbook implements Navigable, Editable {
 
     private org.apache.poi.ss.usermodel.Cell getCellForCoordinate(Coordinate coordinate) {
         org.apache.poi.ss.usermodel.Row row = getRowForCoordinate(coordinate.getRow(), coordinate.getSheet());
-        return row.getCell(coordinate.getColumn().value(), CREATE_NULL_AS_BLANK);
+        return row.getCell(coordinate.getColumn().value(), MissingCellPolicy.CREATE_NULL_AS_BLANK);
     }
 
     private org.apache.poi.ss.usermodel.Row getRowForCoordinate(RowIndex rowIndex, SheetIndex sheetIndex) {

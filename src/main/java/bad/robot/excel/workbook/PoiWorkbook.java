@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 
-import static org.apache.poi.ss.usermodel.Row.CREATE_NULL_AS_BLANK;
+import static org.apache.poi.ss.usermodel.Row.MissingCellPolicy.CREATE_NULL_AS_BLANK;
 
 
 public class PoiWorkbook implements Editable {

@@ -16,22 +16,25 @@
 
 package bad.robot.excel.style;
 
-import static org.apache.poi.ss.usermodel.CellStyle.*;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+
+import static org.apache.poi.ss.usermodel.HorizontalAlignment.*;
+
 
 public enum AlignmentStyle {
 
-    Left(ALIGN_LEFT),
-    Centre(ALIGN_CENTER),
-    Right(ALIGN_RIGHT),
-    Justify(ALIGN_JUSTIFY);
+    Left(LEFT),
+    Centre(CENTER),
+    Right(RIGHT),
+    Justify(JUSTIFY);
 
-    private short poiStyle;
+    private HorizontalAlignment poiStyle;
 
-    AlignmentStyle(short poiStyle) {
+    AlignmentStyle(HorizontalAlignment poiStyle) {
         this.poiStyle = poiStyle;
     }
 
-    public Short getPoiStyle() {
+    public HorizontalAlignment getPoiStyle() {
         return poiStyle;
     }
 }
