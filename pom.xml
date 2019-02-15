@@ -27,7 +27,7 @@
         <repository>
             <id>internal.repo</id>
             <name>internal.repo</name>
-            <url>file:///Users/toby/Workspace/robotooling/maven</url>
+            <url>file:///Users/toby/code/github/robotooling/maven</url>
         </repository>
     </distributionManagement>
 
