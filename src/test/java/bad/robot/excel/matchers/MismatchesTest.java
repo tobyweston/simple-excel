@@ -23,6 +23,7 @@ import org.jmock.Mockery;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -39,7 +40,7 @@ public class MismatchesTest {
     private final StringDescription description = new StringDescription();
     private final String actual = "I've been checked for mismatches";
     private final Matcher<String> matcher = context.mock(Matcher.class);
-    private final List<Matcher<String>> matchers = asList(matcher);
+    private final List<Matcher<String>> matchers = Collections.singletonList(matcher);
 
     @Test
     public void noMismatchesOnInitialisation() {
