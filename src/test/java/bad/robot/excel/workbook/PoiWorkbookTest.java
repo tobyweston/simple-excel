@@ -25,7 +25,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 
 import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.WorkbookResource.getCellForCoordinate;
@@ -109,7 +108,7 @@ public class PoiWorkbookTest {
     }
 
     @Test
-    public void shouldAppendRow() throws IOException, ParseException {
+    public void shouldAppendRow() throws IOException {
         RowBuilder row = aRow()
                 .withString(column(A), "This")
                 .withString(column(C), "Row")
