@@ -66,13 +66,13 @@ public class ExcelCoordinateTest {
     }
 
     public String asColumn(int column) {
-        String converted = "";
+        StringBuilder converted = new StringBuilder();
         while (column >= 0) {
             int remainder = column % 26;
-            converted = (char) (remainder + 'A') + converted;
+            converted.insert(0, (char) (remainder + 'A'));
             column = (column / 26) - 1;
         }
-        return converted;
+        return converted.toString();
     }
 
 }
