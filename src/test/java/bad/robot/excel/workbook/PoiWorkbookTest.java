@@ -20,7 +20,11 @@ import bad.robot.excel.WorkbookResource;
 import bad.robot.excel.cell.BlankCell;
 import bad.robot.excel.matchers.Matchers;
 import bad.robot.excel.row.RowBuilder;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -29,6 +33,7 @@ import java.io.InputStream;
 import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.WorkbookResource.getCellForCoordinate;
 import static bad.robot.excel.WorkbookResource.getWorkbook;
+import static bad.robot.excel.WorkbookResource.getWorkbookFromFactory;
 import static bad.robot.excel.column.ColumnIndex.column;
 import static bad.robot.excel.column.ExcelColumnIndex.*;
 import static bad.robot.excel.matchers.CellType.adaptPoi;
@@ -149,4 +154,16 @@ public class PoiWorkbookTest {
         assertThat(adaptPoi(getCellForCoordinate(coordinate(A, 1), modified.workbook())), is(instanceOf(BlankCell.class)));
     }
 
+    @Test
+    public void shouldCountMergedCellsCorrectly() throws IOException, InvalidFormatException {
+        // Create a workbook with a single empty sheet that has merged cells.
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Sheet1");
+        int firstMergedCol = 1;
+        int lastMergedCol = 5;
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, firstMergedCol, lastMergedCol));
+
+        // Compare the workbook to an empty workbook without merged cells.
+        assertThat(workbook, sameWorkbook(getWorkbookFromFactory("emptySheet.xlsx")));
+    }
 }
