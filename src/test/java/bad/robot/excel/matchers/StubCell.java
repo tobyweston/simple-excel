@@ -62,7 +62,7 @@ class StubCell {
         return createCell(0, 0, aDouble);
     }
 
-        static Cell createCell(int row, int column, Date date) {
+    static Cell createCell(int row, int column, Date date) {
         Workbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet();
         Cell cell = sheet.createRow(row).createCell(column, NUMERIC);
