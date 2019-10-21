@@ -23,7 +23,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import static java.lang.String.format;
-import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_ERROR;
+import static org.apache.poi.ss.usermodel.CellType.ERROR;
 
 public class ErrorCell extends StyledCell {
 
@@ -40,7 +40,7 @@ public class ErrorCell extends StyledCell {
 
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
-        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_ERROR);
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), ERROR);
         update(cell, workbook);
     }
 

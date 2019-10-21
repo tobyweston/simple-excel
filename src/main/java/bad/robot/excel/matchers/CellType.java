@@ -21,32 +21,32 @@ import bad.robot.excel.cell.*;
 
 import static bad.robot.excel.PoiToExcelCoercions.asExcelCoordinate;
 import static bad.robot.excel.cell.Hyperlink.hyperlink;
-import static org.apache.poi.ss.usermodel.Cell.*;
+import static org.apache.poi.ss.usermodel.CellType.*;
 import static org.apache.poi.ss.usermodel.DateUtil.isCellDateFormatted;
 
 public enum CellType implements CellAdapter {
 
-    Boolean(CELL_TYPE_BOOLEAN) {
+    Boolean(BOOLEAN) {
         @Override
         public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
             return new BooleanCell(cell.getBooleanCellValue());
         }
     },
-    Error(CELL_TYPE_ERROR) {
+    Error(ERROR) {
         @Override
         public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
             return new ErrorCell(cell.getErrorCellValue());
         }
     },
-    Formula(CELL_TYPE_FORMULA) {
+    Formula(FORMULA) {
         @Override
         public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
-            if (cell.getCachedFormulaResultType() == CELL_TYPE_ERROR)
+            if (cell.getCachedFormulaResultType() == ERROR)
                 return new ErrorCell(cell.getErrorCellValue());
             return new FormulaCell(cell.getCellFormula());
         }
     },
-    Numeric(CELL_TYPE_NUMERIC) {
+    Numeric(NUMERIC) {
         @Override
         public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
             if (isCellDateFormatted(cell))
@@ -54,7 +54,7 @@ public enum CellType implements CellAdapter {
             return new DoubleCell(cell.getNumericCellValue());
         }
     },
-    String(CELL_TYPE_STRING) {
+    String(STRING) {
         @Override
         public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
             if (cell.getHyperlink() != null && containsUrl(cell.getHyperlink()))
@@ -70,16 +70,16 @@ public enum CellType implements CellAdapter {
             return hyperlink.getAddress().startsWith("http://") || hyperlink.getAddress().startsWith("file://");
         }
     },
-    Blank(CELL_TYPE_BLANK) {
+    Blank(BLANK) {
         @Override
         public Cell adapt(org.apache.poi.ss.usermodel.Cell cell) {
             return new BlankCell();
         }
     };
 
-    private final Integer poiType;
+    private final org.apache.poi.ss.usermodel.CellType poiType;
 
-    CellType(Integer poiType) {
+    CellType(org.apache.poi.ss.usermodel.CellType poiType) {
         this.poiType = poiType;
     }
 

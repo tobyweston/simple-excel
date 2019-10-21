@@ -16,7 +16,6 @@
 
 package bad.robot.excel.workbook;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
@@ -39,8 +38,6 @@ public class PoiWorkbookReader implements Readable<Workbook> {
             throw new IllegalArgumentException("stream was null, could not load the workbook");
         try {
             return WorkbookFactory.create(stream);
-        } catch (InvalidFormatException e) {
-            throw new IOException(e);
         } finally {
             stream.close();
         }

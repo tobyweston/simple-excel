@@ -26,7 +26,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.util.Date;
 
 import static bad.robot.excel.cell.DataFormat.asDayMonthYear;
-import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_NUMERIC;
+import static org.apache.poi.ss.usermodel.CellType.NUMERIC;
 
 public class DateCell extends StyledCell {
 
@@ -43,7 +43,7 @@ public class DateCell extends StyledCell {
 
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
-        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_NUMERIC);
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), NUMERIC);
         update(cell, workbook);
     }
 
@@ -65,6 +65,6 @@ public class DateCell extends StyledCell {
     }
 
     private static boolean isCellDateFormatted(org.apache.poi.ss.usermodel.Cell cell) {
-        return cell.getCellType() == CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(cell);
+        return cell.getCellType() == NUMERIC && DateUtil.isCellDateFormatted(cell);
     }
 }
