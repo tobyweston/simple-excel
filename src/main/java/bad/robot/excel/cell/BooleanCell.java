@@ -22,7 +22,7 @@ import bad.robot.excel.style.Style;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_BOOLEAN;
+import static org.apache.poi.ss.usermodel.CellType.BOOLEAN;
 
 public class BooleanCell extends StyledCell {
 
@@ -39,7 +39,7 @@ public class BooleanCell extends StyledCell {
 
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
-        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_BOOLEAN);
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), BOOLEAN);
         update(cell, workbook);
     }
 

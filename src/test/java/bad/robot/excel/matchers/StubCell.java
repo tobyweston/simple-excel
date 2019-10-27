@@ -17,23 +17,21 @@
 package bad.robot.excel.matchers;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.*;
 
 import java.util.Date;
 
-import static org.apache.poi.ss.usermodel.Cell.*;
+import static org.apache.poi.ss.usermodel.CellType.*;
 
 class StubCell {
 
     static Cell createBlankCell(int row, int column) {
-        return create(row, column, CELL_TYPE_BLANK);
+        return create(row, column, BLANK);
     }
 
     static Cell createCell(int row, int column, Boolean aBoolean) {
-        Cell cell = create(row, column, CELL_TYPE_BOOLEAN);
+        Cell cell = create(row, column, BOOLEAN);
         cell.setCellValue(aBoolean);
         return cell;
     }
@@ -43,19 +41,19 @@ class StubCell {
     }
 
     static Cell createCell(int row, int column, Byte value) {
-        Cell cell = create(row, column, CELL_TYPE_ERROR);
+        Cell cell = create(row, column, ERROR);
         cell.setCellErrorValue(value);
         return cell;
     }
 
     static Cell createFormulaCell(int row, int column, String formula) {
-        Cell cell = create(row, column, CELL_TYPE_FORMULA);
+        Cell cell = create(row, column, FORMULA);
         cell.setCellFormula(formula);
         return cell;
     }
 
     static Cell createCell(int row, int column, Double aDouble) {
-        Cell cell = create(row, column, CELL_TYPE_NUMERIC);
+        Cell cell = create(row, column, NUMERIC);
         cell.setCellValue(aDouble);
         return cell;
     }
@@ -64,10 +62,10 @@ class StubCell {
         return createCell(0, 0, aDouble);
     }
 
-        static Cell createCell(int row, int column, Date date) {
+    static Cell createCell(int row, int column, Date date) {
         Workbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet();
-        Cell cell = sheet.createRow(row).createCell(column, CELL_TYPE_NUMERIC);
+        Cell cell = sheet.createRow(row).createCell(column, NUMERIC);
         cell.setCellValue(date);
         CellStyle style = workbook.createCellStyle();
         style.setDataFormat(workbook.getCreationHelper().createDataFormat().getFormat("m/d/yy h:mm"));
@@ -76,7 +74,7 @@ class StubCell {
     }
 
     static Cell createCell(int row, int column, String value) {
-        Cell cell = create(row, column, CELL_TYPE_STRING);
+        Cell cell = create(row, column, STRING);
         cell.setCellValue(value);
         return cell;
     }
@@ -85,7 +83,7 @@ class StubCell {
         return createCell(0, 0, value);
     }
 
-    private static Cell create(int row, int column, int type) {
+    private static Cell create(int row, int column, CellType type) {
         Workbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet();
         Cell cell = sheet.createRow(row).createCell(column, type);

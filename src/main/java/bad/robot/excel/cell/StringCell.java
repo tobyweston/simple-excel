@@ -22,7 +22,7 @@ import bad.robot.excel.style.Style;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING;
+import static org.apache.poi.ss.usermodel.CellType.STRING;
 
 public class StringCell extends StyledCell {
 
@@ -39,7 +39,7 @@ public class StringCell extends StyledCell {
 
     @Override
     public void addTo(Row row, ColumnIndex column, Workbook workbook) {
-        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), CELL_TYPE_STRING);
+        org.apache.poi.ss.usermodel.Cell cell = row.createCell(column.value(), STRING);
         update(cell, workbook);
     }
 
