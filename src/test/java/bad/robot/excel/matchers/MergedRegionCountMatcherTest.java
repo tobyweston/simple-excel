@@ -25,12 +25,12 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static bad.robot.excel.WorkbookResource.firstSheetOf;
-import static bad.robot.excel.matchers.MergedRegionMatcher.hasSameNumberOfMergedRegions;
+import static bad.robot.excel.matchers.MergedRegionCountMatcher.hasSameNumberOfMergedRegions;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class MergedRegionMatcherTest {
+public class MergedRegionCountMatcherTest {
 
 	private Sheet sheetWithMergedRegions;
 	private Sheet emptySheet;

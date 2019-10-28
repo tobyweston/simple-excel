@@ -21,7 +21,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static bad.robot.excel.matchers.MergedRegionMatcher.hasSameNumberOfMergedRegions;
+import static bad.robot.excel.matchers.MergedRegionCountMatcher.hasSameNumberOfMergedRegions;
 import static bad.robot.excel.matchers.RowNumberMatcher.hasSameNumberOfRowAs;
 import static bad.robot.excel.matchers.RowsMatcher.hasSameRowsAs;
 import static bad.robot.excel.sheet.SheetIterable.sheetsOf;

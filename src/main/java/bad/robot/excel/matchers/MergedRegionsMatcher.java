@@ -17,30 +17,34 @@
 package bad.robot.excel.matchers;
 
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-public class MergedRegionMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
+import java.util.stream.Collectors;
+
+public class MergedRegionsMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     private final Sheet expected;
 
-    public static MergedRegionMatcher hasSameNumberOfMergedRegions(Sheet expected) {
-        return new MergedRegionMatcher(expected);
+    public static MergedRegionsMatcher hasSameMergedRegions(Sheet expected) {
+        return new MergedRegionsMatcher(expected);
     }
 
-    private MergedRegionMatcher(Sheet expected) {
+    private MergedRegionsMatcher(Sheet expected) {
         this.expected = expected;
     }
 
     @Override
     protected boolean matchesSafely(Sheet actual, Description mismatch) {
-        if (expected.getMergedRegions().size() != actual.getMergedRegions().size()) {
+        if (!expected.getMergedRegions().equals(actual.getMergedRegions())) {
             mismatch.appendText("got ")
-                    .appendValue(numberOfRegionsIn(actual))
-                    .appendText(" merged region(s) in sheet ")
-                    .appendValue(actual.getSheetName())
-                    .appendText(" expected ")
-                    .appendValue(numberOfRegionsIn(expected));
+                .appendValue(mergedRegion(actual))
+                .appendText(" as a merged region(s) in sheet ")
+                .appendValue(actual.getSheetName())
+                .appendText(" expected ")
+                .appendValue(mergedRegion(expected))
+            ;
             return false;
         }
         return true;
@@ -48,10 +52,11 @@ public class MergedRegionMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendValue(numberOfRegionsIn(expected)).appendText(" merged region(s) in sheet ").appendValue(expected.getSheetName());
+        description.appendValue(mergedRegion(expected)).appendText(" as a merged region(s) in sheet ").appendValue(expected.getSheetName());
     }
 
-    private static int numberOfRegionsIn(Sheet sheet) {
-        return sheet.getMergedRegions().size();
+    private String mergedRegion(Sheet sheet) {
+        return sheet.getMergedRegions().stream().map(CellRangeAddress::formatAsString).collect(Collectors.joining());
     }
+
 }
