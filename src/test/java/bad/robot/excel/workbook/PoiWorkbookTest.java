@@ -24,7 +24,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -153,8 +152,7 @@ public class PoiWorkbookTest {
     }
 
     @Test
-    @Ignore
-    public void shouldCountMergedCellsWhenSingleEmptySheetHasMergedCells() throws IOException {
+    public void anEmptySheetWithMergedCellsIsNotTheSameAsAnEmptySheet() throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Sheet1");
         int firstMergedCol = 1;
