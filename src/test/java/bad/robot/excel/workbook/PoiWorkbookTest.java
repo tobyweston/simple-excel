@@ -20,7 +20,6 @@ import bad.robot.excel.WorkbookResource;
 import bad.robot.excel.cell.BlankCell;
 import bad.robot.excel.matchers.Matchers;
 import bad.robot.excel.row.RowBuilder;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -155,15 +154,13 @@ public class PoiWorkbookTest {
 
     @Test
     @Ignore
-    public void shouldCountMergedCellsCorrectly() throws IOException, InvalidFormatException {
-        // Create a workbook with a single empty sheet that has merged cells.
+    public void shouldCountMergedCellsWhenSingleEmptySheetHasMergedCells() throws IOException {
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Sheet1");
         int firstMergedCol = 1;
         int lastMergedCol = 5;
         sheet.addMergedRegion(new CellRangeAddress(0, 0, firstMergedCol, lastMergedCol));
 
-        // Compare the workbook to an empty workbook without merged cells.
         assertThat(workbook, is(not(sameWorkbook(getWorkbook("emptySheet.xlsx")))));
     }
 }
