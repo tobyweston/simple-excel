@@ -33,7 +33,6 @@ import java.io.InputStream;
 import static bad.robot.excel.DateUtil.createDate;
 import static bad.robot.excel.WorkbookResource.getCellForCoordinate;
 import static bad.robot.excel.WorkbookResource.getWorkbook;
-import static bad.robot.excel.WorkbookResource.getWorkbookFromFactory;
 import static bad.robot.excel.column.ColumnIndex.column;
 import static bad.robot.excel.column.ExcelColumnIndex.*;
 import static bad.robot.excel.matchers.CellType.adaptPoi;
@@ -164,6 +163,6 @@ public class PoiWorkbookTest {
         sheet.addMergedRegion(new CellRangeAddress(0, 0, firstMergedCol, lastMergedCol));
 
         // Compare the workbook to an empty workbook without merged cells.
-        assertThat(workbook, sameWorkbook(getWorkbookFromFactory("emptySheet.xlsx")));
+        assertThat(workbook, sameWorkbook(getWorkbook("emptySheet.xlsx")));
     }
 }

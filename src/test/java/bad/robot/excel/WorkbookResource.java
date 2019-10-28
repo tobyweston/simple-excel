@@ -18,10 +18,8 @@ package bad.robot.excel;
 
 import bad.robot.excel.sheet.Coordinate;
 import bad.robot.excel.workbook.PoiWorkbookReader;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,11 +30,6 @@ public class WorkbookResource {
     public static Workbook getWorkbook(String file) throws IOException {
         InputStream stream = WorkbookResource.class.getResourceAsStream(file);
         return new PoiWorkbookReader().read(stream);
-    }
-
-    public static Workbook getWorkbookFromFactory(String file) throws IOException, InvalidFormatException {
-        InputStream stream = WorkbookResource.class.getResourceAsStream(file);
-        return WorkbookFactory.create(stream);
     }
 
     public static Sheet firstSheetOf(String file) throws IOException {
