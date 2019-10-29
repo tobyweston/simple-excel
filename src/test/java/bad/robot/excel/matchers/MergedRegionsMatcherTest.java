@@ -32,13 +32,15 @@ import static org.hamcrest.Matchers.is;
 public class MergedRegionsMatcherTest {
 
 	private Sheet sheetWithMergedRegions;
-	private Sheet sheetWithMergedRegionsAltText;
 	private Sheet sheetWithAltMergedRegion;
+	private Sheet sheetWithTwoMergedRegion;
+	private Sheet sheetWithMergedRegionsAltText;
 
 	@Before
 	public void loadWorkbookAndSheets() throws IOException {
 		sheetWithMergedRegions = firstSheetOf("mergedRegionSheet.xlsx");
 		sheetWithAltMergedRegion = firstSheetOf("mergedRegionWithAltRegion.xlsx");
+		sheetWithTwoMergedRegion = firstSheetOf("mergedRegionWithTwoRegions.xlsx");
 		sheetWithMergedRegionsAltText = firstSheetOf("mergedRegionWithAltText.xlsx");
 	}
 
@@ -75,6 +77,13 @@ public class MergedRegionsMatcherTest {
 		Description description = new StringDescription();
 		hasSameMergedRegions(sheetWithAltMergedRegion).describeTo(description);
 		assertThat(description.toString(), is("\"A2:E2\" as a merged region(s) in sheet \"Sheet1\""));
+	}
+
+	@Test
+	public void descriptionMultipleMismatches() {
+		Description description = new StringDescription();
+		hasSameMergedRegions(sheetWithTwoMergedRegion).describeTo(description);
+		assertThat(description.toString(), is("\"A2:E2, A4:E4\" as a merged region(s) in sheet \"Sheet1\""));
 	}
 
 	@Test

@@ -56,7 +56,7 @@ public class MergedRegionsMatcher extends TypeSafeDiagnosingMatcher<Sheet> {
     }
 
     private String mergedRegion(Sheet sheet) {
-        return sheet.getMergedRegions().stream().map(CellRangeAddress::formatAsString).collect(Collectors.joining());
+        return sheet.getMergedRegions().stream().map(CellRangeAddress::formatAsString).collect(Collectors.joining(", "));
     }
 
 }
