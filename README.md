@@ -13,6 +13,7 @@ Add styles, formula and content to cells programmatically via a simple DSL.
 ``` java
 @Test
 public void shouldReplaceCellsInComplicatedAlternateSyntaxExample() throws IOException {
+public void shouldReplaceCellsInComplicatedAlternateSyntaxExample() throws IOException {
     HSSFWorkbook workbook = getWorkbook("shouldReplaceCellsInComplicatedExampleTemplate.xls");
     new PoiWorkbookMutator(workbook)
             .replaceCell(coordinate(C, 5), "Adding")
@@ -102,7 +103,7 @@ Available for manual download via my [Maven repository](http://robotooling.com/m
     <repository>
         <id>bad.robot</id>
         <name>bad.robot repository on robotooling</name>
-        <url>http://www.robotooling.com/maven/</url>
+        <url>https://robotooling.com/maven/</url>
         <snapshots>
             <enabled>true</enabled>
             <updatePolicy>always</updatePolicy>
@@ -118,7 +119,7 @@ Then add a dependency.
 <dependency>
     <groupId>bad.robot</groupId>
     <artifactId>simple-excel</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <scope>compile</scope>
 </dependency>
 ```
